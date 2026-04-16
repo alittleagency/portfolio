@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brittany May — Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white: #ffffff;
+  --off-white: #f9f8f6;
+  --ink: #1a1916;
+  --ink-light: #6b6860;
+  --border: #e9e6df;
+  --coral: #e8533a;
+  --teal: #1a8a7a;
+  --gold: #d4a027;
+  --blue: #2c6fad;
+  --r: 10px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Epilogue', sans-serif;
+  background: var(--off-white);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(249, 248, 246, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.nav-cta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--ink);
+  padding: 8px 18px;
+  border-radius: 100px;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: opacity 0.15s;
+}
+.nav-cta:hover { opacity: 0.75; }
+
+/* ─── HERO ─── */
+.hero {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 40px 64px;
+}
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 18px;
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+h1 em {
+  font-style: italic;
+  color: var(--ink-light);
+}
+.hero-sub {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--ink-light);
+  max-width: 520px;
+  line-height: 1.7;
+}
+
+/* ─── DIVIDER ─── */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  max-width: 760px;
+  margin: 0 auto 56px;
+}
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  padding: 0 40px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+/* ─── CARDS ─── */
+.cards {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 40px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  display: grid;
+  grid-template-columns: 5px 1fr auto;
+  align-items: stretch;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease, box-shadow 0.2s ease;
+}
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.card:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,0.09);
+  transform: translateY(-2px) !important;
+}
+
+.card-stripe { width: 5px; flex-shrink: 0; }
+.stripe-coral { background: var(--coral); }
+.stripe-teal  { background: var(--teal); }
+.stripe-gold  { background: var(--gold); }
+
+.card-content {
+  padding: 24px 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.card-meta {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.card-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ink-light);
+  line-height: 1.65;
+  max-width: 480px;
+  margin-top: 2px;
+}
+
+.card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.chip {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--off-white);
+  color: var(--ink-light);
+  letter-spacing: 0.02em;
+}
+.chip-coral { background: #fef0ed; color: var(--coral);  border-color: #f5c5bb; }
+.chip-teal  { background: #e8f5f3; color: var(--teal);   border-color: #b0ddd8; }
+.chip-gold  { background: #fdf5e4; color: var(--gold);   border-color: #e8d09a; }
+
+.card-arrow-col {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border-left: 1px solid var(--border);
+}
+.card-arrow {
+  font-size: 20px;
+  color: var(--ink-light);
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+.card:hover .card-arrow {
+  transform: translateX(4px);
+  color: var(--ink);
+}
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center;
+  padding: 0 40px 60px;
+  font-size: 13px;
+  color: var(--ink-light);
+  font-weight: 300;
+}
+footer a {
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+footer a:hover { border-color: var(--ink); }
+
+@media (max-width: 600px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 56px 20px 48px; }
+  .section-label { padding: 0 20px; }
+  .cards { padding: 0 20px 80px; }
+  .card-arrow-col { display: none; }
+  .card-content { padding: 20px; }
+  footer { padding: 0 20px 48px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="#">Brittany May</a>
+  <a class="nav-cta" href="mailto:brittany@alittleagency.com">Get in touch →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Selected Work</div>
+  <h1>Building things that<br><em>actually work</em></h1>
+  <p class="hero-sub">I design and build web products, AI-powered tools, and automation systems — for government agencies, small businesses, and people who need their lives to run a little smoother.</p>
+</section>
+
+<hr />
+
+<div class="section-label">Projects</div>
+
+<div class="cards">
+
+  <a class="card" href="file:///Users/brittanymay/Documents/Claude/Projects/government%20contracts/alittle-agency-website/alittleagency.html" target="_blank">
+    <div class="card-stripe stripe-coral"></div>
+    <div class="card-content">
+      <div class="card-meta">Government Contracting · Website</div>
+      <div class="card-title">A Little Agency</div>
+      <div class="card-desc">Professional website for a woman-owned AI consulting firm targeting federal and local government procurement. Built to convert contracting officers and procurement leads.</div>
+      <div class="card-chips">
+        <span class="chip chip-coral">WOSB</span>
+        <span class="chip chip-coral">Gov Contracting</span>
+        <span class="chip">AI Consulting</span>
+        <span class="chip">Web</span>
+      </div>
+    </div>
+    <div class="card-arrow-col"><span class="card-arrow">→</span></div>
+  </a>
+
+  <a class="card" href="https://caseclosed-ashy.vercel.app/demos" target="_blank">
+    <div class="card-stripe stripe-teal"></div>
+    <div class="card-content">
+      <div class="card-meta">Legal Tech · Web App</div>
+      <div class="card-title">Case Closed</div>
+      <div class="card-desc">A case management dashboard for solo attorneys — client tracking, deadlines, billing, and document management in one clean, modern interface.</div>
+      <div class="card-chips">
+        <span class="chip chip-teal">Live ↗</span>
+        <span class="chip chip-teal">Legal Tech</span>
+        <span class="chip">Dashboard</span>
+        <span class="chip">Solo Practice</span>
+      </div>
+    </div>
+    <div class="card-arrow-col"><span class="card-arrow">→</span></div>
+  </a>
+
+  <a class="card" href="file:///Users/brittanymay/Library/Mobile%20Documents/com~apple~CloudDocs/claude%20personal%20playbook%20project/personal%20playbook/spoon-stack-dashboard.html" target="_blank">
+    <div class="card-stripe stripe-gold"></div>
+    <div class="card-content">
+      <div class="card-meta">Accessibility · Interactive Tool</div>
+      <div class="card-title">Low Spoons Dashboard</div>
+      <div class="card-desc">A daily planning tool built around Spoon Theory — track your energy, triage tasks by cost, and protect your capacity. Designed for neurodivergent and chronically ill users.</div>
+      <div class="card-chips">
+        <span class="chip chip-gold">Spoon Theory</span>
+        <span class="chip chip-gold">Neurodivergent</span>
+        <span class="chip">Accessibility</span>
+        <span class="chip">Interactive</span>
+      </div>
+    </div>
+    <div class="card-arrow-col"><span class="card-arrow">→</span></div>
+  </a>
+
+</div>
+
+<footer>
+  Brittany May &nbsp;·&nbsp; <a href="mailto:brittany@alittleagency.com">brittany@alittleagency.com</a>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 120);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.card').forEach(c => obs.observe(c));
+</script>
+</body>
+</html>
