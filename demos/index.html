@@ -1,0 +1,128 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}</style><title>AI Solutions Demos · Brittany May</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap"><style>
+/* Layout: a four-step walkthrough (clean, see, follow up, report) with step pills; each step is one wide working panel that stacks on phones. */
+:root{
+  --display:"Sora","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --bg:#f4f6f5; --surface:#ffffff; --sunk:#eaefed; --fg:#14232a; --muted:#53636a; --line:#d5dedb;
+  --teal:#0d6b68; --teal-soft:#d9efec; --gold:#b97900; --gold-soft:#fdf0d2; --red:#b8432c; --red-soft:#f9e3dc; --ok:#2c7a4b; --ok-soft:#dff2e5;
+  color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1719; --surface:#162125; --sunk:#0c1315; --fg:#e8f0ee; --muted:#9db0ae; --line:#28373a;
+  --teal:#5ccbc4; --teal-soft:#143536; --gold:#f2c15b; --gold-soft:#3a2d12; --red:#f09179; --red-soft:#3d2019; --ok:#79d79d; --ok-soft:#163224; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1719; --surface:#162125; --sunk:#0c1315; --fg:#e8f0ee; --muted:#9db0ae; --line:#28373a;
+  --teal:#5ccbc4; --teal-soft:#143536; --gold:#f2c15b; --gold-soft:#3a2d12; --red:#f09179; --red-soft:#3d2019; --ok:#79d79d; --ok-soft:#163224; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1100px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,38px);line-height:1.15;margin:0;letter-spacing:-.015em;text-wrap:balance;max-width:24ch}
+h2{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.3;margin:0 0 6px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:15px;margin:0 0 10px;color:var(--muted)}
+p{margin:0}
+.lede{color:var(--muted);font-size:17.5px;margin-top:12px;max-width:62ch}
+.tag{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.sample{display:inline-flex;gap:8px;align-items:center;background:var(--gold-soft);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:14px;margin-top:16px}
+.sample b{color:var(--gold)}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 16px}
+.steps button{font:inherit;font-weight:700;font-size:15px;display:flex;align-items:center;gap:9px;background:var(--surface);color:var(--muted);border:2px solid var(--line);border-radius:999px;padding:8px 16px 8px 9px;cursor:pointer}
+.steps button span{width:26px;height:26px;border-radius:50%;background:var(--sunk);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px}
+.steps button[aria-selected="true"]{border-color:var(--teal);color:var(--fg)}
+.steps button[aria-selected="true"] span{background:var(--teal);color:var(--surface)}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;min-width:0}
+.phead{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.phead p{color:var(--muted);max-width:60ch}
+.btn{font:inherit;font-weight:700;font-size:15px;border-radius:10px;padding:10px 18px;border:2px solid var(--teal);background:var(--teal);color:var(--surface);cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--teal)}
+.btn:disabled{opacity:.5;cursor:default}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+th{text-align:left;font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;background:var(--sunk)}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+tr.dupe td{background:var(--red-soft)}
+.src{font-size:12.5px;font-weight:700;color:var(--muted)}
+.chip{display:inline-block;font-size:12.5px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.chip.t{background:var(--teal-soft);color:var(--teal)}.chip.g{background:var(--gold-soft);color:var(--gold)}.chip.r{background:var(--red-soft);color:var(--red)}.chip.o{background:var(--ok-soft);color:var(--ok)}
+.summary{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0}
+.summary .s{background:var(--sunk);border-radius:12px;padding:10px 16px;min-width:140px}
+.summary .s b{display:block;font-family:var(--display);font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.summary .s span{font-size:14px;color:var(--muted)}
+.merges{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:16px}
+.merge{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);min-width:0}
+.merge .why{font-size:13.5px;color:var(--red);font-weight:600;margin-top:4px}
+.merge ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+.box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr) 34px;gap:10px;align-items:center;font-size:14.5px}
+.bar .track{height:14px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.bar .fill{height:100%;background:var(--teal);border-radius:99px}
+.bar.g .fill{background:var(--gold)}
+.bar .n{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--sunk);border-radius:12px;padding:12px 16px}
+.kpi b{display:block;font-family:var(--display);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;color:var(--muted)}
+.fu{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px}
+@media (max-width:760px){.fu{grid-template-columns:minmax(0,1fr)}}
+.people{display:flex;flex-direction:column;gap:8px;max-height:560px;overflow:auto}
+@media (max-width:760px){.people{flex-direction:row;overflow-x:auto;max-height:none;padding-bottom:6px;scroll-snap-type:x mandatory}.people button{flex:0 0 74%;scroll-snap-align:start}}
+.sent{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--ok)}
+.fubar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;padding:10px 14px;border-radius:12px;background:var(--sunk);font-weight:600}
+.fubar .track{flex:1 1 160px;height:12px;background:var(--surface);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.fubar .fill{height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
+.people button{font:inherit;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--fg)}
+.people button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-soft)}
+.people b{display:block;font-size:15px}
+.people span{font-size:13.5px;color:var(--muted)}
+.msg{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.msg header{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--sunk);font-weight:700;font-size:14px}
+.msg pre{margin:0;padding:14px 16px;white-space:pre-wrap;font:inherit;font-size:15.5px;line-height:1.6}
+.msg+.msg{margin-top:12px}
+.note{font-size:14px;color:var(--muted);margin-top:10px}
+.report{font-size:16.5px;line-height:1.7;max-width:70ch}
+.report p+p{margin-top:12px}
+.report b{color:var(--teal)}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+@media (max-width:760px){.how{grid-template-columns:minmax(0,1fr)}}
+.how div{border-top:3px solid var(--teal);padding-top:10px}
+.how b{display:block;font-family:var(--display);font-size:16px;margin-bottom:4px}
+.how p{font-size:15px;color:var(--muted)}
+footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--muted);font-size:14.5px}
+footer b{color:var(--fg)}
+a{color:var(--teal);font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:9px;font-size:14px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}.bar .fill{transition:none}}
+.bar .fill{transition:width .5s}
+</style></head><body>
+<div class="wrap">
+  <div class="tag">A Little Agency · AI Solutions Demos</div>
+  <h1>Four working demos of AI and clean data for small business programs</h1>
+  <p class="lede">Each one is a working tool you can try. They use made-up sample data, and each can be set up for a real program, office or business.</p>
+  <div class="hub">
+    <a class="hc" href="ai-review.html"><span class="hn">1</span><div><span class="hk">For small business owners</span><b>AI Opportunity Review</b><p>Five quick questions show where a business is losing hours. Then a full sample plan with tools, costs and a 30-day start, plus packages.</p><span class="go">Open demo</span></div></a>
+    <a class="hc" href="resource-navigator.html"><span class="hn">2</span><div><span class="hk">For front desks and event intake</span><b>Business Resource Navigator</b><p>Four questions match an owner to the right partner, with a take-home plan for them and a handoff note for staff.</p><span class="go">Open demo</span></div></a>
+    <a class="hc" href="follow-through.html"><span class="hn">3</span><div><span class="hk">For events and pop-ups</span><b>Pop-Up Follow-Through</b><p>Messy sign-ups from three sources become one clean list, a snapshot of needs, a follow-up for every business and a report for leadership.</p><span class="go">Open demo</span></div></a>
+    <a class="hc" href="contract-ready.html"><span class="hn">4</span><div><span class="hk">For contracting and public sector programs</span><b>Contract Ready Check</b><p>A checklist shows a business what's missing to sell to the county, the next three steps, and the contracts it can go after now.</p><span class="go">Open demo</span></div></a>
+  </div>
+  <section class="who"><h2>About me</h2><p>I'm Brittany May, an AI Solutions Architect with 15 years in enterprise data. I build practical AI tools on top of clean, trustworthy data, for organizations that can't afford to get it wrong.</p><p class="links"><a href="../">See my portfolio</a> · <a href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a> · brittany@alittle.agency · 404-723-6084</p></section>
+</div>
+<style>
+.hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}
+@media (max-width:720px){.hub{grid-template-columns:minmax(0,1fr)}}
+.hc{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;text-decoration:none;color:var(--fg);transition:transform .15s,border-color .15s;min-width:0}
+.hc:hover{transform:translateY(-2px);border-color:var(--teal)}
+@media (prefers-reduced-motion:reduce){.hc{transition:none}.hc:hover{transform:none}}
+.hn{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700}
+.hk{display:block;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold)}
+.hc b{display:block;font-family:var(--display);font-size:19px;margin:4px 0 6px}
+.hc p{font-size:15px;color:var(--muted)}
+.go{display:inline-block;margin-top:10px;font-weight:700;color:var(--teal)}
+.who{margin-top:36px;padding-top:22px;border-top:1px solid var(--line);max-width:70ch}
+.who p{color:var(--muted);margin-top:6px}
+.links{font-weight:600}
+</style>
+</body></html>
