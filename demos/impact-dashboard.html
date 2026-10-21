@@ -1,0 +1,223 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style><title>Business Impact Dashboard</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a four-step walkthrough (clean, see, follow up, report) with step pills; each step is one wide working panel that stacks on phones. */
+:root{
+  --display:"Sora","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --bg:#f4f6f5; --surface:#ffffff; --sunk:#eaefed; --fg:#14232a; --muted:#53636a; --line:#d5dedb;
+  --teal:#0d6b68; --teal-soft:#d9efec; --gold:#b97900; --gold-soft:#fdf0d2; --red:#b8432c; --red-soft:#f9e3dc; --ok:#2c7a4b; --ok-soft:#dff2e5;
+  color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1719; --surface:#162125; --sunk:#0c1315; --fg:#e8f0ee; --muted:#9db0ae; --line:#28373a;
+  --teal:#5ccbc4; --teal-soft:#143536; --gold:#f2c15b; --gold-soft:#3a2d12; --red:#f09179; --red-soft:#3d2019; --ok:#79d79d; --ok-soft:#163224; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1719; --surface:#162125; --sunk:#0c1315; --fg:#e8f0ee; --muted:#9db0ae; --line:#28373a;
+  --teal:#5ccbc4; --teal-soft:#143536; --gold:#f2c15b; --gold-soft:#3a2d12; --red:#f09179; --red-soft:#3d2019; --ok:#79d79d; --ok-soft:#163224; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1100px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,38px);line-height:1.15;margin:0;letter-spacing:-.015em;text-wrap:balance;max-width:24ch}
+h2{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.3;margin:0 0 6px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:15px;margin:0 0 10px;color:var(--muted)}
+p{margin:0}
+.lede{color:var(--muted);font-size:17.5px;margin-top:12px;max-width:62ch}
+.tag{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.sample{display:inline-flex;gap:8px;align-items:center;background:var(--gold-soft);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:14px;margin-top:16px}
+.sample b{color:var(--gold)}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 16px}
+.steps button{font:inherit;font-weight:700;font-size:15px;display:flex;align-items:center;gap:9px;background:var(--surface);color:var(--muted);border:2px solid var(--line);border-radius:999px;padding:8px 16px 8px 9px;cursor:pointer}
+.steps button span{width:26px;height:26px;border-radius:50%;background:var(--sunk);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px}
+.steps button[aria-selected="true"]{border-color:var(--teal);color:var(--fg)}
+.steps button[aria-selected="true"] span{background:var(--teal);color:var(--surface)}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;min-width:0}
+.phead{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.phead p{color:var(--muted);max-width:60ch}
+.btn{font:inherit;font-weight:700;font-size:15px;border-radius:10px;padding:10px 18px;border:2px solid var(--teal);background:var(--teal);color:var(--surface);cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--teal)}
+.btn:disabled{opacity:.5;cursor:default}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+th{text-align:left;font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;background:var(--sunk)}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+tr.dupe td{background:var(--red-soft)}
+.src{font-size:12.5px;font-weight:700;color:var(--muted)}
+.chip{display:inline-block;font-size:12.5px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.chip.t{background:var(--teal-soft);color:var(--teal)}.chip.g{background:var(--gold-soft);color:var(--gold)}.chip.r{background:var(--red-soft);color:var(--red)}.chip.o{background:var(--ok-soft);color:var(--ok)}
+.summary{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0}
+.summary .s{background:var(--sunk);border-radius:12px;padding:10px 16px;min-width:140px}
+.summary .s b{display:block;font-family:var(--display);font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.summary .s span{font-size:14px;color:var(--muted)}
+.merges{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:16px}
+.merge{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);min-width:0}
+.merge .why{font-size:13.5px;color:var(--red);font-weight:600;margin-top:4px}
+.merge ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+.box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr) 34px;gap:10px;align-items:center;font-size:14.5px}
+.bar .track{height:14px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.bar .fill{height:100%;background:var(--teal);border-radius:99px}
+.bar.g .fill{background:var(--gold)}
+.bar .n{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--sunk);border-radius:12px;padding:12px 16px}
+.kpi b{display:block;font-family:var(--display);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;color:var(--muted)}
+.fu{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px}
+@media (max-width:760px){.fu{grid-template-columns:minmax(0,1fr)}}
+.people{display:flex;flex-direction:column;gap:8px;max-height:560px;overflow:auto}
+@media (max-width:760px){.people{flex-direction:row;overflow-x:auto;max-height:none;padding-bottom:6px;scroll-snap-type:x mandatory}.people button{flex:0 0 74%;scroll-snap-align:start}}
+.sent{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--ok)}
+.fubar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;padding:10px 14px;border-radius:12px;background:var(--sunk);font-weight:600}
+.fubar .track{flex:1 1 160px;height:12px;background:var(--surface);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.fubar .fill{height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
+.people button{font:inherit;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--fg)}
+.people button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-soft)}
+.people b{display:block;font-size:15px}
+.people span{font-size:13.5px;color:var(--muted)}
+.msg{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.msg header{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--sunk);font-weight:700;font-size:14px}
+.msg pre{margin:0;padding:14px 16px;white-space:pre-wrap;font:inherit;font-size:15.5px;line-height:1.6}
+.msg+.msg{margin-top:12px}
+.note{font-size:14px;color:var(--muted);margin-top:10px}
+.report{font-size:16.5px;line-height:1.7;max-width:70ch}
+.report p+p{margin-top:12px}
+.report b{color:var(--teal)}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+@media (max-width:760px){.how{grid-template-columns:minmax(0,1fr)}}
+.how div{border-top:3px solid var(--teal);padding-top:10px}
+.how b{display:block;font-family:var(--display);font-size:16px;margin-bottom:4px}
+.how p{font-size:15px;color:var(--muted)}
+footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--muted);font-size:14.5px}
+footer b{color:var(--fg)}
+a{color:var(--teal);font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:9px;font-size:14px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}.bar .fill{transition:none}}
+.bar .fill{transition:width .5s}
+</style></head><body>
+<div class="wrap">
+  <div class="tag">Economic development · One system</div>
+  <h1>Every business you meet, from first hello to funded, in one place</h1>
+  <p class="lede">Event sign-ups, intake answers, contract readiness and loan applications all land on one record per business. Follow-ups draft themselves in your email, check-ins go on your calendar, and the quarterly impact report writes itself.</p>
+  <div class="sample"><b>Demo</b> All businesses, amounts and results are made up.</div>
+
+  <section class="conn" aria-label="Connected tools">
+    <span class="cl">Feeds in from</span>
+    <span class="pill">Pop-Up Follow-Through</span><span class="pill">Resource Navigator</span><span class="pill">Contract Ready Check</span><span class="pill">Loan applications</span>
+    <span class="cl">Sends out to</span>
+    <span class="pill out">Email drafts</span><span class="pill out">Calendar</span><span class="pill out">Impact report</span>
+  </section>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="dash">
+    <section class="panel"><h2>Where businesses are</h2><p class="meta2">Click a stage to filter the list.</p><div id="funnel"></div></section>
+    <section class="panel"><h2>Where they are</h2><p class="meta2">Businesses reached by city</p><div class="bars" id="areas"></div></section>
+  </div>
+
+  <section class="panel" style="margin-top:16px">
+    <div class="lh"><div><h2 style="margin:0">Businesses</h2><p class="meta2" id="lmeta"></p></div><div class="lf"><input type="search" id="q" placeholder="Search" aria-label="Search businesses"><select id="src" aria-label="Source"><option value="">All sources</option></select><button class="btn ghost" id="clr">Show all</button></div></div>
+    <div class="scroll"><table><thead><tr><th>Business</th><th>City</th><th>Stage</th><th>Came from</th><th>Next step</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+  </section>
+
+  <section class="panel" style="margin-top:16px" id="drawer" hidden></section>
+
+  <section class="panel" style="margin-top:16px">
+    <div class="lh"><div><h2 style="margin:0">Quarterly impact report</h2><p class="meta2">Written from the records above, ready for leadership.</p></div><button class="btn" id="mkrep">Write the report</button></div>
+    <div class="report" id="rep"></div>
+  </section>
+
+  <footer><span><b>Brittany May</b> · A Little Agency · AI solutions and enterprise data · Brookhaven, GA</span><span><a href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a> · brittany@alittle.agency · 404-723-6084</span></footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<style>
+.meta2{color:var(--muted);font-size:14.5px;margin-top:2px}
+.conn{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:22px 0 18px}
+.cl{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-left:6px}
+.cl:first-child{margin-left:0}
+.pill{font-size:14px;font-weight:600;background:var(--teal-soft);color:var(--teal);border-radius:999px;padding:5px 12px}
+.pill.out{background:var(--gold-soft);color:var(--gold)}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px}
+@media (max-width:860px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dash{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}
+@media (max-width:860px){.dash{grid-template-columns:minmax(0,1fr)}}
+.stage{display:grid;grid-template-columns:110px minmax(0,1fr) 40px;gap:10px;align-items:center;width:100%;font:inherit;background:none;border:0;padding:6px 0;cursor:pointer;color:var(--fg);text-align:left}
+.stage .track{height:26px;background:var(--sunk);border-radius:8px;overflow:hidden}
+.stage .fill{height:100%;background:var(--teal);border-radius:8px}
+.stage[aria-pressed="true"] .fill{background:var(--gold)}
+.stage b{font-variant-numeric:tabular-nums;text-align:right}
+.lh{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end;margin-bottom:14px}
+.lf{display:flex;flex-wrap:wrap;gap:8px}
+.lf input,.lf select{font:inherit;font-size:15px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--surface);color:var(--fg)}
+.lf .btn{padding:7px 14px;font-size:14px}
+td .btn{padding:5px 11px;font-size:13.5px}
+.st{font-weight:700;font-size:13px;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.st.Met{background:var(--sunk);color:var(--muted)}.st.Referred{background:var(--teal-soft);color:var(--teal)}.st.Applied{background:var(--gold-soft);color:var(--gold)}.st.Funded{background:var(--ok-soft);color:var(--ok)}.st.Growing{background:var(--ok);color:var(--surface)}
+.dg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:12px}
+@media (max-width:760px){.dg{grid-template-columns:minmax(0,1fr)}}
+.tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 12px 16px;font-size:15px}
+.tl li::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--teal)}
+.tl small{display:block;color:var(--muted);font-size:13px}
+.mail{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.mail header{background:var(--sunk);padding:10px 14px;font-size:14px;line-height:1.5}
+.mail pre{margin:0;padding:14px;white-space:pre-wrap;font:inherit;font-size:15px;line-height:1.6}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+</style>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2000)}
+const STAGES=["Met","Referred","Applied","Funded","Growing"];
+const B=[
+ ["Delgado Tamales","Maria Delgado","Chamblee","Funded","Pop-up",25000,3,"90-day check-in on new oven"],
+ ["Pho Saigon Corner","Thanh Nguyen","Doraville","Applied","Pop-up",40000,0,"Collect last bank statement"],
+ ["Park Tailoring","Ji-woo Park","Doraville","Referred","Navigator",0,0,"Online sales workshop on Nov 4"],
+ ["Rosa's Cleaning Co","Rosa Martinez","Chamblee","Met","Pop-up",0,0,"Book LLC counseling session"],
+ ["Golden Lantern Bakery","Wei Chen","Doraville","Referred","Navigator",0,0,"Match with marketing mentor"],
+ ["Brooks Mobile Detailing","Darnell Brooks","Brookhaven","Applied","Navigator",10000,0,"Microloan review on Oct 30"],
+ ["Yusuf Home Care","Amina Yusuf","Tucker","Referred","Contract Check",0,0,"Finish county vendor registration"],
+ ["Ramirez Auto Glass","Luis Ramirez","Doraville","Growing","Loan fund",50000,4,"Quarterly results call"],
+ ["Seoul Beauty Studio","Hana Kim","Chamblee","Met","Pop-up",0,0,"License and insurance session"],
+ ["Okafor Catering","Grace Okafor","Stone Mountain","Funded","Contract Check",30000,2,"Bid on the county caterer list"],
+ ["Tran Nail Supply","Tuan Tran","Doraville","Referred","Pop-up",0,0,"Bookkeeping workshop"],
+ ["Lithonia Fresh Market","Keisha Walker","Lithonia","Growing","Loan fund",75000,6,"Expansion site visit"],
+ ["Clarkston Coffee Collective","Abdi Hassan","Clarkston","Applied","Navigator",20000,0,"Submit equipment quote"],
+ ["Decatur Design Print","Jamal Carter","Decatur","Funded","Loan fund",35000,2,"Check new press install"],
+ ["Mountain View Childcare","Tanya Brooks","Stone Mountain","Referred","Contract Check",0,0,"Get state supplier registration"],
+ ["Tucker Tech Repair","Kevin Osei","Tucker","Met","Pop-up",0,0,"Send capability statement template"],
+ ["Kensington Kitchen","Aaliyah Price","Decatur","Applied","Loan fund",15000,0,"Credit review next week"],
+ ["Redan Landscaping","Marcus Bell","Lithonia","Growing","Contract Check",45000,5,"First county contract started"]
+].map(([biz,owner,city,stage,src,amt,jobs,next],i)=>({id:i,biz,owner,first:owner.split(" ")[0],city,stage,src,amt,jobs,next,email:owner.toLowerCase().replace(/[^a-z]+/g,".")+"@example.com"}));
+const SENT=new Set(),BOOKED=new Set();let filt=null;
+const money=n=>"$"+Math.round(n).toLocaleString();
+const after=s=>STAGES.indexOf(s);
+function kpis(){const f=B.filter(b=>after(b.stage)>=3);const dep=f.reduce((a,b)=>a+b.amt,0),jobs=B.reduce((a,b)=>a+b.jobs,0);
+ $("#kpis").innerHTML=[["Businesses reached",B.length],["Referred to a partner",B.filter(b=>after(b.stage)>=1).length],["Applied for funding",B.filter(b=>after(b.stage)>=2&&b.amt).length],["Dollars deployed",money(dep)],["Jobs supported",jobs]].map(([l,v])=>`<div class="kpi"><b>${v}</b><span>${l}</span></div>`).join("")}
+function funnel(){const max=B.length;$("#funnel").innerHTML=STAGES.map(s=>{const n=B.filter(b=>after(b.stage)>=after(s)).length;return `<button class="stage" data-stage="${s}" aria-pressed="${filt===s}"><span>${s}</span><div class="track"><div class="fill" style="width:${n/max*100}%"></div></div><b>${n}</b></button>`}).join("")}
+function areas(){const t={};B.forEach(b=>t[b.city]=(t[b.city]||0)+1);const max=Math.max(...Object.values(t));$("#areas").innerHTML=Object.entries(t).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar g"><span>${esc(k)}</span><div class="track"><div class="fill" style="width:${v/max*100}%"></div></div><span class="n">${v}</span></div>`).join("")}
+$("#src").innerHTML+=[...new Set(B.map(b=>b.src))].map(s=>`<option>${esc(s)}</option>`).join("");
+function rows(){const q=$("#q").value.toLowerCase(),src=$("#src").value;const r=B.filter(b=>(!filt||b.stage===filt)&&(!src||b.src===src)&&(!q||(b.biz+b.owner+b.city).toLowerCase().includes(q)));
+ $("#lmeta").textContent=`${r.length} of ${B.length}${filt?` · stage: ${filt}`:""} · ${SENT.size} follow-ups drafted · ${BOOKED.size} check-ins booked`;
+ $("#rows").innerHTML=r.map(b=>`<tr><td><b>${esc(b.biz)}</b><br><span class="src">${esc(b.owner)}</span></td><td>${esc(b.city)}</td><td><span class="st ${b.stage}">${b.stage}</span></td><td>${esc(b.src)}</td><td>${esc(b.next)}${SENT.has(b.id)?' <span class="chip o">Draft ready</span>':""}${BOOKED.has(b.id)?' <span class="chip t">Booked</span>':""}</td><td><button class="btn ghost" data-open="${b.id}">Open</button></td></tr>`).join("")}
+function draftFor(b){const L={Met:`It was great meeting you and learning about ${b.biz}. As promised, here's your next step: ${b.next.toLowerCase()}. Reply with a time that works and I'll set it up.`,Referred:`Checking in on your connection with our partner. Your next step is to ${b.next.toLowerCase()}. Let me know if anything is getting in the way.`,Applied:`Thanks for applying for funding for ${b.biz}. To keep things moving, the next step is to ${b.next.toLowerCase()}.`,Funded:`Congratulations again on your funding. I'd like to schedule our ${b.next.toLowerCase()} so we can capture how it's going.`,Growing:`It's been great watching ${b.biz} grow. Let's set up our ${b.next.toLowerCase()} to hear the latest numbers.`};
+ return {to:b.email,subject:`Next step for ${b.biz}`,body:`Hi ${b.first},\n\n${L[b.stage]}\n\nBest,\n[Your name]\nSmall Business Program`}}
+function openB(id){const b=B[id],d=draftFor(b),i=after(b.stage);const steps=[["Met",`At a ${b.src==="Pop-up"?"pop-up event":b.src==="Navigator"?"Resource Navigator intake":b.src==="Contract Check"?"Contract Ready Check":"loan fund inquiry"}`],["Referred","Matched to a partner"],["Applied",b.amt?`Requested ${money(b.amt)}`:"Applied to a program"],["Funded",b.amt?`${money(b.amt)} approved`:"Approved"],["Growing",`${b.jobs} jobs supported`]].slice(0,i+1);
+ const dr=$("#drawer");dr.hidden=false;dr.innerHTML=`<div class="lh"><div><h2 style="margin:0">${esc(b.biz)}</h2><p class="meta2">${esc(b.owner)} · ${esc(b.city)} · <span class="st ${b.stage}">${b.stage}</span></p></div><button class="btn ghost" id="close">Close</button></div>
+ <div class="dg"><div><h3>History</h3><ul class="tl">${steps.map(([s,t])=>`<li><b>${s}</b><small>${esc(t)}</small></li>`).join("")}</ul><h3>Next step</h3><p>${esc(b.next)}</p></div>
+ <div><h3>Follow-up draft</h3><div class="mail"><header><b>To:</b> ${esc(d.to)}<br><b>Subject:</b> ${esc(d.subject)}</header><pre>${esc(d.body)}</pre></div>
+ <div class="acts"><button class="btn" id="toMail">${SENT.has(id)?"Draft saved to email":"Save as email draft"}</button><button class="btn ghost" id="book">${BOOKED.has(id)?"Check-in booked":"Book a check-in"}</button></div><p class="note">Demo only. In a real setup this saves to your Gmail or Outlook drafts and your calendar.</p></div></div>`;
+ $("#close").onclick=()=>{dr.hidden=true};$("#toMail").onclick=()=>{SENT.add(id);toast("Saved to your email drafts");openB(id);rows()};$("#book").onclick=()=>{BOOKED.add(id);toast("Check-in added to your calendar");openB(id);rows()};
+ dr.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})}
+function report(){const f=B.filter(b=>after(b.stage)>=3),dep=f.reduce((a,b)=>a+b.amt,0),jobs=B.reduce((a,b)=>a+b.jobs,0),cities=new Set(B.map(b=>b.city)).size;const pend=B.filter(b=>b.stage==="Applied"),pa=pend.reduce((a,b)=>a+b.amt,0);const src={};B.forEach(b=>src[b.src]=(src[b.src]||0)+1);const top=Object.entries(src).sort((a,b)=>b[1]-a[1]);
+ $("#rep").innerHTML=[`This quarter the program reached <b>${B.length} businesses in ${cities} cities</b>. ${B.filter(b=>after(b.stage)>=1).length} were connected to a partner, and <b>${f.length} received funding totaling ${money(dep)}</b>, supporting <b>${jobs} jobs</b>.`,`${pend.length} applications worth ${money(pa)} are in review. The biggest sources of new businesses were ${top.slice(0,2).map(([k,v])=>`${k.toLowerCase()} (${v})`).join(" and ")}.`,`Every business has a named next step. ${SENT.size} follow-ups and ${BOOKED.size} check-ins were scheduled from this dashboard.`].map(p=>`<p>${p}</p>`).join("")}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.stage){filt=filt===b.dataset.stage?null:b.dataset.stage;funnel();rows()}else if(b.dataset.open!==undefined)openB(Number(b.dataset.open))});
+$("#q").addEventListener("input",rows);$("#src").addEventListener("input",rows);$("#clr").onclick=()=>{filt=null;$("#q").value="";$("#src").value="";funnel();rows()};$("#mkrep").onclick=()=>{report();toast("Report written")};
+kpis();funnel();areas();rows();
+</script>
+</body></html>
