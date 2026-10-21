@@ -1,0 +1,294 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style><title>AI Opportunity Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a four-step walkthrough (clean, see, follow up, report) with step pills; each step is one wide working panel that stacks on phones. */
+:root{
+  --display:"Sora","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --bg:#f4f6f5; --surface:#ffffff; --sunk:#eaefed; --fg:#14232a; --muted:#53636a; --line:#d5dedb;
+  --teal:#0d6b68; --teal-soft:#d9efec; --gold:#b97900; --gold-soft:#fdf0d2; --red:#b8432c; --red-soft:#f9e3dc; --ok:#2c7a4b; --ok-soft:#dff2e5;
+  color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1719; --surface:#162125; --sunk:#0c1315; --fg:#e8f0ee; --muted:#9db0ae; --line:#28373a;
+  --teal:#5ccbc4; --teal-soft:#143536; --gold:#f2c15b; --gold-soft:#3a2d12; --red:#f09179; --red-soft:#3d2019; --ok:#79d79d; --ok-soft:#163224; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1719; --surface:#162125; --sunk:#0c1315; --fg:#e8f0ee; --muted:#9db0ae; --line:#28373a;
+  --teal:#5ccbc4; --teal-soft:#143536; --gold:#f2c15b; --gold-soft:#3a2d12; --red:#f09179; --red-soft:#3d2019; --ok:#79d79d; --ok-soft:#163224; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1100px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,38px);line-height:1.15;margin:0;letter-spacing:-.015em;text-wrap:balance;max-width:24ch}
+h2{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.3;margin:0 0 6px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:15px;margin:0 0 10px;color:var(--muted)}
+p{margin:0}
+.lede{color:var(--muted);font-size:17.5px;margin-top:12px;max-width:62ch}
+.tag{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.sample{display:inline-flex;gap:8px;align-items:center;background:var(--gold-soft);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:14px;margin-top:16px}
+.sample b{color:var(--gold)}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 16px}
+.steps button{font:inherit;font-weight:700;font-size:15px;display:flex;align-items:center;gap:9px;background:var(--surface);color:var(--muted);border:2px solid var(--line);border-radius:999px;padding:8px 16px 8px 9px;cursor:pointer}
+.steps button span{width:26px;height:26px;border-radius:50%;background:var(--sunk);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px}
+.steps button[aria-selected="true"]{border-color:var(--teal);color:var(--fg)}
+.steps button[aria-selected="true"] span{background:var(--teal);color:var(--surface)}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;min-width:0}
+.phead{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.phead p{color:var(--muted);max-width:60ch}
+.btn{font:inherit;font-weight:700;font-size:15px;border-radius:10px;padding:10px 18px;border:2px solid var(--teal);background:var(--teal);color:var(--surface);cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--teal)}
+.btn:disabled{opacity:.5;cursor:default}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+th{text-align:left;font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;background:var(--sunk)}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+tr.dupe td{background:var(--red-soft)}
+.src{font-size:12.5px;font-weight:700;color:var(--muted)}
+.chip{display:inline-block;font-size:12.5px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.chip.t{background:var(--teal-soft);color:var(--teal)}.chip.g{background:var(--gold-soft);color:var(--gold)}.chip.r{background:var(--red-soft);color:var(--red)}.chip.o{background:var(--ok-soft);color:var(--ok)}
+.summary{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0}
+.summary .s{background:var(--sunk);border-radius:12px;padding:10px 16px;min-width:140px}
+.summary .s b{display:block;font-family:var(--display);font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.summary .s span{font-size:14px;color:var(--muted)}
+.merges{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:16px}
+.merge{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);min-width:0}
+.merge .why{font-size:13.5px;color:var(--red);font-weight:600;margin-top:4px}
+.merge ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+.box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr) 34px;gap:10px;align-items:center;font-size:14.5px}
+.bar .track{height:14px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.bar .fill{height:100%;background:var(--teal);border-radius:99px}
+.bar.g .fill{background:var(--gold)}
+.bar .n{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--sunk);border-radius:12px;padding:12px 16px}
+.kpi b{display:block;font-family:var(--display);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;color:var(--muted)}
+.fu{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px}
+@media (max-width:760px){.fu{grid-template-columns:minmax(0,1fr)}}
+.people{display:flex;flex-direction:column;gap:8px;max-height:560px;overflow:auto}
+@media (max-width:760px){.people{flex-direction:row;overflow-x:auto;max-height:none;padding-bottom:6px;scroll-snap-type:x mandatory}.people button{flex:0 0 74%;scroll-snap-align:start}}
+.sent{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--ok)}
+.fubar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;padding:10px 14px;border-radius:12px;background:var(--sunk);font-weight:600}
+.fubar .track{flex:1 1 160px;height:12px;background:var(--surface);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.fubar .fill{height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
+.people button{font:inherit;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--fg)}
+.people button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-soft)}
+.people b{display:block;font-size:15px}
+.people span{font-size:13.5px;color:var(--muted)}
+.msg{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.msg header{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--sunk);font-weight:700;font-size:14px}
+.msg pre{margin:0;padding:14px 16px;white-space:pre-wrap;font:inherit;font-size:15.5px;line-height:1.6}
+.msg+.msg{margin-top:12px}
+.note{font-size:14px;color:var(--muted);margin-top:10px}
+.report{font-size:16.5px;line-height:1.7;max-width:70ch}
+.report p+p{margin-top:12px}
+.report b{color:var(--teal)}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+@media (max-width:760px){.how{grid-template-columns:minmax(0,1fr)}}
+.how div{border-top:3px solid var(--teal);padding-top:10px}
+.how b{display:block;font-family:var(--display);font-size:16px;margin-bottom:4px}
+.how p{font-size:15px;color:var(--muted)}
+footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--muted);font-size:14.5px}
+footer b{color:var(--fg)}
+a{color:var(--teal);font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:9px;font-size:14px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}.bar .fill{transition:none}}
+.bar .fill{transition:width .5s}
+</style></head><body>
+<div class="wrap">
+  <div class="tag">AI Opportunity Review</div>
+  <h1>See what your business gets in an AI review</h1>
+  <p class="lede">A plain-language plan showing where AI can save you time and money, which tools to use, what they cost, and what to do first. Here is a full sample, written for a made-up restaurant.</p>
+  <div class="sample"><b>Sample</b> Casa Sol Taquería is a made-up business. Your review is written about yours.</div>
+
+  <nav class="jump" aria-label="Sections"><a href="#try">Try it</a><a href="#review">The sample review</a><a href="#packages">Packages</a><a href="#more">Bigger projects</a></nav>
+
+
+  <section class="panel intake" id="try" style="margin-top:6px">
+    <div class="row3"><h2 style="margin:0">Try it: 5 quick questions</h2><span class="chip t" id="iq">1 of 5</span></div>
+    <p class="meta2" id="iqs" style="margin:6px 0 14px"></p>
+    <div class="opts2" id="iopts"></div>
+    <div id="ires" aria-live="polite"></div>
+  </section>
+
+  <article class="doc" id="review" style="margin-top:28px">
+    <header class="dochead"><div><div class="dk">AI Opportunity Review</div><h2>Casa Sol Taquería</h2><p class="meta2">Family-owned · 2 locations on Buford Highway · 14 staff · Prepared by Brittany May, A Little Agency</p></div><div class="save"><b>11 hrs</b><span>saved per week</span><b>$190/mo</b><span>in tools</span></div></header>
+
+    <section><h3>Your biggest opportunity</h3><p>Phone orders and repeat questions are eating your evenings. About 40 calls a night ask the same five things: hours, the menu, catering, parking and whether you deliver. An AI assistant on your website and Google listing can answer those in English and Spanish, take catering inquiries, and free up the person stuck on the phone during the dinner rush.</p></section>
+
+    <section><h3>Top 5 places AI fits</h3>
+      <div class="ops" id="ops"></div>
+    </section>
+
+    <section class="two">
+      <div><h3>Quick wins this week</h3><ul class="tick"><li>Turn on AI-suggested replies for Google reviews, and answer the last 30 in one sitting.</li><li>Paste your menu into an AI assistant and get a bilingual menu, a catering menu and allergen notes in an hour.</li><li>Set up a free scheduling tool so staff can trade shifts without group texts.</li></ul></div>
+      <div><h3>Bigger projects for later</h3><ul class="tick later"><li>A website chat and text assistant that answers questions and takes catering leads.</li><li>One customer list from your POS, catering emails and loyalty sign-ups, so you can actually reach regulars.</li><li>A simple weekly dashboard: sales, top dishes, food cost and labor in one place.</li></ul></div>
+    </section>
+
+    <section><h3>Risks to watch</h3><ul class="risk"><li><b>Wrong answers.</b> The assistant only answers from your real menu and hours, and hands anything else to a person.</li><li><b>Customer privacy.</b> No card numbers or personal details go into AI tools. Payment stays in your POS.</li><li><b>Your voice.</b> Every review reply and post is checked by you or a manager before it goes out.</li></ul></section>
+
+    <section><h3>Your 30-day starter plan</h3><ol class="plan"><li><b>Week 1</b>Review replies, bilingual menu, shift scheduling.</li><li><b>Week 2</b>Clean up the customer list and pick one email or text tool.</li><li><b>Week 3</b>Launch the website and Google assistant for hours, menu and catering questions.</li><li><b>Week 4</b>Check what saved time, fix what didn't, and decide on the next project.</li></ol></section>
+    <p class="meta2" style="margin-top:14px">Tool costs are typical monthly prices and vary by plan. Hours saved are estimates from the owner's own numbers.</p>
+  </article>
+
+  <section id="packages" style="margin-top:34px">
+    <h2 class="sect">Pick your package</h2>
+    <div class="pk">
+      <div class="pack"><div class="ptop"><b>AI Review</b><span class="price">$300</span></div><p class="pd">The written plan you just saw, for your business.</p><ul class="tick"><li>Short questionnaire and an optional 30-minute call</li><li>Your top 5 AI opportunities with tools, costs and hours saved</li><li>Quick wins, bigger projects and risks</li><li>A 30-day starter plan</li><li>Delivered in 3 business days</li></ul></div>
+      <div class="pack best"><div class="badge">Most popular</div><div class="ptop"><b>Review + Setup</b><span class="price">$500</span></div><p class="pd">The plan, plus I set up your first quick win with you.</p><ul class="tick"><li>Everything in the AI Review</li><li>I set up your #1 quick win, like review replies or a bilingual menu</li><li>A 1-hour training for you or your manager</li><li>2 weeks of questions by text or email</li><li>Go at your pace, whether you're new to AI or already using it</li></ul></div>
+    </div>
+  </section>
+
+  <section id="more" style="margin-top:34px">
+    <h2 class="sect">When you're ready for more</h2>
+    <p class="meta2" style="margin:-4px 0 14px;max-width:60ch">Bigger projects for businesses that want AI doing real work every day. Ask me what's inside.</p>
+    <div class="locked">
+      <div class="lock"><canvas width="10" height="10" data-lock></canvas><b>The Assistant</b><span>from $1,500</span><p>Ask Brittany</p></div>
+      <div class="lock"><canvas width="10" height="10" data-lock></canvas><b>The Clean Machine</b><span>from $2,500</span><p>Ask Brittany</p></div>
+      <div class="lock"><canvas width="10" height="10" data-lock></canvas><b>The Command Center</b><span>from $3,500</span><p>Ask Brittany</p></div>
+      <div class="lock"><canvas width="10" height="10" data-lock></canvas><b>The Partner</b><span>monthly</span><p>Ask Brittany</p></div>
+    </div>
+  </section>
+
+  <section class="cta"><div><h2 style="margin:0">Want yours?</h2><p>Tell me about your business and I'll send a time for the 30-minute call.</p></div><div class="ctab"><b>brittany@alittle.agency</b><a href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a></div></section>
+
+  <footer><span><b>Brittany May</b> · A Little Agency · AI solutions and enterprise data · Brookhaven, GA</span><span>15+ years in enterprise data · AI evaluation for a top AI lab</span></footer>
+</div>
+<style>
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}
+.jump a{font-weight:700;font-size:15px;text-decoration:none;color:var(--teal);border:2px solid var(--line);border-radius:999px;padding:7px 14px;background:var(--surface)}
+.doc{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 28px;max-width:900px;box-shadow:0 10px 30px -18px rgba(13,107,104,.35)}
+@media (max-width:560px){.doc{padding:20px 18px}}
+.dochead{display:flex;flex-wrap:wrap;gap:16px 24px;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:2px solid var(--line);margin-bottom:6px}
+.dk{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.dochead h2{font-size:28px;margin:4px 0}
+.meta2{color:var(--muted);font-size:14.5px}
+.save{display:grid;grid-template-columns:auto auto;gap:2px 10px;align-items:baseline;background:var(--teal-soft);border-radius:12px;padding:12px 16px}
+.save b{font-family:var(--display);font-size:24px;color:var(--teal);font-variant-numeric:tabular-nums}
+.save span{font-size:14px;color:var(--muted)}
+.doc section{margin-top:22px}
+.doc h3{font-size:16px;color:var(--fg);margin-bottom:8px}
+.doc p{max-width:70ch}
+.ops{display:flex;flex-direction:column;gap:10px}
+.op{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.op .n{width:30px;height:30px;border-radius:50%;background:var(--teal);color:var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600}
+.op b{display:block;font-size:16px}
+.op p{font-size:15px;color:var(--muted);margin-top:2px}
+.op .tool{font-size:13.5px;margin-top:6px}
+.op .tool .chip{white-space:normal}
+.op .nums{text-align:right;font-size:14px;color:var(--muted);white-space:nowrap}
+.op .nums b{font-family:var(--display);color:var(--teal);font-size:18px}
+@media (max-width:560px){.op{grid-template-columns:30px minmax(0,1fr)}.op .nums{grid-column:2;text-align:left;display:flex;gap:14px}}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:700px){.two{grid-template-columns:minmax(0,1fr)}}
+ul.tick{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+ul.tick li{position:relative;padding-left:26px;font-size:15.5px}
+ul.tick li::before{content:"";position:absolute;left:4px;top:.45em;width:11px;height:6px;border-left:2.5px solid var(--ok);border-bottom:2.5px solid var(--ok);transform:rotate(-45deg)}
+ul.later li::before{border-color:var(--gold)}
+ul.risk{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:15.5px}
+ol.plan{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:760px){ol.plan{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+ol.plan li{background:var(--sunk);border-radius:12px;padding:12px 14px;font-size:15px}
+ol.plan b{display:block;font-family:var(--display);color:var(--teal);margin-bottom:4px}
+h2.sect{font-size:24px;margin-bottom:14px}
+.pk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:900px}
+@media (max-width:700px){.pk{grid-template-columns:minmax(0,1fr)}}
+.pack{position:relative;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:20px 22px}
+.pack.best{border-color:var(--teal);box-shadow:0 10px 30px -18px rgba(13,107,104,.5)}
+.badge{position:absolute;top:-13px;left:20px;background:var(--gold);color:var(--surface);font-weight:700;font-size:13px;border-radius:999px;padding:3px 12px}
+.ptop{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ptop b{font-family:var(--display);font-size:20px}
+.price{font-family:var(--display);font-weight:700;font-size:32px;color:var(--teal)}
+.pd{color:var(--muted);margin:4px 0 14px}
+.locked{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:900px}
+@media (max-width:760px){.locked{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.lock{border:2px dashed var(--line);border-radius:16px;padding:18px 14px;text-align:center;background:repeating-linear-gradient(135deg,var(--surface) 0 10px,var(--sunk) 10px 20px)}
+.lock canvas{width:30px;height:30px;image-rendering:pixelated}
+.lock b{display:block;font-family:var(--display);font-size:16px;margin-top:6px}
+.lock span{display:block;font-weight:700;color:var(--teal);margin-top:2px}
+.lock p{font-size:13.5px;color:var(--muted);margin-top:4px}
+.cta{display:flex;flex-wrap:wrap;gap:14px 24px;justify-content:space-between;align-items:center;margin-top:34px;background:var(--teal);color:var(--surface);border-radius:18px;padding:22px 26px;max-width:900px}
+.cta p{opacity:.9;margin-top:4px}
+.ctab{display:flex;flex-direction:column;gap:4px;text-align:right}
+.ctab b{font-size:17px}
+.ctab a{color:var(--surface)}
+@media (max-width:560px){.ctab{text-align:left}}
+.intake{max-width:900px}
+.row3{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center}
+.opts2{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:700px){.opts2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media (max-width:420px){.opts2{grid-template-columns:minmax(0,1fr)}}
+.io{font:inherit;font-weight:600;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:11px 13px;cursor:pointer;color:var(--fg)}
+.io:hover{border-color:var(--teal)}
+.io{display:flex;gap:10px;align-items:center}
+.io input[type=checkbox]{width:20px;height:20px;accent-color:var(--teal);flex:none;margin:0}
+.io.on{border-color:var(--teal);background:var(--teal-soft)}
+.io.other{flex-direction:column;align-items:stretch;gap:6px;cursor:text}
+.io.other input{font:inherit;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--surface);color:var(--fg)}
+.inav{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.feel{background:var(--teal-soft);border-radius:12px;padding:12px 16px}
+.feel b{display:block;font-family:var(--display);color:var(--teal)}
+.feel span{font-size:15px}
+.prev{margin-top:4px}
+.prev .op{margin-top:10px}
+.blur{filter:blur(4px);user-select:none;pointer-events:none;opacity:.7}
+.unlock{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--gold-soft);border-radius:12px;padding:12px 16px;margin-top:12px}
+</style>
+<script>
+const OPS=[
+ ["Answer the phones' top 5 questions","A bilingual assistant on your website and Google listing handles hours, menu, catering, parking and delivery questions.","Website chat or Google Business messaging tool","$40-60/mo",4],
+ ["Reply to every review","AI drafts a warm reply in the reviewer's language, and you approve it in one tap.","Google Business Profile plus an AI writing assistant","$0-20/mo",2],
+ ["Turn catering calls into booked orders","An online catering form with AI follow-up, so leads stop getting lost in voicemail.","Online form plus an email assistant","$20-40/mo",2],
+ ["Stop the shift-swap group texts","Staff swap and pick up shifts in an app, and AI flags gaps before the weekend.","Restaurant scheduling app","$30-60/mo",2],
+ ["Know your numbers every Monday","A simple dashboard pulls sales, top dishes and labor from your POS into one page.","POS reports plus a free dashboard tool","$0-30/mo",1]];
+const IQ=[["type","What kind of business do you run?","Check any that fit.",["Restaurant or food","Cleaning or home services","Salon or beauty","Retail shop","Auto services","Office or professional services"]],
+["size","How many people work there, including you?","",["Just me","2 to 5","6 to 15","16 or more"]],
+["pain","What takes up most of your time?","Check all that apply.",["Phone calls and the same questions","Reviews, social media and marketing","Scheduling staff or appointments","Invoices, bookkeeping and paperwork","Keeping track of customers","Writing quotes and estimates"]],
+["feel","How do you feel about AI?","There's no wrong answer.",["A little nervous about it","Curious, but new to it","Already using it"]],
+["tools","What do you use to run things today?","Check all that apply.",["Paper and my phone","Spreadsheets","A POS or booking app","Several apps that don't talk to each other"]]];
+const IA={};IQ.forEach(q=>IA[q[0]]={sel:[],other:""});let istep=0;
+const LIB={"Phone calls and the same questions":["Answer the top questions automatically","An assistant on your website or Google listing answers hours, prices and booking questions",4],
+"Reviews, social media and marketing":["Reply to reviews and post every week","AI drafts review replies and a week of posts from your photos, and you approve them",3],
+"Scheduling staff or appointments":["Book and remind without the back-and-forth","Online booking with automatic reminders cuts no-shows and phone tag",3],
+"Invoices, bookkeeping and paperwork":["Invoices and receipts that sort themselves","Snap receipts and send invoices from your phone, sorted for your bookkeeper",3],
+"Keeping track of customers":["One clean customer list","Merge contacts from your phone, register and email so you can reach your regulars",2],
+"Writing quotes and estimates":["Quotes in minutes","Turn your notes and photos into a professional quote with your prices",3]};
+const ALT={"Restaurant or food":["Phone calls and the same questions","Reviews, social media and marketing"],"Cleaning or home services":["Writing quotes and estimates","Scheduling staff or appointments"],"Salon or beauty":["Scheduling staff or appointments","Reviews, social media and marketing"],"Retail shop":["Reviews, social media and marketing","Keeping track of customers"],"Auto services":["Writing quotes and estimates","Phone calls and the same questions"],"Office or professional services":["Invoices, bookkeeping and paperwork","Keeping track of customers"]};
+const FEEL={"A little nervous about it":["Start small","One simple tool, set up with you. You approve everything before it goes out, and nothing runs without you."],"Curious, but new to it":["Learn as you go","Two or three easy wins first, with a short walkthrough so you understand how each one works."],"Already using it":["Go further","Connect the tools you already like so the work moves on its own, with you checking the results."]};
+const has=(k,v)=>IA[k].sel.includes(v);
+function irender(){const box=document.getElementById("iopts"),res=document.getElementById("ires"),sub=document.getElementById("iqs");
+ if(istep<IQ.length){const [k,t,h,opts]=IQ[istep];document.getElementById("iq").textContent=`${istep+1} of 5`;sub.innerHTML=`<b style="color:var(--fg);font-size:17px">${esc(t)}</b>${h?" "+esc(h):""}`;
+  box.innerHTML=opts.map((o,i)=>`<label class="io ${has(k,o)?"on":""}"><input type="checkbox" data-o="${esc(o)}" ${has(k,o)?"checked":""}><span>${esc(o)}</span></label>`).join("")+`<label class="io other"><span>Other</span><input type="text" id="iother" placeholder="Type your own" value="${esc(IA[k].other)}"></label>`;
+  res.innerHTML=`<div class="inav"><button class="btn ghost" id="iback" ${istep?"":"disabled"}>Back</button><button class="btn" id="inext">${istep===IQ.length-1?"See my results":"Next"}</button></div>`;
+  const ok=()=>IA[k].sel.length||IA[k].other.trim();document.getElementById("inext").disabled=!ok();
+  box.querySelectorAll("input[type=checkbox]").forEach(c=>c.onchange=()=>{const v=c.dataset.o;IA[k].sel=c.checked?[...IA[k].sel,v]:IA[k].sel.filter(x=>x!==v);c.closest(".io").classList.toggle("on",c.checked);document.getElementById("inext").disabled=!ok()});
+  document.getElementById("iother").oninput=ev=>{IA[k].other=ev.target.value;document.getElementById("inext").disabled=!ok()};
+  document.getElementById("inext").onclick=()=>{istep++;irender()};document.getElementById("iback").onclick=()=>{if(istep){istep--;irender()}};return}
+ document.getElementById("iq").textContent="Done";sub.textContent="Here's a quick preview based on your answers.";box.innerHTML="";
+ let pains=[...IA.pain.sel];IA.type.sel.forEach(t=>(ALT[t]||[]).forEach(p=>{if(!pains.includes(p))pains.push(p)}));
+ let items=pains.map(p=>LIB[p]).filter(Boolean);
+ if(IA.pain.other.trim())items.splice(Math.min(1,items.length),0,["Your own: "+IA.pain.other.trim(),"We'll look at this one together on the call and find the right fix.",2]);
+ if(has("tools","Several apps that don't talk to each other"))items.splice(1,0,["Get your apps talking to each other","Information you type in once shows up everywhere it's needed, so nothing gets retyped",3]);
+ if(!items.length)items=[["Find your biggest time saver","We'll pick the one task worth automating first on the call",3]];
+ items=items.slice(0,3);
+ const sz=IA.size.sel[0]||"2 to 5",mult={"Just me":.6,"2 to 5":1,"6 to 15":1.5,"16 or more":2}[sz]||1;
+ const total=Math.round(items.reduce((a,x)=>a+x[2],0)*mult);
+ const feel=FEEL[IA.feel.sel[IA.feel.sel.length-1]]||(IA.feel.other.trim()?["Your pace","We'll go at whatever speed feels right to you."]:FEEL["Curious, but new to it"]);
+ const toolNote=has("tools","Paper and my phone")&&IA.tools.sel.length===1?"Everything works from your phone. No new computer system to learn.":has("tools","A POS or booking app")?"We start from the app you already use, so your team keeps their routine.":has("tools","Spreadsheets")?"Your spreadsheets stay. We build on what you already track.":"";
+ res.innerHTML=`<div class="prev"><div class="feel"><b>${esc(feel[0])}</b><span>${esc(feel[1])}</span></div><div class="row3" style="margin-top:14px"><b style="font-family:var(--display);font-size:18px">About ${total} hours a week you could get back</b><button class="btn ghost" id="iagain" style="padding:6px 12px;font-size:14px">Start over</button></div>${items.map((x,i)=>`<div class="op ${i>0?"blur":""}"><span class="n">${i+1}</span><div><b>${esc(x[0])}</b><p>${esc(x[1])}</p></div><div class="nums"><div><b>${Math.max(1,Math.round(x[2]*mult))} hrs</b> a week</div></div></div>`).join("")}
+ ${toolNote?`<p class="meta2" style="margin-top:10px">${esc(toolNote)}</p>`:""}
+ <div class="unlock"><span><b>Get the full plan:</b> all your opportunities, the exact tools, costs and a 30-day plan.</span><a class="btn" href="#packages" style="text-decoration:none">See packages</a></div>
+ <p class="meta2" style="margin-top:8px">Preview hours are rough estimates. Your review uses your real numbers.</p></div>`;
+ document.getElementById("iagain").onclick=()=>{IQ.forEach(q=>IA[q[0]]={sel:[],other:""});istep=0;irender()}}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+irender();
+document.getElementById("ops").innerHTML=OPS.map(([t,d,tool,cost,h],i)=>`<div class="op"><span class="n">${i+1}</span><div><b>${esc(t)}</b><p>${esc(d)}</p><div class="tool"><span class="chip t">${esc(tool)}</span></div></div><div class="nums"><div><b>${h} hrs</b> a week</div><div>${esc(cost)}</div></div></div>`).join("");
+const LOCK=["..####....",".#....#...",".#....#...","##########","#........#","#...##...#","#...##...#","#........#","##########",".........."];
+document.querySelectorAll("canvas[data-lock]").forEach(cv=>{const g=cv.getContext("2d"),col=getComputedStyle(document.documentElement).getPropertyValue("--teal").trim()||"#0d6b68";LOCK.forEach((r,y)=>[...r].forEach((ch,x)=>{if(ch==="#"){g.fillStyle=col;g.fillRect(x,y,1,1)}}))});
+</script>
+</body></html>

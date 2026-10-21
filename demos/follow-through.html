@@ -1,0 +1,249 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style><title>Pop-Up Follow-Through</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a four-step walkthrough (clean, see, follow up, report) with step pills; each step is one wide working panel that stacks on phones. */
+:root{
+  --display:"Sora","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --bg:#f4f6f5; --surface:#ffffff; --sunk:#eaefed; --fg:#14232a; --muted:#53636a; --line:#d5dedb;
+  --teal:#0d6b68; --teal-soft:#d9efec; --gold:#b97900; --gold-soft:#fdf0d2; --red:#b8432c; --red-soft:#f9e3dc; --ok:#2c7a4b; --ok-soft:#dff2e5;
+  color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1719; --surface:#162125; --sunk:#0c1315; --fg:#e8f0ee; --muted:#9db0ae; --line:#28373a;
+  --teal:#5ccbc4; --teal-soft:#143536; --gold:#f2c15b; --gold-soft:#3a2d12; --red:#f09179; --red-soft:#3d2019; --ok:#79d79d; --ok-soft:#163224; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1719; --surface:#162125; --sunk:#0c1315; --fg:#e8f0ee; --muted:#9db0ae; --line:#28373a;
+  --teal:#5ccbc4; --teal-soft:#143536; --gold:#f2c15b; --gold-soft:#3a2d12; --red:#f09179; --red-soft:#3d2019; --ok:#79d79d; --ok-soft:#163224; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1100px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,38px);line-height:1.15;margin:0;letter-spacing:-.015em;text-wrap:balance;max-width:24ch}
+h2{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.3;margin:0 0 6px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:15px;margin:0 0 10px;color:var(--muted)}
+p{margin:0}
+.lede{color:var(--muted);font-size:17.5px;margin-top:12px;max-width:62ch}
+.tag{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.sample{display:inline-flex;gap:8px;align-items:center;background:var(--gold-soft);color:var(--fg);border-radius:8px;padding:6px 12px;font-size:14px;margin-top:16px}
+.sample b{color:var(--gold)}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 16px}
+.steps button{font:inherit;font-weight:700;font-size:15px;display:flex;align-items:center;gap:9px;background:var(--surface);color:var(--muted);border:2px solid var(--line);border-radius:999px;padding:8px 16px 8px 9px;cursor:pointer}
+.steps button span{width:26px;height:26px;border-radius:50%;background:var(--sunk);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px}
+.steps button[aria-selected="true"]{border-color:var(--teal);color:var(--fg)}
+.steps button[aria-selected="true"] span{background:var(--teal);color:var(--surface)}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;min-width:0}
+.phead{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.phead p{color:var(--muted);max-width:60ch}
+.btn{font:inherit;font-weight:700;font-size:15px;border-radius:10px;padding:10px 18px;border:2px solid var(--teal);background:var(--teal);color:var(--surface);cursor:pointer;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--teal)}
+.btn:disabled{opacity:.5;cursor:default}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+th{text-align:left;font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;background:var(--sunk)}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+tr.dupe td{background:var(--red-soft)}
+.src{font-size:12.5px;font-weight:700;color:var(--muted)}
+.chip{display:inline-block;font-size:12.5px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.chip.t{background:var(--teal-soft);color:var(--teal)}.chip.g{background:var(--gold-soft);color:var(--gold)}.chip.r{background:var(--red-soft);color:var(--red)}.chip.o{background:var(--ok-soft);color:var(--ok)}
+.summary{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0}
+.summary .s{background:var(--sunk);border-radius:12px;padding:10px 16px;min-width:140px}
+.summary .s b{display:block;font-family:var(--display);font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.summary .s span{font-size:14px;color:var(--muted)}
+.merges{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:16px}
+.merge{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);min-width:0}
+.merge .why{font-size:13.5px;color:var(--red);font-weight:600;margin-top:4px}
+.merge ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+.box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr) 34px;gap:10px;align-items:center;font-size:14.5px}
+.bar .track{height:14px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.bar .fill{height:100%;background:var(--teal);border-radius:99px}
+.bar.g .fill{background:var(--gold)}
+.bar .n{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--sunk);border-radius:12px;padding:12px 16px}
+.kpi b{display:block;font-family:var(--display);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;color:var(--muted)}
+.fu{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px}
+@media (max-width:760px){.fu{grid-template-columns:minmax(0,1fr)}}
+.people{display:flex;flex-direction:column;gap:8px;max-height:560px;overflow:auto}
+@media (max-width:760px){.people{flex-direction:row;overflow-x:auto;max-height:none;padding-bottom:6px;scroll-snap-type:x mandatory}.people button{flex:0 0 74%;scroll-snap-align:start}}
+.sent{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--ok)}
+.fubar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px;padding:10px 14px;border-radius:12px;background:var(--sunk);font-weight:600}
+.fubar .track{flex:1 1 160px;height:12px;background:var(--surface);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.fubar .fill{height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
+.people button{font:inherit;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--fg)}
+.people button[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-soft)}
+.people b{display:block;font-size:15px}
+.people span{font-size:13.5px;color:var(--muted)}
+.msg{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.msg header{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--sunk);font-weight:700;font-size:14px}
+.msg pre{margin:0;padding:14px 16px;white-space:pre-wrap;font:inherit;font-size:15.5px;line-height:1.6}
+.msg+.msg{margin-top:12px}
+.note{font-size:14px;color:var(--muted);margin-top:10px}
+.report{font-size:16.5px;line-height:1.7;max-width:70ch}
+.report p+p{margin-top:12px}
+.report b{color:var(--teal)}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+@media (max-width:760px){.how{grid-template-columns:minmax(0,1fr)}}
+.how div{border-top:3px solid var(--teal);padding-top:10px}
+.how b{display:block;font-family:var(--display);font-size:16px;margin-bottom:4px}
+.how p{font-size:15px;color:var(--muted)}
+footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--muted);font-size:14.5px}
+footer b{color:var(--fg)}
+a{color:var(--teal);font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:9px;font-size:14px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}.bar .fill{transition:none}}
+.bar .fill{transition:width .5s}
+</style></head><body>
+
+<div class="wrap">
+  <div class="tag">Small business events</div>
+  <h1>From a messy sign&#8209;in sheet to a follow&#8209;up for every business, the same day</h1>
+  <p class="lede">After a pop-up event, the sign-ups live in three places, half of them are duplicates, and the follow-up that turns a visit into a next step often never goes out. This walks through how AI and clean data fix that.</p>
+  <div class="sample"><b>Demo</b> All names and businesses below are made up.</div>
+
+  <nav class="steps" role="tablist" aria-label="Steps">
+    <button role="tab" data-step="clean" aria-selected="true"><span>1</span>Clean the list</button>
+    <button role="tab" data-step="see" aria-selected="false"><span>2</span>See who came</button>
+    <button role="tab" data-step="follow" aria-selected="false"><span>3</span>Follow up</button>
+    <button role="tab" data-step="report" aria-selected="false"><span>4</span>Report the impact</button>
+  </nav>
+
+  <section class="panel" data-panel="clean">
+    <div class="phead"><div><h2>Three sources, one messy list</h2><p>The online form, the paper sign-in sheet and the partner-station cards each caught some people. The same owner often shows up two or three times with different spellings.</p></div><button class="btn" id="cleanBtn">Clean and merge</button></div>
+    <div class="scroll"><table><thead><tr><th>Source</th><th>Name</th><th>Business</th><th>Email</th><th>Phone</th><th>Language</th><th>Needs</th></tr></thead><tbody id="rawBody"></tbody></table></div>
+    <div id="cleanOut"></div>
+  </section>
+
+  <section class="panel" data-panel="see" hidden>
+    <div class="phead"><div><h2>Who came, and what they need</h2><p>Once the list is clean, the counts are real. Staff see at a glance which needs came up most and which partners to send people to.</p></div></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="grid"><div class="box"><h3>Business stage</h3><div class="bars" id="bStage"></div></div><div class="box"><h3>Top needs</h3><div class="bars" id="bNeeds"></div></div><div class="box"><h3>Preferred language</h3><div class="bars" id="bLang"></div></div><div class="box"><h3>City</h3><div class="bars" id="bCity"></div></div></div>
+  </section>
+
+  <section class="panel" data-panel="follow" hidden>
+    <div class="phead"><div><h2>A follow-up for every business, in their language</h2><p>Each owner gets a short note about the next step they committed to, with the right partner, in the language they chose. Staff review and send.</p></div></div>
+    <div class="fubar"><span id="fuCount"></span><div class="track"><div class="fill" id="fuFill" style="width:0%"></div></div><button class="btn" id="sendAll">Send all reviewed</button></div>
+    <div class="fu"><div class="people" id="people" aria-label="Businesses"></div><div id="msgs"></div></div>
+    <p class="note">Translations are drafted by AI and should get a quick read from a native speaker before they go out. That review step is part of the design.</p>
+  </section>
+
+  <section class="panel" data-panel="report" hidden>
+    <div class="phead"><div><h2>The summary leadership asks for</h2><p>Written straight from the clean data, so nobody spends a Friday building it by hand.</p></div><button class="btn ghost" id="copyRep">Copy summary</button></div>
+    <div class="report" id="rep"></div>
+  </section>
+
+  <div class="how">
+    <div><b>Clean data first</b><p>Matching and merging records is the unglamorous part that makes every count, list and message trustworthy.</p></div>
+    <div><b>AI where it saves hours</b><p>Drafting follow-ups and translations, sorting needs, writing the summary. People stay in charge of what goes out.</p></div>
+    <div><b>Built for your tools</b><p>Works from the forms and spreadsheets you already use. No new system for staff to learn.</p></div>
+  </div>
+
+  <footer><span><b>Brittany May</b> · A Little Agency · AI solutions and enterprise data · Brookhaven, GA</span><span><a href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a> · brittany@alittle.agency</span></footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const RAW=[
+ {src:"Online form",name:"Maria Delgado",biz:"Delgado Tamales",email:"maria@delgadotamales.com",phone:"(470) 555-0142",lang:"Spanish",city:"Chamblee",stage:"Build",needs:["Funding","Marketing"],partner:"Small business lender",next:"Schedule a loan readiness review"},
+ {src:"Sign-in sheet",name:"Maria Delgado-Ruiz",biz:"Delgado's Tamales",email:"MARIA@delgadotamales.com",phone:"470-555-0142",lang:"Spanish",city:"Chamblee",stage:"Build",needs:["Funding"],partner:"",next:""},
+ {src:"Online form",name:"Thanh Nguyen",biz:"Pho Saigon Corner",email:"thanh.nguyen@mail.com",phone:"(678) 555-0119",lang:"Vietnamese",city:"Doraville",stage:"Fund",needs:["Funding","Permits"],partner:"Small business lender",next:"Send equipment loan application"},
+ {src:"Partner card",name:"Thanh Nguyen",biz:"Pho Saigon Corner LLC",email:"",phone:"6785550119",lang:"Vietnamese",city:"Doraville",stage:"Fund",needs:["Permits"],partner:"County permitting help",next:"Book permit walkthrough"},
+ {src:"Online form",name:"Ji-woo Park",biz:"Park Tailoring",email:"jiwoo@parktailoring.com",phone:"(404) 555-0177",lang:"Korean",city:"Doraville",stage:"Build",needs:["Website","Bookkeeping"],partner:"Business coaching",next:""},
+ {src:"Sign-in sheet",name:"Rosa Martinez",biz:"Rosa's Cleaning Co",email:"rosacleaning@mail.com",phone:"(470) 555-0198",lang:"Spanish",city:"Chamblee",stage:"Start",needs:["Business license","Insurance"],partner:"Startup counseling",next:"Meet a counselor about forming an LLC"},
+ {src:"Online form",name:"Rosa Martínez",biz:"Rosa's Cleaning Company",email:"rosacleaning@mail.com",phone:"",lang:"Spanish",city:"Chamblee",stage:"Start",needs:["Business license"],partner:"",next:""},
+ {src:"Online form",name:"Wei Chen",biz:"Golden Lantern Bakery",email:"wei@goldenlantern.com",phone:"(770) 555-0133",lang:"Chinese",city:"Doraville",stage:"Build",needs:["Marketing","Hiring"],partner:"Business coaching",next:"Get matched with a marketing mentor"},
+ {src:"Online form",name:"Darnell Brooks",biz:"Brooks Mobile Detailing",email:"dbrooks@mail.com",phone:"(404) 555-0151",lang:"English",city:"Brookhaven",stage:"Start",needs:["Funding","Business license"],partner:"Startup counseling",next:"Attend the free business plan class"},
+ {src:"Partner card",name:"D. Brooks",biz:"Brooks Mobile Detailing",email:"dbrooks@mail.com",phone:"",lang:"English",city:"Brookhaven",stage:"Start",needs:["Funding"],partner:"Small business lender",next:"Ask about microloans"},
+ {src:"Sign-in sheet",name:"Amina Yusuf",biz:"Yusuf Home Care",email:"amina.yusuf@mail.com",phone:"(678) 555-0164",lang:"English",city:"Tucker",stage:"Build",needs:["Contracts","Certification"],partner:"Government contracting help",next:"Register as a county vendor"},
+ {src:"Online form",name:"Luis Ramirez",biz:"Ramirez Auto Glass",email:"luis@ramirezglass.com",phone:"(470) 555-0186",lang:"Spanish",city:"Doraville",stage:"Fund",needs:["Funding","Hiring"],partner:"Small business lender",next:"Schedule a loan readiness review"},
+ {src:"Online form",name:"Hana Kim",biz:"Seoul Beauty Studio",email:"hana@seoulbeauty.com",phone:"(404) 555-0122",lang:"Korean",city:"Chamblee",stage:"Start",needs:["Business license","Insurance"],partner:"Startup counseling",next:"Meet a counselor about licenses"},
+ {src:"Sign-in sheet",name:"Hana  Kim",biz:"Seoul Beauty",email:"",phone:"404.555.0122",lang:"Korean",city:"Chamblee",stage:"Start",needs:["Insurance"],partner:"",next:""},
+ {src:"Online form",name:"Grace Okafor",biz:"Okafor Catering",email:"grace@okaforcatering.com",phone:"(770) 555-0109",lang:"English",city:"Stone Mountain",stage:"Build",needs:["Contracts","Marketing"],partner:"Government contracting help",next:"Get on the caterer vendor list"},
+ {src:"Sign-in sheet",name:"Tuan Tran",biz:"Tran Nail Supply",email:"tuantran@mail.com",phone:"(678) 555-0170",lang:"Vietnamese",city:"Doraville",stage:"Build",needs:["Bookkeeping","Website"],partner:"Business coaching",next:""}];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),1800)}
+const normE=e=>e.trim().toLowerCase(),normP=p=>p.replace(/\D/g,"").slice(-10);
+const normB=b=>b.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\b(llc|inc|co|company|corp)\b/g,"").replace(/['’]s\b/g,"").replace(/[^a-z0-9]+/g," ").trim();
+function dedupe(){
+  const groups=[];
+  RAW.forEach((r,i)=>{
+    let g=groups.find(g=>g.rows.some(x=>(r.email&&x.email&&normE(r.email)===normE(x.email))||(r.phone&&x.phone&&normP(r.phone)===normP(x.phone))||(normB(r.biz)===normB(x.biz)||normB(r.biz).startsWith(normB(x.biz))||normB(x.biz).startsWith(normB(r.biz)))));
+    if(g)g.rows.push({...r,i});else groups.push({rows:[{...r,i}]});
+  });
+  return groups.map(g=>{
+    const pick=k=>g.rows.map(x=>x[k]).filter(Boolean).sort((a,b)=>b.length-a.length)[0]||"";
+    const name=g.rows.map(x=>x.name).find(n=>!/^\w\./.test(n)&&!/\s{2}/.test(n))||g.rows[0].name;
+    const reasons=[];if(g.rows.length>1){const a=g.rows[0],b=g.rows[1];if(a.email&&b.email&&normE(a.email)===normE(b.email))reasons.push("same email");if(a.phone&&b.phone&&normP(a.phone)===normP(b.phone))reasons.push("same phone");if(normB(a.biz).startsWith(normB(b.biz))||normB(b.biz).startsWith(normB(a.biz)))reasons.push("same business name");}
+    return {name,biz:g.rows[0].biz,email:normE(pick("email")),phone:pick("phone"),lang:g.rows[0].lang,city:g.rows[0].city,stage:g.rows[0].stage,needs:[...new Set(g.rows.flatMap(x=>x.needs))],partners:[...new Set(g.rows.map(x=>x.partner).filter(Boolean))],nexts:[...new Set(g.rows.map(x=>x.next).filter(Boolean))],rows:g.rows,reasons};
+  });
+}
+const CLEAN=dedupe();
+let cleaned=false;
+function renderRaw(){
+  const dupIdx=new Set(CLEAN.filter(c=>c.rows.length>1).flatMap(c=>c.rows.slice(1).map(r=>r.i)));
+  $("#rawBody").innerHTML=RAW.map((r,i)=>`<tr class="${cleaned&&dupIdx.has(i)?"dupe":""}"><td class="src">${esc(r.src)}</td><td>${esc(r.name)}</td><td>${esc(r.biz)}</td><td>${esc(r.email)||"<span class='src'>missing</span>"}</td><td>${esc(r.phone)||"<span class='src'>missing</span>"}</td><td>${esc(r.lang)}</td><td>${r.needs.map(n=>`<span class="chip">${esc(n)}</span>`).join(" ")}</td></tr>`).join("");
+}
+function renderClean(){
+  if(!cleaned){$("#cleanOut").innerHTML="";return}
+  const m=CLEAN.filter(c=>c.rows.length>1);
+  $("#cleanOut").innerHTML=`<div class="summary"><div class="s"><b>${RAW.length}</b><span>sign-ups</span></div><div class="s"><b>${CLEAN.length}</b><span>real businesses</span></div><div class="s"><b>${RAW.length-CLEAN.length}</b><span>duplicates merged</span></div><div class="s"><b>${CLEAN.filter(c=>c.email).length}</b><span>with an email now</span></div></div>
+  <h3 style="margin-top:20px">What got merged, and why</h3><div class="merges">${m.map(c=>`<div class="merge"><b>${esc(c.biz)}</b><div class="why">Matched on ${esc(c.reasons.join(" and ")||"business name")}</div><ul>${c.rows.map(r=>`<li>${esc(r.src)}: ${esc(r.name)}, ${esc(r.biz)}</li>`).join("")}</ul></div>`).join("")}</div>`;
+  $("#cleanBtn").textContent="Merged";$("#cleanBtn").disabled=true;
+}
+function bars(el,counts,cls){const max=Math.max(...Object.values(counts));el.innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar ${cls||""}"><span>${esc(k)}</span><div class="track"><div class="fill" style="width:${v/max*100}%"></div></div><span class="n">${v}</span></div>`).join("")}
+const tally=(arr)=>arr.reduce((o,k)=>(o[k]=(o[k]||0)+1,o),{});
+function renderSee(){
+  const commits=CLEAN.filter(c=>c.nexts.length).length,nonEn=CLEAN.filter(c=>c.lang!=="English").length;
+  $("#kpis").innerHTML=`<div class="kpi"><b>${CLEAN.length}</b><span>businesses served</span></div><div class="kpi"><b>${commits}</b><span>committed to a next step</span></div><div class="kpi"><b>${nonEn}</b><span>prefer a language other than English</span></div><div class="kpi"><b>${CLEAN.filter(c=>c.needs.includes("Funding")).length}</b><span>asked about funding</span></div>`;
+  const order={Start:"Starting up",Build:"Growing",Fund:"Ready for funding"};
+  bars($("#bStage"),tally(CLEAN.map(c=>order[c.stage])));bars($("#bNeeds"),tally(CLEAN.flatMap(c=>c.needs)),"g");bars($("#bLang"),tally(CLEAN.map(c=>c.lang)));bars($("#bCity"),tally(CLEAN.map(c=>c.city)),"g");
+}
+const T={
+ English:(c,n,p)=>`Hi ${c.first},\n\nThank you for stopping by the pop-up business incubator on Buford Highway. It was great to learn about ${c.biz}.\n\nYour next step: ${n}. The ${p} team will reach out this week, or you can reply to this message and we'll connect you.\n\nWe're glad you came.`,
+ Spanish:(c,n,p)=>`Hola ${c.first}:\n\nGracias por visitar la incubadora de negocios en Buford Highway. Nos dio mucho gusto conocer ${c.biz}.\n\nSu próximo paso: ${n}. El equipo de ${p} se comunicará con usted esta semana, o puede responder a este mensaje y le ponemos en contacto.\n\nNos alegra que haya venido.`,
+ Vietnamese:(c,n,p)=>`Chào anh/chị ${c.first},\n\nCảm ơn anh/chị đã ghé thăm chương trình hỗ trợ doanh nghiệp trên đường Buford Highway. Chúng tôi rất vui được biết về ${c.biz}.\n\nBước tiếp theo của anh/chị: ${n}. Nhóm ${p} sẽ liên hệ trong tuần này, hoặc anh/chị có thể trả lời tin nhắn này để chúng tôi kết nối.\n\nRất vui vì anh/chị đã đến.`,
+ Korean:(c,n,p)=>`${c.first}님, 안녕하세요.\n\n뷰포드 하이웨이 비즈니스 지원 행사에 방문해 주셔서 감사합니다. ${c.biz}에 대해 알게 되어 반가웠습니다.\n\n다음 단계: ${n}. ${p} 담당자가 이번 주에 연락드릴 예정이며, 이 메시지에 답장하시면 바로 연결해 드리겠습니다.\n\n와 주셔서 감사합니다.`,
+ Chinese:(c,n,p)=>`${c.first}，您好！\n\n感谢您参加布福德高速公路（Buford Highway）的小企业孵化活动。很高兴了解到${c.biz}。\n\n您的下一步：${n}。${p}团队将在本周与您联系，您也可以直接回复此消息，我们会为您安排对接。\n\n感谢您的到来。`};
+const NEXT_TR={
+ Spanish:{"Schedule a loan readiness review":"programar una revisión para préstamo","Meet a counselor about forming an LLC":"reunirse con un asesor para formar su LLC","Ask about microloans":"preguntar sobre microcréditos"},
+ Vietnamese:{"Send equipment loan application":"gửi hồ sơ vay mua thiết bị","Book permit walkthrough":"đặt lịch hướng dẫn xin giấy phép","Join the online sales workshop":"tham gia lớp học bán hàng trực tuyến","Book a one-on-one with a business advisor":"đặt lịch gặp riêng với chuyên viên tư vấn kinh doanh"},
+ Korean:{"Join the online sales workshop":"온라인 판매 워크숍 참가","Meet a counselor about licenses":"사업 허가 관련 상담 예약","Book a one-on-one with a business advisor":"비즈니스 상담사와 1:1 상담 예약"},
+ Chinese:{"Get matched with a marketing mentor":"与营销导师配对"}};
+const PART_TR={Spanish:{"Small business lender":"préstamos para pequeñas empresas","Startup counseling":"asesoría para nuevos negocios"},Vietnamese:{"Small business lender":"cho vay doanh nghiệp nhỏ","County permitting help":"hỗ trợ giấy phép của quận","Business coaching":"tư vấn kinh doanh"},Korean:{"Business coaching":"비즈니스 코칭","Startup counseling":"창업 상담"},Chinese:{"Business coaching":"商业辅导"}};
+let sel=0;const SENT=new Set();
+function renderFuBar(){$("#fuCount").textContent=`${SENT.size} of ${CLEAN.length} followed up`;$("#fuFill").style.width=(SENT.size/CLEAN.length*100)+"%";$("#sendAll").disabled=SENT.size===CLEAN.length;$("#sendAll").textContent=SENT.size===CLEAN.length?"All sent":"Send all reviewed"}
+function renderFollow(){
+  renderFuBar();
+  $("#people").innerHTML=CLEAN.map((c,i)=>`<button aria-pressed="${i===sel}" data-p="${i}"><b>${esc(c.biz)}</b><span>${esc(c.name)} · ${esc(c.lang)}${SENT.has(i)?' · <span class="sent">Sent</span>':""}</span></button>`).join("");
+  const c=CLEAN[sel];c.first=c.name.split(/\s+/)[0];
+  const n=c.nexts[0]||"Book a one-on-one with a business advisor",p=c.partners[0]||"Business coaching";
+  const out=[["English",T.English(c,n.charAt(0).toLowerCase()+n.slice(1),p.toLowerCase())]];
+  if(c.lang!=="English"){const nt=(NEXT_TR[c.lang]||{})[n]||n,pt=(PART_TR[c.lang]||{})[p]||p;out.unshift([c.lang,T[c.lang](c,nt,pt)])}
+  $("#msgs").innerHTML=`<div class="chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">${c.needs.map(x=>`<span class="chip t">${esc(x)}</span>`).join("")}${c.partners.map(x=>`<span class="chip g">${esc(x)}</span>`).join("")}${c.email?`<span class="chip o">${esc(c.email)}</span>`:`<span class="chip r">No email: text ${esc(c.phone)}</span>`}</div>`+`<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">${SENT.has(sel)?`<span class="sent">Sent ${c.email?"by email":"by text"} in ${esc(c.lang)}</span>`:`<button class="btn" data-send="${sel}">Send follow-up</button><span class="note" style="margin:0">Demo only. Nothing is actually sent.</span>`}</div>`+out.map(([l,t],k)=>`<div class="msg"><header><span>${esc(l)}${k===0&&c.lang!=="English"?" · what they receive":c.lang!=="English"?" · copy for staff":" · what they receive"}</span><button class="btn ghost" style="padding:4px 12px;font-size:13.5px" data-copy="${k}">Copy</button></header><pre id="m${k}">${esc(t)}</pre></div>`).join("");
+}
+function reportText(){
+  const commits=CLEAN.filter(c=>c.nexts.length).length;const need=tally(CLEAN.flatMap(c=>c.needs));const top=Object.entries(need).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0].toLowerCase());
+  const langs=Object.keys(tally(CLEAN.map(c=>c.lang))).filter(l=>l!=="English");const part=tally(CLEAN.flatMap(c=>c.partners));
+  return [`The Buford Highway pop-up served <b>${CLEAN.length} businesses</b> from ${Object.keys(tally(CLEAN.map(c=>c.city))).length} cities. <b>${commits} of them committed to a specific next step</b> before leaving.`,
+  `The most common needs were ${top.slice(0,-1).join(", ")} and ${top.slice(-1)}. ${CLEAN.filter(c=>c.stage==="Fund").length} businesses are ready for funding conversations now, and ${CLEAN.filter(c=>c.stage==="Start").length} are just getting started.`,
+  `${CLEAN.filter(c=>c.lang!=="English").length} owners prefer ${langs.slice(0,-1).join(", ")} or ${langs.slice(-1)}, so follow-ups went out in those languages. Referrals: ${Object.entries(part).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k.toLowerCase()} (${v})`).join(", ")}.`,
+  `${SENT.size?SENT.size+" of "+CLEAN.length+" businesses have received their follow-up so far.":"Every business gets a follow-up within 24 hours."} We'll report back in 30 days on how many next steps were completed.`];
+}
+function renderReport(){$("#rep").innerHTML=reportText().map(p=>`<p>${p}</p>`).join("")}
+document.querySelectorAll(".steps button").forEach(b=>b.onclick=()=>go(b.dataset.step));
+function go(s){if(s!=="clean"&&!cleaned){cleaned=true;renderRaw();renderClean()}document.querySelectorAll(".steps button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.step===s)));document.querySelectorAll("[data-panel]").forEach(p=>p.hidden=p.dataset.panel!==s);if(s==="see")renderSee();if(s==="follow")renderFollow();if(s==="report")renderReport()}
+$("#cleanBtn").onclick=()=>{cleaned=true;renderRaw();renderClean();toast(`${RAW.length-CLEAN.length} duplicates merged`)};
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.p!==undefined){sel=Number(b.dataset.p);renderFollow();const m=$("#msgs");if(m&&window.innerWidth<=760)m.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})}else if(b.dataset.send!==undefined){SENT.add(Number(b.dataset.send));const nx=CLEAN.findIndex((c,i)=>!SENT.has(i));toast(`Follow-up sent to ${CLEAN[sel].biz}`);if(nx>=0)sel=nx;renderFollow();const pb=document.querySelector(`[data-p="${sel}"]`);if(pb)pb.scrollIntoView({block:"nearest",inline:"start"})}else if(b.dataset.copy!==undefined){copyEl($("#m"+b.dataset.copy))}});
+function copyEl(el){if(!el)return;const t=el.innerText;const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Selected. Tap Copy.")};try{navigator.clipboard.writeText(t).then(()=>toast("Copied"),sel)}catch(x){sel()}}
+$("#copyRep").onclick=()=>copyEl($("#rep"));
+$("#sendAll").onclick=()=>{CLEAN.forEach((c,i)=>SENT.add(i));toast(`${CLEAN.length} follow-ups sent`);renderFollow()};
+renderRaw();
+</script>
+</body></html>
