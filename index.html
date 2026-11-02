@@ -8,13 +8,13 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-:root{--ink:#24154f;--soft:#5d5779;--plum:#6d4aff;--pink:#e0568f;--lilac:#ece6ff;--blush:#ffe1ec;--mint:#dff3ea;--card:rgba(255,255,255,.88);--r:24px}
+:root{--ink:#111;--soft:#4a4a4a;--plum:#111;--pink:#e2583e;--lilac:#efe8da;--blush:#ffd9cf;--mint:#dff3ea;--card:#fff;--r:14px}
 body{font-family:Figtree,system-ui,sans-serif;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
-background:#fbf6fb;background-image:radial-gradient(900px 600px at 95% -5%,#ffe1ec 0,transparent 60%),radial-gradient(800px 600px at -10% 30%,#ece6ff 0,transparent 60%),radial-gradient(700px 500px at 100% 75%,#dff3ea 0,transparent 60%)}
+background:#f6f1e7}
 a{color:inherit}
 .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
 h1,h2,h3{font-family:Figtree,sans-serif;letter-spacing:-.02em}
-nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(251,246,251,.8)}
+nav{position:sticky;top:0;z-index:20;background:#f6f1e7;border-bottom:2px solid #111}
 nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
 .logo{font:800 19px Figtree;text-decoration:none}
 .logo span{color:var(--pink)}
@@ -97,13 +97,31 @@ footer{text-align:center;color:var(--soft);font-size:13px;padding:0 0 40px}
 @media(prefers-reduced-motion:reduce){.hero>*{animation:none}.rv{opacity:1;transform:none}*{transition:none!important}}
 @media(max-width:720px){.links a:not(.btn){display:none}.about{grid-template-columns:1fr}.hero{padding-top:44px}.end{padding:36px 22px}}
 .also{margin-top:22px;background:var(--card);border-radius:var(--r);padding:26px;box-shadow:0 8px 24px rgba(80,50,140,.09)}.also h3{font-size:21px}.also p{color:var(--soft);margin-top:14px}.also a{color:var(--plum);font-weight:700}
+
+/* Look A: serious */
+.btn{background:#111;color:#fff;border-radius:99px;box-shadow:none;border:2px solid #111}
+.btn:hover{transform:translateY(-2px);box-shadow:3px 3px 0 #e2583e}
+.btn.ghost{background:#fff;color:#111;box-shadow:none}
+.offer,.prod,.mini,.box,.also{border:2px solid #111;box-shadow:4px 4px 0 #111;border-radius:14px;background:#fff}
+.offer:hover,.prod:hover,.mini:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #111}
+.shot{border-radius:8px;border:1px solid #ddd;background:#efe8da}
+.go{color:#111;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#e2583e;text-decoration-thickness:2px}
+.chip b,.chip:nth-child(2) b,.chip:nth-child(3) b{color:#111}
+.chip,.chip:nth-child(2),.chip:nth-child(3){border-color:#e2583e}
+.tag{background:#efe8da;color:#111}.tag.live{background:#111;color:#fff}
+.how li b,.how li:nth-child(2) b,.how li:nth-child(3) b{background:#111}
+.where span{box-shadow:none;border:1.5px solid #111}
+.end{background:#111;border-radius:20px}
+.end .btn{background:#fff;color:#111;border-color:#fff}.end .btn.ghost{background:transparent;color:#fff;border-color:#fff}
+h1{letter-spacing:-.035em}
+.also a,.box a{color:#111}
+:focus-visible{outline-color:#e2583e}
 </style></head>
 <body>
 <nav><div class="wrap"><a class="logo" href="#">Brittany May<span>.</span></a>
 <div class="links"><a href="#build">What I build</a><a href="#work">Work</a><a href="#about">About</a><a href="BrittanyMay_Resume.pdf" target="_blank">Resume</a><a class="btn" href="mailto:brittany@alittle.agency">Say hi</a></div></div></nav>
 
 <header class="hero wrap">
-<span class="hi">Hi, I'm Brittany 👋</span>
 <h1>I connect solutions and meet you where you are.</h1>
 <p class="lede">Workflows, automations, data and processes that work for everyone involved. Sometimes that includes AI, and sometimes it doesn't. 15 years of making messy work simple.</p>
 <div class="ctas"><a class="btn" href="mailto:brittany@alittle.agency">Email me</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank">Download my resume</a><a class="btn ghost" href="https://linkedin.com/in/brittany-h-may" target="_blank" rel="noopener">LinkedIn</a></div>
@@ -117,11 +135,11 @@ footer{text-align:center;color:var(--soft);font-size:13px;padding:0 0 40px}
 <section id="build" class="wrap">
 <div class="sh"><div><h2>Pick a problem.<br>I'll show you a fix.</h2></div><p>Click any of these to try it. They're working demos with made-up sample data.</p></div>
 <div class="offers">
-<a class="offer rv" href="demos/ai-review.html" target="_blank"><div class="ic">✨</div><h3>Find where AI saves you hours</h3><p>Five quick questions show where your time goes. Then you get a plan with tools, costs and a 30-day start.</p><span class="go">Try the AI review</span></a>
-<a class="offer rv" href="demos/resource-navigator.html" target="_blank"><div class="ic">🧭</div><h3>Send people to the right help</h3><p>Four questions match a business owner to the right partner, with a take-home plan and a warm handoff for staff.</p><span class="go">Try the navigator</span></a>
-<a class="offer rv" href="demos/follow-through.html" target="_blank"><div class="ic">🧹</div><h3>Turn messy sign-ups into follow-ups</h3><p>Three messy lists become one clean one, with a follow-up for every person and a report for leadership.</p><span class="go">Try the cleanup</span></a>
-<a class="offer rv" href="demos/contract-ready.html" target="_blank"><div class="ic">📋</div><h3>Get a business contract-ready</h3><p>A simple checklist shows what's missing to sell to the government and which contracts to go after now.</p><span class="go">Try the checklist</span></a>
-<a class="offer rv" href="demos/impact-dashboard.html" target="_blank"><div class="ic">📈</div><h3>Show your impact in one place</h3><p>Every client from first meeting to funded, with email drafts, check-ins and an impact report that writes itself.</p><span class="go">Try the dashboard</span></a>
+<a class="offer rv" href="demos/ai-review.html" target="_blank"><h3>Find where AI saves you hours</h3><p>Five quick questions show where your time goes. Then you get a plan with tools, costs and a 30-day start.</p><span class="go">Try the AI review</span></a>
+<a class="offer rv" href="demos/resource-navigator.html" target="_blank"><h3>Send people to the right help</h3><p>Four questions match a business owner to the right partner, with a take-home plan and a warm handoff for staff.</p><span class="go">Try the navigator</span></a>
+<a class="offer rv" href="demos/follow-through.html" target="_blank"><h3>Turn messy sign-ups into follow-ups</h3><p>Three messy lists become one clean one, with a follow-up for every person and a report for leadership.</p><span class="go">Try the cleanup</span></a>
+<a class="offer rv" href="demos/contract-ready.html" target="_blank"><h3>Get a business contract-ready</h3><p>A simple checklist shows what's missing to sell to the government and which contracts to go after now.</p><span class="go">Try the checklist</span></a>
+<a class="offer rv" href="demos/impact-dashboard.html" target="_blank"><h3>Show your impact in one place</h3><p>Every client from first meeting to funded, with email drafts, check-ins and an impact report that writes itself.</p><span class="go">Try the dashboard</span></a>
 </div>
 <div class="also rv"><b>And a lot more.</b> If it's messy, I can help. A few things people ask me for:
 <div class="where"><span>Websites</span><span>Dashboards & reports</span><span>CRM setup & cleanup</span><span>Salesforce</span><span>Zapier automations</span><span>Data migration</span><span>AI assistants</span><span>Teaching teams to use AI</span><span>Process mapping</span><span>Grant & impact reports</span><span>Pitch decks</span><span>Government bid prep</span><span>Project management</span></div>
