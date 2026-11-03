@@ -146,10 +146,11 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 
 <section class="step done" data-t="Send">
 <h2>Thank you! One last tap.</h2>
-<p class="hint">Tap "Email my answers" to send them to me from your email. I'll reply within 2 business days with ideas for where to start.</p>
+<p class="hint" id="sendhint">Here's what you told me. Tap "Send to Brittany" and it comes straight to me. I'll reply within 2 business days with ideas for where to start.</p>
 <pre id="out"></pre>
-<div class="row"><a class="btn" id="mail" href="#">Email my answers</a><button type="button" class="ghost" id="copy">Copy answers</button></div>
-<p class="note" style="margin-top:12px">If the email button doesn't open anything, tap "Copy answers" and paste them into an email to <b>brittany@alittle.agency</b>.</p>
+<div class="row" id="sendrow"><button type="button" id="send">Send to Brittany</button></div>
+<p class="note" id="status" role="status" style="margin-top:12px"></p>
+<div class="row" id="fallback" style="display:none"><a class="btn" id="mail" href="#">Email my answers instead</a><button type="button" class="ghost" id="copy">Copy answers</button></div>
 </section>
 
 <div class="nav2"><button type="button" class="ghost" id="back">Back</button><button type="button" id="next">Next</button></div>
@@ -173,6 +174,15 @@ next.onclick=()=>{if(i===0){const n=document.getElementById('name'),e=document.g
  const ok=n.value.trim()&&/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.value.trim());document.getElementById('e0').style.display=ok?'none':'block';if(!ok){(n.value.trim()?e:n).focus();return}}
  show(i+1)};
 back.onclick=()=>show(i-1);
+
+document.getElementById('send').onclick=async e=>{const btn=e.target,st=document.getElementById('status');btn.disabled=true;btn.textContent='Sending...';st.textContent='';
+ const g=id=>(document.getElementById(id)||{}).value||'';
+ try{const r=await fetch('https://formsubmit.co/ajax/brittany@alittle.agency',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+  body:JSON.stringify({_subject:'Project intake: '+g('name').trim(),_template:'box',_captcha:'false',name:g('name'),email:g('email'),_replyto:g('email'),answers:text()})});
+  const j=await r.json().catch(()=>({}));if(!r.ok||String(j.success)==='false')throw 0;
+  document.getElementById('sendrow').style.display='none';document.getElementById('sendhint').textContent='';
+  steps[i].querySelector('h2').textContent='Sent! Thank you.';st.textContent="I got your answers and I'll reply within 2 business days. You can close this page.";back.style.visibility='hidden'}
+ catch(_){btn.disabled=false;btn.textContent='Try again';st.textContent="That didn't go through. Try again, or use one of these:";document.getElementById('fallback').style.display='flex'}};
 document.getElementById('copy').onclick=async e=>{try{await navigator.clipboard.writeText(text());e.target.textContent='Copied'}catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById('out'));getSelection().removeAllRanges();getSelection().addRange(r);e.target.textContent='Selected, now copy'}};
 show(0);window.scrollTo(0,0);
 </script>
