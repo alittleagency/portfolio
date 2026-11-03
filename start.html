@@ -177,12 +177,13 @@ back.onclick=()=>show(i-1);
 
 document.getElementById('send').onclick=async e=>{const btn=e.target,st=document.getElementById('status');btn.disabled=true;btn.textContent='Sending...';st.textContent='';
  const g=id=>(document.getElementById(id)||{}).value||'';
- try{const r=await fetch('https://formsubmit.co/ajax/brittany@alittle.agency',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+ const ac=new AbortController();const to=setTimeout(()=>ac.abort(),12000);
+ try{const r=await fetch('https://formsubmit.co/ajax/brittany@alittle.agency',{signal:ac.signal,method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
   body:JSON.stringify({_subject:'Project intake: '+g('name').trim(),_template:'box',_captcha:'false',name:g('name'),email:g('email'),_replyto:g('email'),answers:text()})});
-  const j=await r.json().catch(()=>({}));if(!r.ok||String(j.success)==='false')throw 0;
+  clearTimeout(to);const j=await r.json().catch(()=>({}));if(!r.ok||String(j.success)==='false')throw (j.message||0);
   document.getElementById('sendrow').style.display='none';document.getElementById('sendhint').textContent='';
   steps[i].querySelector('h2').textContent='Sent! Thank you.';st.textContent="I got your answers and I'll reply within 2 business days. You can close this page.";back.style.visibility='hidden'}
- catch(_){btn.disabled=false;btn.textContent='Try again';st.textContent="That didn't go through. Try again, or use one of these:";document.getElementById('fallback').style.display='flex'}};
+ catch(err){clearTimeout(to);btn.disabled=false;btn.textContent='Try again';st.textContent=(/activat/i.test(String(err))?'Almost there: Brittany needs to activate this form first. ':'')+"That didn't go through. Try again, or use one of these:";document.getElementById('fallback').style.display='flex'}};
 document.getElementById('copy').onclick=async e=>{try{await navigator.clipboard.writeText(text());e.target.textContent='Copied'}catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById('out'));getSelection().removeAllRanges();getSelection().addRange(r);e.target.textContent='Selected, now copy'}};
 show(0);window.scrollTo(0,0);
 </script>
