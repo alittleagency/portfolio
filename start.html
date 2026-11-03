@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Let's figure it out · Brittany May</title>
+<meta name="description" content="Not sure what you need? Answer a few easy questions and Brittany May will suggest where to start.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#111;--soft:#4a4a4a;--line:#111;--accent:#e2583e;--paper:#f6f1e7;--tint:#efe8da}
+body{font-family:Figtree,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
+nav{border-bottom:2px solid #111}
+nav div{max-width:760px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between}
+nav a{font-weight:800;font-size:18px;text-decoration:none;color:#111}nav a span{color:var(--accent)}
+main{max-width:760px;margin:0 auto;padding:40px 20px 64px}
+h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
+.lede{color:var(--soft);font-size:1.1rem;margin:14px 0 8px;max-width:600px}
+.note{font-size:14px;color:var(--soft)}
+.bar{height:8px;background:#fff;border:2px solid #111;border-radius:99px;margin:28px 0 18px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.step{display:none;background:#fff;border:2px solid #111;box-shadow:4px 4px 0 #111;border-radius:14px;padding:26px}
+.step.on{display:block}
+.step h2{font-size:1.45rem;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
+.step .hint{color:var(--soft);margin-bottom:18px}
+.q{margin-bottom:20px}
+.q>label,.q>.lab{display:block;font-weight:700;margin-bottom:6px}
+.q small{display:block;color:var(--soft);font-weight:400;margin:-2px 0 8px}
+input[type=text],input[type=email],textarea{width:100%;font:inherit;padding:12px 14px;border:2px solid #111;border-radius:10px;background:#fff}
+textarea{min-height:96px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{cursor:pointer}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips span{display:inline-block;border:1.5px solid #111;border-radius:99px;padding:7px 14px;font-size:15px;background:#fff;transition:background .12s}
+.chips input:checked+span{background:#111;color:#fff}
+.chips input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.nav2{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+button,.btn{font:inherit;font-weight:700;font-size:15px;border:2px solid #111;border-radius:99px;padding:11px 20px;cursor:pointer;background:#111;color:#fff;text-decoration:none;display:inline-block}
+button.ghost{background:#fff;color:#111}
+button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.done{text-align:left}
+.done pre{white-space:pre-wrap;font:14px/1.5 Figtree;background:var(--tint);border-radius:10px;padding:14px;margin:14px 0;max-height:260px;overflow:auto}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.err{color:#b3261e;font-weight:600;font-size:14px;margin-top:6px;display:none}
+@media(max-width:520px){.step{padding:20px}}
+</style></head><body>
+<nav><div><a href="./">Brittany May<span>.</span></a><a href="./" style="font-weight:600;font-size:14px">Back to my work</a></div></nav>
+<main>
+<h1>Not sure what you need? That's normal.</h1>
+<p class="lede">Answer a few easy questions about how your work goes today. You don't need the right words or any tech know-how. I'll read your answers and suggest where to start.</p>
+<p class="note">About 5 minutes. Skip anything you're not sure about.</p>
+<div class="bar" aria-hidden="true"><i id="bar"></i></div>
+<form id="f" novalidate>
+
+<section class="step on" data-t="About you">
+<h2>First, who are you?</h2><p class="hint">So I know who I'm talking to.</p>
+<div class="q"><label for="name">Your name</label><input type="text" id="name" name="Name" autocomplete="name" required></div>
+<div class="q"><label for="email">Your email</label><input type="email" id="email" name="Email" autocomplete="email" required></div>
+<div class="q"><label for="org">Where do you work, and what do you all do?</label><small>One sentence is plenty. Example: "A 6-person nonprofit that runs after-school programs."</small><input type="text" id="org" name="Organization"></div>
+<div class="q"><label for="role">What's your role?</label><input type="text" id="role" name="Role"></div>
+<p class="err" id="e0">Please add your name and a valid email so I can reply.</p>
+</section>
+
+<section class="step" data-t="What's hard">
+<h2>What's getting in the way?</h2><p class="hint">Tap everything that sounds familiar.</p>
+<div class="q"><div class="chips" data-name="Pain points">
+<label><input type="checkbox" value="Typing the same info into more than one place"><span>Typing the same info into more than one place</span></label>
+<label><input type="checkbox" value="Chasing people for updates or paperwork"><span>Chasing people for updates or paperwork</span></label>
+<label><input type="checkbox" value="Spreadsheets everywhere"><span>Spreadsheets everywhere</span></label>
+<label><input type="checkbox" value="Reports take forever to put together"><span>Reports take forever to put together</span></label>
+<label><input type="checkbox" value="Can't see how we're doing at a glance"><span>Can't see how we're doing at a glance</span></label>
+<label><input type="checkbox" value="Our tools don't talk to each other"><span>Our tools don't talk to each other</span></label>
+<label><input type="checkbox" value="Things fall through the cracks"><span>Things fall through the cracks</span></label>
+<label><input type="checkbox" value="Can't find files or the latest version"><span>Can't find files or the latest version</span></label>
+<label><input type="checkbox" value="Too many emails and messages"><span>Too many emails and messages</span></label>
+<label><input type="checkbox" value="Onboarding new people is slow"><span>Onboarding new people is slow</span></label>
+<label><input type="checkbox" value="Following up with clients or customers"><span>Following up with clients or customers</span></label>
+<label><input type="checkbox" value="Our data is messy or out of date"><span>Our data is messy or out of date</span></label>
+<label><input type="checkbox" value="We need a website or app"><span>We need a website or app</span></label>
+<label><input type="checkbox" value="Curious what AI could do for us"><span>Curious what AI could do for us</span></label>
+</div></div>
+<div class="q"><label for="other">Anything else that bugs you?</label><input type="text" id="other" name="Other pain points"></div>
+</section>
+
+<section class="step" data-t="A normal week">
+<h2>Walk me through a normal week.</h2><p class="hint">This is the most helpful part. Messy answers are perfect.</p>
+<div class="q"><label for="week">What eats the most time?</label><small>Example: "Every Friday I copy numbers from 3 spreadsheets into a report for my boss."</small><textarea id="week" name="Biggest time sink"></textarea></div>
+<div class="q"><label for="wand">If one thing at work just handled itself, what would it be?</label><textarea id="wand" name="Magic wand"></textarea></div>
+<div class="q"><label for="tried">Have you tried fixing this before? What happened?</label><textarea id="tried" name="Tried before"></textarea></div>
+</section>
+
+<section class="step" data-t="Tools and people">
+<h2>What do you use, and who's involved?</h2><p class="hint">Tap what you use. It's fine if it's "mostly email."</p>
+<div class="q"><span class="lab">Tools</span><div class="chips" data-name="Tools">
+<label><input type="checkbox" value="Excel or Google Sheets"><span>Excel or Google Sheets</span></label>
+<label><input type="checkbox" value="Gmail or Outlook"><span>Gmail or Outlook</span></label>
+<label><input type="checkbox" value="Google Drive or Dropbox"><span>Google Drive or Dropbox</span></label>
+<label><input type="checkbox" value="Microsoft 365 or Teams"><span>Microsoft 365 or Teams</span></label>
+<label><input type="checkbox" value="Slack"><span>Slack</span></label>
+<label><input type="checkbox" value="Salesforce or HubSpot"><span>Salesforce or HubSpot</span></label>
+<label><input type="checkbox" value="QuickBooks"><span>QuickBooks</span></label>
+<label><input type="checkbox" value="Mailchimp or Constant Contact"><span>Mailchimp or Constant Contact</span></label>
+<label><input type="checkbox" value="Airtable, Notion, or Monday"><span>Airtable, Notion, or Monday</span></label>
+<label><input type="checkbox" value="Paper or whiteboards"><span>Paper or whiteboards</span></label>
+<label><input type="checkbox" value="ChatGPT or other AI"><span>ChatGPT or other AI</span></label>
+</div></div>
+<div class="q"><label for="tools">Any others?</label><input type="text" id="tools" name="Other tools"></div>
+<div class="q"><span class="lab">How many people would use the fix?</span><div class="chips" data-name="Team size" data-one>
+<label><input type="radio" name="ts" value="Just me"><span>Just me</span></label>
+<label><input type="radio" name="ts" value="2 to 10"><span>2 to 10</span></label>
+<label><input type="radio" name="ts" value="11 to 50"><span>11 to 50</span></label>
+<label><input type="radio" name="ts" value="50+"><span>50+</span></label>
+<label><input type="radio" name="ts" value="Also clients or the public"><span>Also clients or the public</span></label>
+</div></div>
+</section>
+
+<section class="step" data-t="Getting started">
+<h2>Last bit: what would make this a win?</h2><p class="hint">No wrong answers. "Not sure" is fine.</p>
+<div class="q"><label for="win">Three months from now, what would be different if this worked?</label><textarea id="win" name="What a win looks like"></textarea></div>
+<div class="q"><span class="lab">How soon?</span><div class="chips" data-name="Timeline" data-one>
+<label><input type="radio" name="tl" value="As soon as possible"><span>As soon as possible</span></label>
+<label><input type="radio" name="tl" value="In 1 to 3 months"><span>In 1 to 3 months</span></label>
+<label><input type="radio" name="tl" value="Just exploring"><span>Just exploring</span></label>
+</div></div>
+<div class="q"><span class="lab">Rough budget</span><small>This helps me suggest something that fits. It's not a commitment.</small><div class="chips" data-name="Budget" data-one>
+<label><input type="radio" name="bg" value="Under $1,000"><span>Under $1,000</span></label>
+<label><input type="radio" name="bg" value="$1,000 to $5,000"><span>$1,000 to $5,000</span></label>
+<label><input type="radio" name="bg" value="$5,000 to $15,000"><span>$5,000 to $15,000</span></label>
+<label><input type="radio" name="bg" value="$15,000+"><span>$15,000+</span></label>
+<label><input type="radio" name="bg" value="Not sure yet"><span>Not sure yet</span></label>
+</div></div>
+<div class="q"><label for="else">Anything else I should know?</label><textarea id="else" name="Anything else"></textarea></div>
+</section>
+
+<section class="step done" data-t="Send">
+<h2>Thank you! One last tap.</h2>
+<p class="hint">Tap "Email my answers" to send them to me from your email. I'll reply within 2 business days with ideas for where to start.</p>
+<pre id="out"></pre>
+<div class="row"><a class="btn" id="mail" href="#">Email my answers</a><button type="button" class="ghost" id="copy">Copy answers</button></div>
+<p class="note" style="margin-top:12px">If the email button doesn't open anything, tap "Copy answers" and paste them into an email to <b>brittany@alittle.agency</b>.</p>
+</section>
+
+<div class="nav2"><button type="button" class="ghost" id="back">Back</button><button type="button" id="next">Next</button></div>
+</form>
+</main>
+<script>
+const steps=[...document.querySelectorAll('.step')],bar=document.getElementById('bar'),back=document.getElementById('back'),next=document.getElementById('next');
+let i=0;
+function show(n){steps[i].classList.remove('on');i=n;steps[i].classList.add('on');bar.style.width=(i/(steps.length-1)*100)+'%';
+ back.style.visibility=i?'visible':'hidden';next.style.display=i===steps.length-1?'none':'';next.textContent=i===steps.length-2?'See my answers':'Next';
+ if(i===steps.length-1)build();steps[i].querySelector('h2').setAttribute('tabindex','-1');steps[i].querySelector('h2').focus();window.scrollTo({top:0,behavior:'smooth'})}
+function text(){const L=[];
+ steps.slice(0,-1).forEach(s=>{L.push('== '+s.dataset.t+' ==');
+  s.querySelectorAll('input[type=text],input[type=email],textarea').forEach(x=>{if(x.value.trim())L.push(x.name+': '+x.value.trim())});
+  s.querySelectorAll('.chips').forEach(c=>{const v=[...c.querySelectorAll('input:checked')].map(x=>x.value);if(v.length)L.push(c.dataset.name+': '+v.join('; '))});
+  L.push('')});return L.join('\n').trim()}
+function build(){const t=text();document.getElementById('out').textContent=t;
+ const n=document.getElementById('name').value.trim();
+ document.getElementById('mail').href='mailto:brittany@alittle.agency?subject='+encodeURIComponent('Project intake: '+n)+'&body='+encodeURIComponent(t)}
+next.onclick=()=>{if(i===0){const n=document.getElementById('name'),e=document.getElementById('email');
+ const ok=n.value.trim()&&/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.value.trim());document.getElementById('e0').style.display=ok?'none':'block';if(!ok){(n.value.trim()?e:n).focus();return}}
+ show(i+1)};
+back.onclick=()=>show(i-1);
+document.getElementById('copy').onclick=async e=>{try{await navigator.clipboard.writeText(text());e.target.textContent='Copied'}catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById('out'));getSelection().removeAllRanges();getSelection().addRange(r);e.target.textContent='Selected, now copy'}};
+show(0);window.scrollTo(0,0);
+</script>
+</body></html>
