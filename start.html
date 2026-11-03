@@ -26,7 +26,8 @@ h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;letter-spacing:-.03em;line-hei
 .q>label,.q>.lab{display:block;font-weight:700;margin-bottom:6px}
 .q small{display:block;color:var(--soft);font-weight:400;margin:-2px 0 8px}
 input[type=text],input[type=email],textarea{width:100%;font:inherit;padding:12px 14px;border:2px solid #111;border-radius:10px;background:#fff}
-textarea{min-height:96px;resize:vertical}
+textarea{min-height:150px;resize:vertical;line-height:1.5}
+textarea.short{min-height:96px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips label{cursor:pointer}
 .chips input{position:absolute;opacity:0;pointer-events:none}
@@ -61,7 +62,7 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 <label><input type="radio" name="for" value="Home and family"><span>Home and family</span></label>
 <label><input type="radio" name="for" value="Both"><span>Both</span></label>
 </div></div>
-<div class="q"><label for="org">Tell me a little about your world.</label><small>One sentence is plenty. Examples: "A 6-person nonprofit that runs after-school programs." or "Stay-at-home mom of three, running the whole house."</small><input type="text" id="org" name="About them"></div>
+<div class="q"><label for="org">Tell me a little about your world.</label><small>One sentence is plenty. Examples: "A 6-person nonprofit that runs after-school programs." or "Stay-at-home mom of three, running the whole house."</small><textarea class="short" id="org" name="About them"></textarea></div>
 <p class="err" id="e0">Please add your name and a valid email so I can reply.</p>
 </section>
 
@@ -86,7 +87,7 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 <label><input type="checkbox" value="We need a website or app"><span>We need a website or app</span></label>
 <label><input type="checkbox" value="Curious what AI could do for us"><span>Curious what AI could do for us</span></label>
 </div></div>
-<div class="q"><label for="other">Anything else that bugs you?</label><input type="text" id="other" name="Other pain points"></div>
+<div class="q"><label for="other">Anything else that bugs you?</label><textarea class="short" id="other" name="Other pain points"></textarea></div>
 </section>
 
 <section class="step" data-t="A normal week">
@@ -113,7 +114,7 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 <label><input type="checkbox" value="Paper or whiteboards"><span>Paper or whiteboards</span></label>
 <label><input type="checkbox" value="ChatGPT or other AI"><span>ChatGPT or other AI</span></label>
 </div></div>
-<div class="q"><label for="tools">Any others?</label><input type="text" id="tools" name="Other tools"></div>
+<div class="q"><label for="tools">Any others?</label><textarea class="short" id="tools" name="Other tools"></textarea></div>
 <div class="q"><span class="lab">How many people would use the fix?</span><small>At home, count your family.</small><div class="chips" data-name="Team size" data-one>
 <label><input type="radio" name="ts" value="Just me"><span>Just me</span></label>
 <label><input type="radio" name="ts" value="My family"><span>My family</span></label>
