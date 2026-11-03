@@ -178,9 +178,9 @@ back.onclick=()=>show(i-1);
 document.getElementById('send').onclick=async e=>{const btn=e.target,st=document.getElementById('status');btn.disabled=true;btn.textContent='Sending...';st.textContent='';
  const g=id=>(document.getElementById(id)||{}).value||'';
  const ac=new AbortController();const to=setTimeout(()=>ac.abort(),12000);
- try{const r=await fetch('https://formsubmit.co/ajax/brittany@alittle.agency',{signal:ac.signal,method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
-  body:JSON.stringify({_subject:'Project intake: '+g('name').trim(),_template:'box',_captcha:'false',name:g('name'),email:g('email'),_replyto:g('email'),answers:text()})});
-  clearTimeout(to);const j=await r.json().catch(()=>({}));if(!r.ok||String(j.success)==='false')throw (j.message||0);
+ try{const r=await fetch('https://api.web3forms.com/submit',{signal:ac.signal,method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+  body:JSON.stringify({access_key:'d43107b4-af96-40b1-a032-8e3bb49d6f97',subject:'Project intake: '+g('name').trim(),from_name:'Intake form',name:g('name'),email:g('email'),replyto:g('email'),message:text(),botcheck:''})});
+  clearTimeout(to);const j=await r.json().catch(()=>({}));if(!r.ok||j.success!==true)throw (j.message||0);
   document.getElementById('sendrow').style.display='none';document.getElementById('sendhint').textContent='';
   steps[i].querySelector('h2').textContent='Sent! Thank you.';st.textContent="I got your answers and I'll reply within 2 business days. You can close this page.";back.style.visibility='hidden'}
  catch(err){clearTimeout(to);btn.disabled=false;btn.textContent='Try again';st.textContent=(/activat/i.test(String(err))?'Almost there: Brittany needs to activate this form first. ':'')+"That didn't go through. Try again, or use one of these:";document.getElementById('fallback').style.display='flex'}};
