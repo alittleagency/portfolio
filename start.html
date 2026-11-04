@@ -4,43 +4,43 @@
 <title>Let's figure it out · Brittany May</title>
 <meta name="description" content="Not sure what you need? Answer a few easy questions and Brittany May will suggest where to start.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--ink:#111;--soft:#4a4a4a;--line:#111;--accent:#e2583e;--paper:#f6f1e7;--tint:#efe8da}
-body{font-family:Figtree,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
-nav{border-bottom:2px solid #111}
+:root{--ink:#1F3A2C;--soft:#5E6B62;--line:#1F3A2C;--accent:#3B6B52;--paper:#FDF5EC;--tint:#F3EADF}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
+nav{border-bottom:2px solid #1F3A2C}
 nav div{max-width:760px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between}
-nav a{font-weight:800;font-size:18px;text-decoration:none;color:#111}nav a span{color:var(--accent)}
+nav a{font-weight:800;font-size:18px;text-decoration:none;color:#1F3A2C}nav a span{color:var(--accent)}
 main{max-width:760px;margin:0 auto;padding:40px 20px 64px}
 h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
 .lede{color:var(--soft);font-size:1.1rem;margin:14px 0 8px;max-width:600px}
 .note{font-size:14px;color:var(--soft)}
-.bar{height:8px;background:#fff;border:2px solid #111;border-radius:99px;margin:28px 0 18px;overflow:hidden}
+.bar{height:8px;background:#fff;border:2px solid #1F3A2C;border-radius:99px;margin:28px 0 18px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
-.step{display:none;background:#fff;border:2px solid #111;box-shadow:4px 4px 0 #111;border-radius:14px;padding:26px}
+.step{display:none;background:#fff;border:2px solid #1F3A2C;box-shadow:4px 4px 0 #1F3A2C;border-radius:14px;padding:26px}
 .step.on{display:block}
 .step h2{font-size:1.45rem;font-weight:800;letter-spacing:-.01em;margin-bottom:4px}
 .step .hint{color:var(--soft);margin-bottom:18px}
 .q{margin-bottom:20px}
 .q>label,.q>.lab{display:block;font-weight:700;margin-bottom:6px}
 .q small{display:block;color:var(--soft);font-weight:400;margin:-2px 0 8px}
-input[type=text],input[type=email],textarea{width:100%;font:inherit;padding:12px 14px;border:2px solid #111;border-radius:10px;background:#fff}
+input[type=text],input[type=email],textarea{width:100%;font:inherit;padding:12px 14px;border:2px solid #1F3A2C;border-radius:10px;background:#fff}
 textarea{min-height:150px;resize:vertical;line-height:1.5}
 textarea.short{min-height:96px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips label{cursor:pointer}
 .chips input{position:absolute;opacity:0;pointer-events:none}
-.chips span{display:inline-block;border:1.5px solid #111;border-radius:99px;padding:7px 14px;font-size:15px;background:#fff;transition:background .12s}
-.chips input:checked+span{background:#111;color:#fff}
+.chips span{display:inline-block;border:1.5px solid #1F3A2C;border-radius:99px;padding:7px 14px;font-size:15px;background:#fff;transition:background .12s}
+.chips input:checked+span{background:#1F3A2C;color:#fff}
 .chips input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
 .nav2{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
-button,.btn{font:inherit;font-weight:700;font-size:15px;border:2px solid #111;border-radius:99px;padding:11px 20px;cursor:pointer;background:#111;color:#fff;text-decoration:none;display:inline-block}
-button.ghost{background:#fff;color:#111}
+button,.btn{font:inherit;font-weight:700;font-size:15px;border:2px solid #1F3A2C;border-radius:99px;padding:11px 20px;cursor:pointer;background:#1F3A2C;color:#fff;text-decoration:none;display:inline-block}
+button.ghost{background:#fff;color:#1F3A2C}
 button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .done{text-align:left}
-.done pre{white-space:pre-wrap;font:14px/1.5 Figtree;background:var(--tint);border-radius:10px;padding:14px;margin:14px 0;max-height:260px;overflow:auto}
+.done pre{white-space:pre-wrap;font:14px/1.5 Manrope;background:var(--tint);border-radius:10px;padding:14px;margin:14px 0;max-height:260px;overflow:auto}
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .err{color:#b3261e;font-weight:600;font-size:14px;margin-top:6px;display:none}
 @media(max-width:520px){.step{padding:20px}}
@@ -50,7 +50,7 @@ p,small,.lede,.hint,.note{text-wrap:pretty}h1,h2,h3{text-wrap:balance}
 <nav><div><a href="./">Brittany May<span>.</span></a><a href="./" style="font-weight:600;font-size:14px">Back to my work</a></div></nav>
 <main>
 <h1>Get a free Systems Snapshot.</h1>
-<p class="lede">Answer a few easy questions about your days, at work, at home, or both. You don't need the right words or any tech know‑how. Within 2 business days, I'll send you a free one-page plan: your top 3 fixes, the tools I'd use, and a rough cost and timeline. No pressure, and no sales call unless you want one.</p>
+<p class="lede">Answer a few easy questions about your days, at work, at home, or both. You don't need the right words or any tech know‑how. Within 2 business days, I'll send you a free Systems Snapshot, a private web page and a PDF with your top 3 fixes, the tools I'd use, and one priced first project. No pressure, and no sales call unless you want one.</p>
 <p class="note">About 5 minutes. Only your name and email are required (marked <span class="req">*</span>). Skip anything you're not sure about.</p>
 <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 <form id="f" novalidate>
