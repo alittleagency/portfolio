@@ -44,24 +44,25 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .err{color:#b3261e;font-weight:600;font-size:14px;margin-top:6px;display:none}
 @media(max-width:520px){.step{padding:20px}}
+.step h2:focus{outline:none}.req{font-weight:500;color:var(--soft);font-size:.9em}
 </style></head><body>
 <nav><div><a href="./">Brittany May<span>.</span></a><a href="./" style="font-weight:600;font-size:14px">Back to my work</a></div></nav>
 <main>
 <h1>Not sure what you need? That's normal.</h1>
 <p class="lede">Answer a few easy questions about how your work goes today. It can be for work, your home, or both. You don't need the right words or any tech know-how. I'll read your answers and suggest where to start.</p>
-<p class="note">About 5 minutes. Skip anything you're not sure about.</p>
+<p class="note">About 5 minutes. Only your name and email are required. Skip anything you're not sure about.</p>
 <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 <form id="f" novalidate>
 
 <section class="step on" data-t="About you">
 <h2>First, who are you?</h2><p class="hint">So I know who I'm talking to.</p>
-<div class="q"><label for="name">Your name</label><input type="text" id="name" name="Name" autocomplete="name" required></div>
-<div class="q"><label for="email">Your email</label><input type="email" id="email" name="Email" autocomplete="email" required></div>
+<div class="q"><label for="name">Your name <span class="req">(required)</span></label><input type="text" id="name" name="Name" autocomplete="name" required></div>
+<div class="q"><label for="email">Your email <span class="req">(required)</span></label><small>So I can reply with ideas.</small><input type="email" id="email" name="Email" autocomplete="email" required></div>
 <div class="q"><span class="lab">Do you already know what you need?</span><div class="chips" data-name="Knows what they need" data-one>
 <label><input type="radio" name="know" value="Yes" id="knowY"><span>Yes, I have an idea</span></label>
 <label><input type="radio" name="know" value="Not sure" id="knowN"><span>Not sure yet</span></label>
 </div></div>
-<div class="q" id="ideaBox" hidden><label for="idea">Tell me what you have in mind.</label><small>A few sentences is perfect. You can send it now, or keep going so I understand the bigger picture.</small><textarea id="idea" name="What they want"></textarea>
+<div class="q" id="ideaBox" hidden><label for="idea">Tell me what you have in mind.</label><small>A few sentences is perfect. Example: "A simple booking page for my salon that sends reminders." You can send it now, or keep going so I understand the bigger picture.</small><textarea id="idea" name="What they want"></textarea>
 <button type="button" class="ghost" id="sendNow" style="margin-top:10px">Skip ahead and send</button></div>
 <div class="q"><span class="lab">Is this for work, home, or both?</span><div class="chips" data-name="For" data-one>
 <label><input type="radio" name="for" value="Work"><span>Work</span></label>
@@ -93,14 +94,14 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 <label><input type="checkbox" value="We need a website or app"><span>We need a website or app</span></label>
 <label><input type="checkbox" value="Curious what AI could do for us"><span>Curious what AI could do for us</span></label>
 </div></div>
-<div class="q"><label for="other">Anything else that bugs you?</label><textarea class="short" id="other" name="Other pain points"></textarea></div>
+<div class="q"><label for="other">Anything else that bugs you?</label><small>Example: "I never know which version of the budget is the latest."</small><textarea class="short" id="other" name="Other pain points"></textarea></div>
 </section>
 
 <section class="step" data-t="A normal week">
 <h2>Walk me through a normal week.</h2><p class="hint">This is the most helpful part. Messy answers are perfect.</p>
 <div class="q"><label for="week">What eats the most time?</label><small>Examples: "Every Friday I copy numbers from 3 spreadsheets into a report." or "Sunday nights I rebuild the family calendar from texts and school emails."</small><textarea id="week" name="Biggest time sink"></textarea></div>
-<div class="q"><label for="wand">If one thing just handled itself, what would it be?</label><textarea id="wand" name="Magic wand"></textarea></div>
-<div class="q"><label for="tried">Have you tried fixing this before? What happened?</label><textarea id="tried" name="Tried before"></textarea></div>
+<div class="q"><label for="wand">If one thing just handled itself, what would it be?</label><small>Examples: "Invoices go out on their own." or "Everyone sees the family calendar without me texting it."</small><textarea id="wand" name="Magic wand"></textarea></div>
+<div class="q"><label for="tried">Have you tried fixing this before? What happened?</label><small>Example: "We bought Monday.com, but nobody kept it updated." "No" is a fine answer.</small><textarea id="tried" name="Tried before"></textarea></div>
 </section>
 
 <section class="step" data-t="Tools and people">
@@ -120,7 +121,7 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 <label><input type="checkbox" value="Paper or whiteboards"><span>Paper or whiteboards</span></label>
 <label><input type="checkbox" value="ChatGPT or other AI"><span>ChatGPT or other AI</span></label>
 </div></div>
-<div class="q"><label for="tools">Any others?</label><textarea class="short" id="tools" name="Other tools"></textarea></div>
+<div class="q"><label for="tools">Any others?</label><small>Example: "Canva, Square, and our church's Planning Center."</small><textarea class="short" id="tools" name="Other tools"></textarea></div>
 <div class="q"><span class="lab">How many people would use the fix?</span><small>At home, count your family.</small><div class="chips" data-name="Team size" data-one>
 <label><input type="radio" name="ts" value="Just me"><span>Just me</span></label>
 <label><input type="radio" name="ts" value="My family"><span>My family</span></label>
@@ -133,7 +134,7 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 
 <section class="step" data-t="Getting started">
 <h2>Last bit: what would make this a win?</h2><p class="hint">No wrong answers. "Not sure" is fine.</p>
-<div class="q"><label for="win">Three months from now, what would be different if this worked?</label><textarea id="win" name="What a win looks like"></textarea></div>
+<div class="q"><label for="win">Three months from now, what would be different if this worked?</label><small>Examples: "I'd stop working Sunday nights." or "Our board report takes 1 hour, not 2 days."</small><textarea id="win" name="What a win looks like"></textarea></div>
 <div class="q"><span class="lab">How soon?</span><div class="chips" data-name="Timeline" data-one>
 <label><input type="radio" name="tl" value="As soon as possible"><span>As soon as possible</span></label>
 <label><input type="radio" name="tl" value="In 1 to 3 months"><span>In 1 to 3 months</span></label>
@@ -147,7 +148,7 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 <label><input type="radio" name="bg" value="$15,000+"><span>$15,000+</span></label>
 <label><input type="radio" name="bg" value="Not sure yet"><span>Not sure yet</span></label>
 </div></div>
-<div class="q"><label for="else">Anything else I should know?</label><textarea id="else" name="Anything else"></textarea></div>
+<div class="q"><label for="else">Anything else I should know?</label><small>Deadlines, worries, or links to things you use.</small><textarea id="else" name="Anything else"></textarea></div>
 </section>
 
 <section class="step done" data-t="Send">
@@ -167,7 +168,7 @@ const steps=[...document.querySelectorAll('.step')],bar=document.getElementById(
 let i=0;
 function show(n){steps[i].classList.remove('on');i=n;steps[i].classList.add('on');bar.style.width=(i/(steps.length-1)*100)+'%';
  back.style.visibility=i?'visible':'hidden';next.style.display=i===steps.length-1?'none':'';next.textContent=i===steps.length-2?'See my answers':'Next';
- if(i===steps.length-1)build();steps[i].querySelector('h2').setAttribute('tabindex','-1');steps[i].querySelector('h2').focus();window.scrollTo({top:0,behavior:'smooth'})}
+ if(i===steps.length-1)build();steps[i].querySelector('h2').setAttribute('tabindex','-1');if(n||steps[i].dataset.seen)steps[i].querySelector('h2').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'})}
 function text(){const L=[];
  steps.slice(0,-1).forEach(s=>{const st=L.length;L.push('== '+s.dataset.t+' ==');
   s.querySelectorAll('input[type=text],input[type=email],textarea').forEach(x=>{if(x.value.trim())L.push(x.name+': '+x.value.trim())});
