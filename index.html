@@ -117,7 +117,8 @@ h1{letter-spacing:-.035em}
 .also a,.box a{color:#111}
 :focus-visible{outline-color:#e2583e}
 h1{text-wrap:balance}
-@media(max-width:520px){.long{display:none}.hero .ctas{flex-wrap:nowrap;gap:8px}.hero .ctas .btn{padding:11px 14px;font-size:14px}}
+.short{display:none}
+@media(max-width:520px){.long{display:none}.short{display:inline}.hero .ctas{flex-wrap:wrap;gap:8px}.hero .ctas .btn:first-child{flex-basis:100%;justify-content:center}.hero .ctas .btn{padding:11px 14px;font-size:14px}}
 </style></head>
 <body>
 <nav><div class="wrap"><a class="logo" href="#">Brittany May<span>.</span></a>
@@ -126,7 +127,7 @@ h1{text-wrap:balance}
 <header class="hero wrap">
 <h1>I make work easier for the people doing&nbsp;it.</h1>
 <p class="lede">I fix slow, messy processes with better workflows, automations, dashboards, and data, and with AI when it helps. 15 years doing it for universities, lenders, campaigns, and small businesses.</p>
-<div class="ctas"><a class="btn" href="mailto:brittany@alittle.agency">Email me</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank"><span class="long">Download my&nbsp;</span>Resume</a><a class="btn ghost" href="https://linkedin.com/in/brittany-h-may" target="_blank" rel="noopener">LinkedIn</a></div>
+<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="mailto:brittany@alittle.agency">Email me</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank"><span class="long">Download my resume</span><span class="short">Resume</span></a><a class="btn ghost" href="https://linkedin.com/in/brittany-h-may" target="_blank" rel="noopener">LinkedIn</a></div>
 <div class="proof">
 <div class="chip rv"><b>15+ years</b><span>Workflows, automations, and dashboards for real teams</span></div>
 <div class="chip rv"><b>40% less</b><span>manual data entry, and 35% faster approvals</span></div>
@@ -182,7 +183,7 @@ h1{text-wrap:balance}
 </section>
 
 <div class="wrap"><div class="end rv"><h2>Have something messy? Let's talk.</h2><p>I'm open to projects, contract work, and full-time roles. Introductions are always welcome too.</p>
-<div class="ctas"><a class="btn" href="mailto:brittany@alittle.agency">brittany@alittle.agency</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank">My resume</a><a class="btn ghost" href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a></div></div></div>
+<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="mailto:brittany@alittle.agency">brittany@alittle.agency</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank">My resume</a><a class="btn ghost" href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a></div></div></div>
 <footer>Brittany May · Atlanta, GA</footer>
 <script>
 const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');o.unobserve(e.target)}}),{threshold:.08});

@@ -57,6 +57,12 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 <h2>First, who are you?</h2><p class="hint">So I know who I'm talking to.</p>
 <div class="q"><label for="name">Your name</label><input type="text" id="name" name="Name" autocomplete="name" required></div>
 <div class="q"><label for="email">Your email</label><input type="email" id="email" name="Email" autocomplete="email" required></div>
+<div class="q"><span class="lab">Do you already know what you need?</span><div class="chips" data-name="Knows what they need" data-one>
+<label><input type="radio" name="know" value="Yes" id="knowY"><span>Yes, I have an idea</span></label>
+<label><input type="radio" name="know" value="Not sure" id="knowN"><span>Not sure yet</span></label>
+</div></div>
+<div class="q" id="ideaBox" hidden><label for="idea">Tell me what you have in mind.</label><small>A few sentences is perfect. You can send it now, or keep going so I understand the bigger picture.</small><textarea id="idea" name="What they want"></textarea>
+<button type="button" class="ghost" id="sendNow" style="margin-top:10px">Skip ahead and send</button></div>
 <div class="q"><span class="lab">Is this for work, home, or both?</span><div class="chips" data-name="For" data-one>
 <label><input type="radio" name="for" value="Work"><span>Work</span></label>
 <label><input type="radio" name="for" value="Home and family"><span>Home and family</span></label>
@@ -163,10 +169,10 @@ function show(n){steps[i].classList.remove('on');i=n;steps[i].classList.add('on'
  back.style.visibility=i?'visible':'hidden';next.style.display=i===steps.length-1?'none':'';next.textContent=i===steps.length-2?'See my answers':'Next';
  if(i===steps.length-1)build();steps[i].querySelector('h2').setAttribute('tabindex','-1');steps[i].querySelector('h2').focus();window.scrollTo({top:0,behavior:'smooth'})}
 function text(){const L=[];
- steps.slice(0,-1).forEach(s=>{L.push('== '+s.dataset.t+' ==');
+ steps.slice(0,-1).forEach(s=>{const st=L.length;L.push('== '+s.dataset.t+' ==');
   s.querySelectorAll('input[type=text],input[type=email],textarea').forEach(x=>{if(x.value.trim())L.push(x.name+': '+x.value.trim())});
   s.querySelectorAll('.chips').forEach(c=>{const v=[...c.querySelectorAll('input:checked')].map(x=>x.value);if(v.length)L.push(c.dataset.name+': '+v.join('; '))});
-  L.push('')});return L.join('\n').trim()}
+  if(L.length===st+1)L.pop();else L.push('')});return L.join('\n').trim()}
 function build(){const t=text();document.getElementById('out').textContent=t;
  const n=document.getElementById('name').value.trim();
  document.getElementById('mail').href='mailto:brittany@alittle.agency?subject='+encodeURIComponent('Project intake: '+n)+'&body='+encodeURIComponent(t)}
@@ -185,6 +191,8 @@ document.getElementById('send').onclick=async e=>{const btn=e.target,st=document
   steps[i].querySelector('h2').textContent='Sent! Thank you.';st.textContent="I got your answers and I'll reply within 2 business days. You can close this page.";back.style.visibility='hidden'}
  catch(err){clearTimeout(to);btn.disabled=false;btn.textContent='Try again';st.textContent=(/activat/i.test(String(err))?'Almost there: Brittany needs to activate this form first. ':'')+"That didn't go through. Try again, or use one of these:";document.getElementById('fallback').style.display='flex'}};
 document.getElementById('copy').onclick=async e=>{try{await navigator.clipboard.writeText(text());e.target.textContent='Copied'}catch(_){const r=document.createRange();r.selectNodeContents(document.getElementById('out'));getSelection().removeAllRanges();getSelection().addRange(r);e.target.textContent='Selected, now copy'}};
+document.querySelectorAll('input[name=know]').forEach(r=>r.addEventListener('change',()=>{document.getElementById('ideaBox').hidden=!document.getElementById('knowY').checked}));
+document.getElementById('sendNow').onclick=()=>{const n=document.getElementById('name'),e=document.getElementById('email');const ok=n.value.trim()&&/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e.value.trim());document.getElementById('e0').style.display=ok?'none':'block';if(!ok){(n.value.trim()?e:n).focus();return}show(steps.length-1)};
 show(0);window.scrollTo(0,0);
 </script>
 </body></html>
