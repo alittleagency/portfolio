@@ -44,20 +44,20 @@ button:hover,.btn:hover{box-shadow:3px 3px 0 var(--accent)}
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .err{color:#b3261e;font-weight:600;font-size:14px;margin-top:6px;display:none}
 @media(max-width:520px){.step{padding:20px}}
-.step h2:focus{outline:none}.req{font-weight:500;color:var(--soft);font-size:.9em}
+.step h2:focus{outline:none}.req{color:#c62828;font-weight:800}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style></head><body>
 <nav><div><a href="./">Brittany May<span>.</span></a><a href="./" style="font-weight:600;font-size:14px">Back to my work</a></div></nav>
 <main>
 <h1>Not sure what you need? That's normal.</h1>
 <p class="lede">Answer a few easy questions about how your work goes today. It can be for work, your home, or both. You don't need the right words or any tech know-how. I'll read your answers and suggest where to start.</p>
-<p class="note">About 5 minutes. Only your name and email are required. Skip anything you're not sure about.</p>
+<p class="note">About 5 minutes. Only your name and email are required (marked <span class="req">*</span>). Skip anything you're not sure about.</p>
 <div class="bar" aria-hidden="true"><i id="bar"></i></div>
 <form id="f" novalidate>
 
 <section class="step on" data-t="About you">
 <h2>First, who are you?</h2><p class="hint">So I know who I'm talking to.</p>
-<div class="q"><label for="name">Your name <span class="req">(required)</span></label><input type="text" id="name" name="Name" autocomplete="name" required></div>
-<div class="q"><label for="email">Your email <span class="req">(required)</span></label><small>So I can reply with ideas.</small><input type="email" id="email" name="Email" autocomplete="email" required></div>
+<div class="q"><label for="name">Your name <span class="req" aria-hidden="true">*</span><span class="sr">(required)</span></label><input type="text" id="name" name="Name" autocomplete="name" required></div>
+<div class="q"><label for="email">Your email <span class="req" aria-hidden="true">*</span><span class="sr">(required)</span></label><small>So I can reply with ideas.</small><input type="email" id="email" name="Email" autocomplete="email" required></div>
 <div class="q"><span class="lab">Do you already know what you need?</span><div class="chips" data-name="Knows what they need" data-one>
 <label><input type="radio" name="know" value="Yes" id="knowY"><span>Yes, I have an idea</span></label>
 <label><input type="radio" name="know" value="Not sure" id="knowN"><span>Not sure yet</span></label>
