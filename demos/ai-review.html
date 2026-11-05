@@ -267,6 +267,9 @@ h1,h2,h3{font-family:var(--display);letter-spacing:-.02em}
 .sample{background:var(--sunk)!important}.sample b{color:var(--teal)!important}
 button,.btn,a.btn,summary,nav a,.chip,.jump a,.steps button,th{white-space:nowrap}
 h1,h2,h3,h4{text-wrap:balance}p,li,label{text-wrap:pretty}
+
+/* headings: no forced breaks */
+h1,h2,h3,h4{max-width:none!important;text-wrap:pretty!important}
 </style>
 <script>
 const OPS=[
@@ -320,4 +323,5 @@ document.getElementById("ops").innerHTML=OPS.map(([t,d,tool,cost,h],i)=>`<div cl
 const LOCK=["..####....",".#....#...",".#....#...","##########","#........#","#...##...#","#...##...#","#........#","##########",".........."];
 document.querySelectorAll("canvas[data-lock]").forEach(cv=>{const g=cv.getContext("2d"),col=getComputedStyle(document.documentElement).getPropertyValue("--teal").trim()||"#0d6b68";LOCK.forEach((r,y)=>[...r].forEach((ch,x)=>{if(ch==="#"){g.fillStyle=col;g.fillRect(x,y,1,1)}}))});
 </script>
+<script>/* fit headings on one line on wider screens */(function(){function fit(){var big=innerWidth>=700;document.querySelectorAll('h1,h2,h3').forEach(function(h){h.style.fontSize='';if(!big||!h.offsetParent)return;var fs=parseFloat(getComputedStyle(h).fontSize),min=fs*0.62,lh=function(){var c=getComputedStyle(h);return parseFloat(c.lineHeight)||parseFloat(c.fontSize)*1.2},n=0;while(h.getBoundingClientRect().height>lh()*1.5&&fs>min&&n<60){fs-=1;h.style.fontSize=fs+'px';n++}})}var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,150)});document.addEventListener('click',function(){setTimeout(fit,80)});if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);addEventListener('load',fit);fit()})();</script>
 </body></html>
