@@ -95,7 +95,7 @@ footer{text-align:center;color:var(--soft);font-size:13px;padding:0 0 40px}
 :focus-visible{outline:3px solid var(--pink);outline-offset:3px;border-radius:8px}
 .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.hero>*{animation:none}.rv{opacity:1;transform:none}*{transition:none!important}}
-@media(max-width:720px){.links a:not(.btn){display:none}.about{grid-template-columns:1fr}.hero{padding-top:44px}.end{padding:36px 22px}}
+@media(max-width:720px){.links a:not(.btn):not(.li){display:none}.about{grid-template-columns:1fr}.hero{padding-top:44px}.end{padding:36px 22px}}
 .also{margin-top:22px;background:var(--card);border-radius:var(--r);padding:26px;box-shadow:0 8px 24px rgba(80,50,140,.09)}.also h3{font-size:21px}.also p{color:var(--soft);margin-top:14px}.also a{color:var(--plum);font-weight:700}
 
 /* Look A: serious */
@@ -133,12 +133,12 @@ h1,h2,h3,h4{max-width:none!important;text-wrap:pretty!important}
 </style></head>
 <body>
 <nav><div class="wrap"><a class="logo" href="#">Brittany May<span>.</span></a>
-<div class="links"><a href="#build">What I build</a><a href="#work">Work</a><a href="#about">About</a><a href="BrittanyMay_Resume.pdf" target="_blank">Resume</a><a href="start.html">Not sure what you need?</a><a class="btn" href="mailto:brittanyhmay@gmail.com">Say hi</a></div></div></nav>
+<div class="links"><a href="#build">What I build</a><a href="#work">Work</a><a href="#about">About</a><a href="BrittanyMay_Resume.pdf" target="_blank">Resume</a><a href="start.html">Not sure what you need?</a><a class="btn" href="mailto:brittanyhmay@gmail.com">Say hi</a><a class="li" href="https://linkedin.com/in/brittany-h-may" target="_blank" rel="noopener">LinkedIn</a></div></div></nav>
 
 <header class="hero wrap">
 <h1>I make work easier for the people doing&nbsp;it.</h1>
 <p class="lede">I fix slow, messy processes with better workflows, automations, dashboards, and data, and with AI when it helps. 15 years doing it for universities, lenders, campaigns, and small businesses.</p>
-<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank"><span class="long">Download my resume</span><span class="short">Resume</span></a></div><p class="alt">Or email <a href="mailto:brittanyhmay@gmail.com">brittanyhmay@gmail.com</a>, or find me on <a href="https://linkedin.com/in/brittany-h-may" target="_blank" rel="noopener">LinkedIn</a>.</p>
+<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank"><span class="long">Download my resume</span><span class="short">Resume</span></a></div>
 <div class="proof">
 <div class="chip rv"><b>15+ years</b><span>Fixing how work gets done</span></div>
 <div class="chip rv"><b>100M+ records</b><span>Managed at the University of Michigan</span></div>
@@ -194,7 +194,7 @@ h1,h2,h3,h4{max-width:none!important;text-wrap:pretty!important}
 </section>
 
 <div class="wrap"><div class="end rv"><h2>Have something messy? Let's talk.</h2><p>I'm open to projects, contract work, and full-time roles. Introductions are always welcome too.</p>
-<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank">My resume</a></div><p class="alt">Or email <a href="mailto:brittanyhmay@gmail.com">brittanyhmay@gmail.com</a>. My business site is <a href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a>.</p></div></div>
+<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank">My resume</a></div></div></div>
 <footer>Brittany May · Atlanta, GA</footer>
 <script>
 const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');o.unobserve(e.target)}}),{threshold:.08});
