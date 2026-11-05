@@ -31,7 +31,7 @@ h1 em{font-style:normal;color:var(--pink);position:relative;white-space:nowrap}
 h1 em::after{content:"";position:absolute;left:0;right:0;bottom:.06em;height:.22em;background:var(--blush);z-index:-1;border-radius:6px}
 .lede{font-size:clamp(1.05rem,2vw,1.25rem);color:var(--soft);max-width:620px;margin:22px 0 30px}
 .ctas{display:flex;gap:12px;flex-wrap:wrap}
-.proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:48px}
+.proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:14px;margin-top:48px}
 .chip{background:none;border-left:4px solid var(--plum);border-radius:0;padding:4px 0 4px 16px}.chip:nth-child(2){border-color:var(--pink)}.chip:nth-child(3){border-color:#1d8a68}
 .chip b{display:block;font:800 26px Manrope;color:var(--plum);line-height:1.1}
 .chip:nth-child(2) b{color:var(--pink)}.chip:nth-child(3) b{color:#1d8a68}
@@ -64,7 +64,7 @@ h2{font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.05}
 .pb h3{font-size:22px}
 .pb .why{font-weight:600;font-size:15px}
 .pb p{color:var(--soft);font-size:14.5px}
-.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,390px),1fr));gap:16px}
 .mini{display:flex;gap:14px;align-items:center;background:var(--card);border-radius:20px;padding:12px;text-decoration:none;box-shadow:0 6px 18px rgba(80,50,140,.07);transition:transform .2s}
 .mini:hover{transform:translateY(-3px)}
 .mini img{width:84px;height:62px;object-fit:cover;object-position:top;border-radius:12px;flex-shrink:0}
@@ -121,15 +121,21 @@ h1{text-wrap:balance}
 @media(max-width:520px){.long{display:none}.short{display:inline}.hero .ctas{flex-wrap:wrap;gap:8px}.hero .ctas .btn:first-child{flex-basis:100%;justify-content:center}.hero .ctas .btn{padding:11px 14px;font-size:14px}}
 p,small,.lede,.hint,.note{text-wrap:pretty}h1,h2,h3{text-wrap:balance}
 .sh{flex-direction:column;align-items:flex-start!important;gap:8px!important}.sh p{max-width:640px!important}
+.alt{margin:14px 0 0;color:inherit;opacity:.8;font-size:16px;text-wrap:pretty}.alt a{color:inherit;font-weight:600;text-underline-offset:3px}
+
+/* no-wrap pass: short UI text stays on one line */
+button,.btn,a.btn,summary,th,.scroll td,nav a,.chip,.tag,.pill,label.io,.src,.owe span,.row small,.steps button{white-space:nowrap}
+h1,h2,h3,h4{text-wrap:balance}
+p,li,dd,span,label,b,strong,.lede,.sub{text-wrap:pretty}
 </style></head>
 <body>
 <nav><div class="wrap"><a class="logo" href="#">Brittany May<span>.</span></a>
-<div class="links"><a href="#build">What I build</a><a href="#work">Work</a><a href="#about">About</a><a href="BrittanyMay_Resume.pdf" target="_blank">Resume</a><a href="start.html">Not sure what you need?</a><a class="btn" href="mailto:brittany@alittle.agency">Say hi</a></div></div></nav>
+<div class="links"><a href="#build">What I build</a><a href="#work">Work</a><a href="#about">About</a><a href="BrittanyMay_Resume.pdf" target="_blank">Resume</a><a href="start.html">Not sure what you need?</a><a class="btn" href="mailto:brittanyhmay@gmail.com">Say hi</a></div></div></nav>
 
 <header class="hero wrap">
 <h1>I make work easier for the people doing&nbsp;it.</h1>
 <p class="lede">I fix slow, messy processes with better workflows, automations, dashboards, and data, and with AI when it helps. 15 years doing it for universities, lenders, campaigns, and small businesses.</p>
-<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="mailto:brittany@alittle.agency">Email me</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank"><span class="long">Download my resume</span><span class="short">Resume</span></a><a class="btn ghost" href="https://linkedin.com/in/brittany-h-may" target="_blank" rel="noopener">LinkedIn</a></div>
+<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank"><span class="long">Download my resume</span><span class="short">Resume</span></a></div><p class="alt">Or email <a href="mailto:brittanyhmay@gmail.com">brittanyhmay@gmail.com</a>, or find me on <a href="https://linkedin.com/in/brittany-h-may" target="_blank" rel="noopener">LinkedIn</a>.</p>
 <div class="proof">
 <div class="chip rv"><b>15+ years</b><span>Fixing how work gets done</span></div>
 <div class="chip rv"><b>100M+ records</b><span>Managed at the University of Michigan</span></div>
@@ -185,7 +191,7 @@ p,small,.lede,.hint,.note{text-wrap:pretty}h1,h2,h3{text-wrap:balance}
 </section>
 
 <div class="wrap"><div class="end rv"><h2>Have something messy? Let's talk.</h2><p>I'm open to projects, contract work, and full-time roles. Introductions are always welcome too.</p>
-<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="mailto:brittany@alittle.agency">brittany@alittle.agency</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank">My resume</a><a class="btn ghost" href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a></div></div></div>
+<div class="ctas"><a class="btn" href="start.html">Start a project</a><a class="btn ghost" href="BrittanyMay_Resume.pdf" target="_blank">My resume</a></div><p class="alt">Or email <a href="mailto:brittanyhmay@gmail.com">brittanyhmay@gmail.com</a>. My business site is <a href="https://alittle.agency" target="_blank" rel="noopener">alittle.agency</a>.</p></div></div>
 <footer>Brittany May · Atlanta, GA</footer>
 <script>
 const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');o.unobserve(e.target)}}),{threshold:.08});

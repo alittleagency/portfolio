@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style><title>Pop-Up Follow-Through</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: a four-step walkthrough (clean, see, follow up, report) with step pills; each step is one wide working panel that stacks on phones. */
 :root{
@@ -54,7 +54,7 @@ tr.dupe td{background:var(--red-soft)}
 .merge .why{font-size:13.5px;color:var(--red);font-weight:600;margin-top:4px}
 .merge ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
 .box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
 .bars{display:flex;flex-direction:column;gap:9px}
 .bar{display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr) 34px;gap:10px;align-items:center;font-size:14.5px}
@@ -99,12 +99,41 @@ a{color:var(--teal);font-weight:600}
 .toast.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}.bar .fill{transition:none}}
 .bar .fill{transition:width .5s}
+
+/* no-wrap pass: short UI text stays on one line */
+footer span{white-space:nowrap}@media (max-width:560px){footer{flex-direction:column}footer span{white-space:normal}}
+button,.btn,a.btn,summary,th,.scroll td,nav a,.chip,.tag,.pill,label.io,.src,.owe span,.row small,.steps button{white-space:nowrap}
+h1,h2,h3,h4{text-wrap:balance}
+p,li,dd,span,label,b,strong,.lede,.sub{text-wrap:pretty}
+
+/* 2026 green refresh: match alittle.agency */
+.jump,.steps{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}.jump::-webkit-scrollbar,.steps::-webkit-scrollbar{display:none}
+@media (max-width:560px){.jump,.steps{gap:16px!important}.jump a,.steps button{font-size:14px!important}}
+:root{--display:"Manrope",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;
+--bg:#FDF5EC;--surface:#FFFBF6;--sunk:#F3EADF;--fg:#1F3A2C;--muted:#5E6B62;--line:#E4D9CB;
+--teal:#3B6B52;--teal-soft:#E9F3D9;--ok:#3B6B52;--ok-soft:#E9F3D9;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14231B;--surface:#1B2E24;--sunk:#172820;--fg:#F3EEE4;--muted:#B9C7BC;--line:#2F4637;--teal:#9BC45B;--teal-soft:#2A3D25;--ok:#9BC45B;--ok-soft:#2A3D25;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14231B;--surface:#1B2E24;--sunk:#172820;--fg:#F3EEE4;--muted:#B9C7BC;--line:#2F4637;--teal:#9BC45B;--teal-soft:#2A3D25;--ok:#9BC45B;--ok-soft:#2A3D25;color-scheme:dark}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em}
+.tag{text-transform:none!important;letter-spacing:0!important;font-size:15px!important;color:var(--muted)!important}
+.jump{gap:22px!important;border-bottom:1px solid var(--line)}
+.jump a{border:0!important;border-radius:0!important;background:none!important;padding:6px 0 9px!important;color:var(--fg)!important;border-bottom:3px solid transparent!important;margin-bottom:-1px;white-space:nowrap}
+.jump a:hover{border-bottom-color:var(--teal)!important}
+.steps{gap:22px!important;border-bottom:1px solid var(--line)}
+.steps button{border:0!important;border-radius:0!important;background:none!important;padding:6px 0 9px!important;border-bottom:3px solid transparent!important;margin-bottom:-1px;white-space:nowrap}
+.steps button[aria-selected="true"],.steps button[aria-pressed="true"]{border-bottom-color:var(--teal)!important;color:var(--fg)!important}
+.chip{background:none!important;padding:0!important;border-radius:0!important}
+.btn{border-radius:999px!important}
+#howto{border:1.5px solid var(--line)!important;box-shadow:none!important;background:var(--surface)!important;color:var(--fg)!important;font-family:var(--body)!important}
+.sample{background:var(--sunk)!important}.sample b{color:var(--teal)!important}
+button,.btn,a.btn,summary,nav a,.chip,.jump a,.steps button,th{white-space:nowrap}
+h1,h2,h3,h4{text-wrap:balance}p,li,label{text-wrap:pretty}
 </style></head><body>
 
 <div class="wrap">
   <div class="tag">Small business events</div>
   <h1>From a messy sign&#8209;in sheet to a follow&#8209;up for every business, the same day</h1>
-  <p class="lede">After a pop-up event, the sign-ups live in three places, half of them are duplicates, and the follow-up that turns a visit into a next step often never goes out. This walks through how AI and clean data fix that.</p><details id="howto" open style="margin:16px 0;padding:14px 18px;border:2px solid #111;border-radius:14px;background:#fff;box-shadow:4px 4px 0 #111;font:15px/1.5 system-ui,sans-serif;color:#111;text-align:left"><summary style="cursor:pointer;font-weight:800">How to try this demo</summary><ol style="margin:8px 0 6px 20px;padding:0"><li style="margin:3px 0">Tap Clean and merge. Duplicates and typos get fixed.</li><li style="margin:3px 0">Look over the follow-up drafted for each business.</li><li style="margin:3px 0">Tap Send all reviewed, or Copy summary for the leadership report.</li></ol><p style="margin:6px 0 0;font-size:13px;color:#555">All names and numbers are made up. Nothing you click is saved or sent.</p></details>
+  <p class="lede">After a pop-up event, the sign-ups live in three places, half of them are duplicates, and the follow‑up that turns a visit into a next step often never goes out. This walks through how AI and clean data fix that.</p><details id="howto" open style="margin:16px 0;padding:14px 18px;border:2px solid #111;border-radius:14px;background:#fff;box-shadow:4px 4px 0 #111;font:15px/1.5 system-ui,sans-serif;color:#111;text-align:left"><summary style="cursor:pointer;font-weight:800">How to try this demo</summary><ol style="margin:8px 0 6px 20px;padding:0"><li style="margin:3px 0">Tap Clean and merge. Duplicates and typos get fixed.</li><li style="margin:3px 0">Look over the follow‑up drafted for each business.</li><li style="margin:3px 0">Tap Send all reviewed, or Copy summary for the leadership report.</li></ol><p style="margin:6px 0 0;font-size:13px;color:#555">All names and numbers are made up. Nothing you click is saved or sent.</p></details>
   <div class="sample"><b>Demo</b> All names and businesses below are made up.</div>
 
   <nav class="steps" role="tablist" aria-label="Steps">
@@ -127,7 +156,7 @@ a{color:var(--teal);font-weight:600}
   </section>
 
   <section class="panel" data-panel="follow" hidden>
-    <div class="phead"><div><h2>A follow-up for every business, in their language</h2><p>Each owner gets a short note about the next step they committed to, with the right partner, in the language they chose. Staff review and send.</p></div></div>
+    <div class="phead"><div><h2>A follow‑up for every business, in their language</h2><p>Each owner gets a short note about the next step they committed to, with the right partner, in the language they chose. Staff review and send.</p></div></div>
     <div class="fubar"><span id="fuCount"></span><div class="track"><div class="fill" id="fuFill" style="width:0%"></div></div><button class="btn" id="sendAll">Send all reviewed</button></div>
     <div class="fu"><div class="people" id="people" aria-label="Businesses"></div><div id="msgs"></div></div>
     <p class="note">Translations are drafted by AI and should get a quick read from a native speaker before they go out. That review step is part of the design.</p>
@@ -226,7 +255,7 @@ function renderFollow(){
   const n=c.nexts[0]||"Book a one-on-one with a business advisor",p=c.partners[0]||"Business coaching";
   const out=[["English",T.English(c,n.charAt(0).toLowerCase()+n.slice(1),p.toLowerCase())]];
   if(c.lang!=="English"){const nt=(NEXT_TR[c.lang]||{})[n]||n,pt=(PART_TR[c.lang]||{})[p]||p;out.unshift([c.lang,T[c.lang](c,nt,pt)])}
-  $("#msgs").innerHTML=`<div class="chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">${c.needs.map(x=>`<span class="chip t">${esc(x)}</span>`).join("")}${c.partners.map(x=>`<span class="chip g">${esc(x)}</span>`).join("")}${c.email?`<span class="chip o">${esc(c.email)}</span>`:`<span class="chip r">No email: text ${esc(c.phone)}</span>`}</div>`+`<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">${SENT.has(sel)?`<span class="sent">Sent ${c.email?"by email":"by text"} in ${esc(c.lang)}</span>`:`<button class="btn" data-send="${sel}">Send follow-up</button><span class="note" style="margin:0">Demo only. Nothing is actually sent.</span>`}</div>`+out.map(([l,t],k)=>`<div class="msg"><header><span>${esc(l)}${k===0&&c.lang!=="English"?" · what they receive":c.lang!=="English"?" · copy for staff":" · what they receive"}</span><button class="btn ghost" style="padding:4px 12px;font-size:13.5px" data-copy="${k}">Copy</button></header><pre id="m${k}">${esc(t)}</pre></div>`).join("");
+  $("#msgs").innerHTML=`<div class="chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">${c.needs.map(x=>`<span class="chip t">${esc(x)}</span>`).join("")}${c.partners.map(x=>`<span class="chip g">${esc(x)}</span>`).join("")}${c.email?`<span class="chip o">${esc(c.email)}</span>`:`<span class="chip r">No email: text ${esc(c.phone)}</span>`}</div>`+`<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">${SENT.has(sel)?`<span class="sent">Sent ${c.email?"by email":"by text"} in ${esc(c.lang)}</span>`:`<button class="btn" data-send="${sel}">Send follow‑up</button><span class="note" style="margin:0">Demo only. Nothing is actually sent.</span>`}</div>`+out.map(([l,t],k)=>`<div class="msg"><header><span>${esc(l)}${k===0&&c.lang!=="English"?" · what they receive":c.lang!=="English"?" · copy for staff":" · what they receive"}</span><button class="btn ghost" style="padding:4px 12px;font-size:13.5px" data-copy="${k}">Copy</button></header><pre id="m${k}">${esc(t)}</pre></div>`).join("");
 }
 function reportText(){
   const commits=CLEAN.filter(c=>c.nexts.length).length;const need=tally(CLEAN.flatMap(c=>c.needs));const top=Object.entries(need).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0].toLowerCase());
@@ -234,7 +263,7 @@ function reportText(){
   return [`The Buford Highway pop-up served <b>${CLEAN.length} businesses</b> from ${Object.keys(tally(CLEAN.map(c=>c.city))).length} cities. <b>${commits} of them committed to a specific next step</b> before leaving.`,
   `The most common needs were ${top.slice(0,-1).join(", ")} and ${top.slice(-1)}. ${CLEAN.filter(c=>c.stage==="Fund").length} businesses are ready for funding conversations now, and ${CLEAN.filter(c=>c.stage==="Start").length} are just getting started.`,
   `${CLEAN.filter(c=>c.lang!=="English").length} owners prefer ${langs.slice(0,-1).join(", ")} or ${langs.slice(-1)}, so follow-ups went out in those languages. Referrals: ${Object.entries(part).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k.toLowerCase()} (${v})`).join(", ")}.`,
-  `${SENT.size?SENT.size+" of "+CLEAN.length+" businesses have received their follow-up so far.":"Every business gets a follow-up within 24 hours."} We'll report back in 30 days on how many next steps were completed.`];
+  `${SENT.size?SENT.size+" of "+CLEAN.length+" businesses have received their follow‑up so far.":"Every business gets a follow‑up within 24 hours."} We'll report back in 30 days on how many next steps were completed.`];
 }
 function renderReport(){$("#rep").innerHTML=reportText().map(p=>`<p>${p}</p>`).join("")}
 document.querySelectorAll(".steps button").forEach(b=>b.onclick=()=>go(b.dataset.step));
