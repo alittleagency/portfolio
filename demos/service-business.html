@@ -1,0 +1,179 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shine &amp; Go Detailing</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
+<style>
+/* Showroom layout (dark navy, two panes) with the Suds palette */
+:root{--navy:#1D2D50;--navy2:#26395F;--navy3:#33497A;--aqua:#3FC1C9;--aqua-ink:#0E5E63;--tang:#FF7A45;--foam:#F2FBFB;--white:#FFFFFF;
+--on:#F2FBFB;--on2:#BFD0E6;--ink:#1D2D50;--muted:#4A5B7E;--line:#D3E4EA;--ok:#1B7F5B;--bad:#C2410C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--navy);color:var(--on);font:400 15px/1.5 Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:var(--aqua);color:var(--navy)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding:18px 0 10px}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.02em}.logo b{color:var(--tang)}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{font:inherit;font-weight:600;background:transparent;color:var(--on2);border:1px solid var(--navy3);border-radius:999px;padding:7px 14px;cursor:pointer}
+nav button[aria-pressed=true]{background:var(--aqua);color:var(--navy);border-color:var(--aqua)}
+nav .n{margin-left:6px;background:var(--tang);color:var(--navy);border-radius:999px;padding:0 7px;font-size:12px;font-weight:800}
+main{padding:12px 0 56px}
+h1{font-size:30px;font-weight:800;letter-spacing:-.025em;line-height:1.1;margin:0 0 4px;text-wrap:balance}
+h2{font-size:18px;font-weight:700;margin:0 0 10px}
+.sub{color:var(--on2);margin:0 0 18px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;align-items:start}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+.pane{background:var(--navy2);border-radius:14px;padding:18px;min-width:0}
+.paper{background:var(--foam);color:var(--ink);border-radius:14px;padding:18px;min-width:0}
+.paper .sub{color:var(--muted)}
+.svc{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;font:inherit;text-align:left;background:var(--navy3);color:var(--on);border:2px solid transparent;border-radius:10px;padding:11px 13px;margin-bottom:8px;cursor:pointer}
+.svc small{display:block;color:var(--on2);font-size:13px}
+.svc .p{font-weight:800;font-size:18px;white-space:nowrap}
+.svc[aria-pressed=true]{background:var(--aqua);color:var(--navy);border-color:var(--aqua)}.svc[aria-pressed=true] small{color:var(--aqua-ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{font:inherit;font-weight:600;font-size:14px;background:transparent;color:var(--on);border:1px solid var(--navy3);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--white);color:var(--navy);border-color:var(--white)}
+.lab{font-size:13px;font-weight:600;color:var(--on2);margin:14px 0 6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+input,select{font:inherit;width:100%;color:var(--ink);background:var(--white);border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0}
+:focus-visible{outline:3px solid var(--tang);outline-offset:2px}
+.quote{margin-top:16px;background:var(--tang);color:var(--navy);border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.quote b{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
+.btn{font:inherit;font-weight:700;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;background:var(--navy);color:var(--on)}
+.btn.aq{background:var(--aqua);color:var(--navy)}.btn.ghost{background:transparent;color:inherit;border:1px solid currentColor}
+.btn.sm{padding:6px 12px;font-size:13px}.btn:disabled{opacity:.45;cursor:default}
+.day{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.day b{font-size:17px}
+.job{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.job .tm{font-weight:800;font-variant-numeric:tabular-nums}
+.job .what{font-weight:700}.job .who{color:var(--muted);font-size:13px}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;margin-right:4px;white-space:nowrap}
+.t-paid{background:#D6F3E7;color:var(--ok)}.t-due{background:#FFE3D6;color:var(--bad)}.t-done{background:#DDF4F5;color:var(--aqua-ink)}.t-plan{background:#E4E9F4;color:var(--navy)}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.acts select{width:auto;padding:5px 8px;font-size:13px}
+@media(max-width:560px){.job{grid-template-columns:52px minmax(0,1fr)}.acts{grid-column:1/-1;justify-content:flex-start}}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}}
+.stat{background:var(--navy2);border-radius:12px;padding:12px 14px}.stat .v{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}.stat .l{color:var(--on2);font-size:13px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:13px;color:var(--muted);font-weight:600;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--line)}
+.num{text-align:right}.tw{overflow-x:auto}
+.empty{color:var(--muted);padding:14px 0}
+.ok{background:var(--aqua);color:var(--navy);border-radius:12px;padding:14px;margin-top:14px;font-weight:600}
+footer{color:var(--on2);font-size:13px;padding-bottom:30px}footer button{font:inherit;color:var(--aqua);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--aqua);color:var(--navy);font-weight:700;padding:10px 16px;border-radius:999px;z-index:9}
+</style>
+<div class="wrap">
+<header><div class="logo">Shine <b>&amp;</b> Go</div><nav id="nav"></nav></header>
+<main id="view"></main>
+<footer>Demo with sample data. Changes stay in this browser. <button id="reset">Reset sample data</button></footer>
+</div>
+<script>
+(function(){"use strict";
+const $=s=>document.querySelector(s);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>"$"+Math.round(n).toLocaleString();const pad=n=>String(n).padStart(2,"0");
+const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());const parse=s=>{const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const addD=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return iso(d)};const TODAY=iso(new Date());
+const fday=s=>parse(s).toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric"});
+const t12=t=>{let[h,m]=t.split(":").map(Number);const a=h>=12?"pm":"am";h=h%12||12;return h+":"+pad(m)+a};
+const uid=()=>Math.random().toString(36).slice(2,8);
+const SIZES=[["Car",1],["SUV",1.15],["Truck or van",1.3]];
+const SLOTS=["08:00","09:30","11:00","12:30","14:00","15:30"];
+function sample(){
+ const services=[{id:"s1",name:"Express wash",desc:"Hand wash, wheels, windows",price:45,mins:45},
+  {id:"s2",name:"Interior refresh",desc:"Vacuum, wipe down, glass",price:99,mins:90},
+  {id:"s3",name:"Full detail",desc:"Inside and out, clay bar, wax",price:189,mins:180},
+  {id:"s4",name:"Ceramic coating",desc:"Paint correction plus 2-year coat",price:650,mins:360}];
+ const addons=[{id:"a1",name:"Pet hair removal",price:30},{id:"a2",name:"Headlight restore",price:40},{id:"a3",name:"Engine bay",price:35},{id:"a4",name:"Odor treatment",price:45}];
+ const crew=["Andre","Kim","Luis"];
+ const clients=[["Tasha Reid","Tahoe","SUV",1],["Marcus Lee","Civic","Car",0],["Dana Brooks","Model Y","SUV",0],["Omar Haddad","F-150","Truck or van",1],["Grace Kim","Camry","Car",1],["Jules Porter","Odyssey","Truck or van",0],["Ben Okafor","RAV4","SUV",0]]
+  .map(([n,v,s,plan],i)=>({id:"c"+i,name:n,phone:"555-01"+pad(10+i*7),vehicle:v,size:s,plan:!!plan}));
+ const jobs=[];const mk=(d,slot,ci,si,add,crewN,st,paid)=>{const c=clients[ci];jobs.push({id:uid(),date:addD(TODAY,d),time:SLOTS[slot],clientId:c.id,serviceId:services[si].id,addons:add,size:c.size,crew:crewN,status:st,paid,price:0})};
+ mk(-6,1,0,2,["a1"],"Andre","done",true);mk(-5,0,3,1,[],"Luis","done",true);mk(-3,2,4,0,[],"Kim","done",true);mk(-2,3,5,2,["a4"],"Andre","done",false);mk(-1,1,6,1,["a1"],"Kim","done",true);
+ mk(0,0,0,2,["a1"],"Andre","booked",false);mk(0,2,1,0,[],"Kim","booked",false);mk(0,3,2,3,[],"Andre","booked",false);mk(0,5,4,0,[],"",  "booked",false);
+ mk(1,1,3,1,["a3"],"Luis","booked",false);mk(2,0,5,2,[],"","booked",false);mk(3,4,6,0,[],"Kim","booked",false);
+ const S={services,addons,crew,clients,jobs,tab:"book",day:TODAY,pick:{svc:"s3",size:"SUV",addons:[],date:addD(TODAY,1),time:"09:30",name:"",phone:"",vehicle:""},booked:null};
+ S.jobs.forEach(j=>j.price=priceOf(S,j));return S}
+function priceOf(S,j){const s=S.services.find(x=>x.id===j.serviceId);const m=(SIZES.find(x=>x[0]===j.size)||[0,1])[1];
+ return Math.round(s.price*m+j.addons.reduce((a,id)=>a+(S.addons.find(x=>x.id===id)||{price:0}).price,0))}
+const KEY="shine-go-demo-v1";let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||!S.services)S=sample();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const cl=id=>S.clients.find(c=>c.id===id);const sv=id=>S.services.find(s=>s.id===id);
+let tt;function toast(m){let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;clearTimeout(tt);tt=setTimeout(()=>t.remove(),2000)}
+const unassigned=()=>S.jobs.filter(j=>j.date>=TODAY&&!j.crew).length;
+
+function nav(){const tabs=[["book","Book a detail (customer)"],["today","Schedule",unassigned()],["clients","Clients"],["money","Money"],["services","Services & prices"]];
+ $("#nav").innerHTML=tabs.map(([k,l,n])=>`<button data-tab="${k}" aria-pressed="${S.tab===k}">${l}${n?`<span class="n">${n}</span>`:""}</button>`).join("")}
+
+function vBook(){const p=S.pick;const job={serviceId:p.svc,size:p.size,addons:p.addons};const total=priceOf(S,job);
+ const taken=S.jobs.filter(j=>j.date===p.date).map(j=>j.time);
+ if(S.booked){const j=S.booked;return `<h1>You're booked</h1><p class="sub">This is what the customer sees after booking. The job is now on the owner's schedule.</p>
+  <div class="paper" style="max-width:520px"><h2>${esc(sv(j.serviceId).name)} for ${esc(j.name)}</h2><p>${fday(j.date)} at ${t12(j.time)}<br>${esc(j.vehicle)} (${esc(j.size)})<br>Total: <b>${money(j.price)}</b>, paid after the job</p>
+  <div class="acts" style="justify-content:flex-start"><button class="btn" data-act="seeSched">See it on the schedule</button><button class="btn ghost" data-act="again">Book another</button></div></div>`}
+ return `<h1>Book a mobile detail</h1><p class="sub">We come to you. Pick a service, tell us your vehicle, and see your price right away.</p>
+ <div class="two"><div class="pane"><h2>1. Choose a service</h2>${S.services.map(s=>`<button class="svc" data-svc="${s.id}" aria-pressed="${p.svc===s.id}"><span>${esc(s.name)}<small>${esc(s.desc)}</small></span><span class="p">${money(s.price)}</span></button>`).join("")}
+  <div class="lab">Vehicle size</div><div class="chips">${SIZES.map(([n,m])=>`<button class="chip" data-size="${n}" aria-pressed="${p.size===n}">${n}${m>1?` +${Math.round((m-1)*100)}%`:""}</button>`).join("")}</div>
+  <div class="lab">Add-ons</div><div class="chips">${S.addons.map(a=>`<button class="chip" data-add="${a.id}" aria-pressed="${p.addons.includes(a.id)}">${esc(a.name)} +${money(a.price)}</button>`).join("")}</div></div>
+ <div class="paper"><h2>2. Pick a time</h2><div class="lab" style="color:var(--muted)">Day</div><input type="date" id="b-date" min="${TODAY}" value="${p.date}">
+  <div class="lab" style="color:var(--muted)">Time</div><div class="chips">${SLOTS.map(t=>{const off=taken.includes(t);return `<button class="chip" style="color:var(--ink);border-color:var(--line);${p.time===t&&!off?"background:var(--navy);color:var(--on)":""}" data-time="${t}" ${off?"disabled title='Taken'":""}>${off?"<s>"+t12(t)+"</s>":t12(t)}</button>`}).join("")}</div>
+  <h2 style="margin-top:14px">3. Your details</h2><div class="grid2"><input id="b-name" placeholder="Your name" value="${esc(p.name)}" aria-label="Your name"><input id="b-phone" placeholder="Phone" value="${esc(p.phone)}" aria-label="Phone"></div>
+  <input id="b-veh" style="margin-top:8px" placeholder="Make and model, like Honda Accord" value="${esc(p.vehicle)}" aria-label="Vehicle">
+  <div class="quote"><div>Your price<br><b>${money(total)}</b></div><button class="btn" data-act="book">Book ${t12(p.time)}</button></div></div></div>`}
+
+function vToday(){const d=S.day;const js=S.jobs.filter(j=>j.date===d).sort((a,b)=>a.time.localeCompare(b.time));
+ const tot=js.reduce((a,j)=>a+j.price,0);
+ return `<h1>Schedule</h1><p class="sub">Every job, who's on it, and whether it's paid.</p>
+ <div class="paper"><div class="day"><button class="btn ghost sm" data-act="dprev">Previous day</button><b>${d===TODAY?"Today, ":""}${fday(d)}</b><button class="btn ghost sm" data-act="dnext">Next day</button>${d!==TODAY?`<button class="btn ghost sm" data-act="dtoday">Today</button>`:""}<span style="margin-left:auto;color:var(--muted)">${js.length} jobs · ${money(tot)}</span></div>
+ ${js.length?js.map(j=>{const c=cl(j.clientId);return `<div class="job"><div class="tm">${t12(j.time)}</div><div><div class="what">${esc(sv(j.serviceId).name)} · ${esc(c.vehicle)}</div><div class="who">${esc(c.name)} · ${money(j.price)}${j.addons.length?" · "+j.addons.map(a=>esc(S.addons.find(x=>x.id===a).name)).join(", "):""}</div>
+  <div style="margin-top:4px">${j.status==="done"?`<span class="tag t-done">Done</span>`:""}${j.paid?`<span class="tag t-paid">Paid</span>`:j.status==="done"?`<span class="tag t-due">Payment due</span>`:""}${c.plan?`<span class="tag t-plan">Monthly plan</span>`:""}</div></div>
+  <div class="acts"><select data-crew="${j.id}" aria-label="Crew">${["",...S.crew].map(n=>`<option value="${n}" ${j.crew===n?"selected":""}>${n||"Assign crew"}</option>`).join("")}</select>
+  ${j.status!=="done"?`<button class="btn sm aq" data-act="done" data-id="${j.id}">Mark done</button>`:!j.paid?`<button class="btn sm" data-act="paid" data-id="${j.id}">Mark paid</button>`:""}</div></div>`}).join(""):`<p class="empty">No jobs this day. Share your booking link to fill it.</p>`}</div>`}
+
+function vClients(){const rows=S.clients.map(c=>{const js=S.jobs.filter(j=>j.clientId===c.id);const done=js.filter(j=>j.status==="done");
+  const last=done.map(j=>j.date).sort().pop();const next=js.filter(j=>j.status!=="done").map(j=>j.date).sort()[0];
+  return {c,visits:done.length,spent:done.reduce((a,j)=>a+j.price,0),last,next}}).sort((a,b)=>b.spent-a.spent);
+ return `<h1>Clients</h1><p class="sub">Who books, how often, and who's due for a visit.</p><div class="paper"><div class="tw"><table><thead><tr><th>Client</th><th>Vehicle</th><th>Plan</th><th class="num">Visits</th><th class="num">Spent</th><th>Last visit</th><th>Next</th></tr></thead><tbody>
+ ${rows.map(r=>`<tr><td><b>${esc(r.c.name)}</b><br><span style="color:var(--muted);font-size:13px">${esc(r.c.phone)}</span></td><td>${esc(r.c.vehicle)} (${esc(r.c.size)})</td><td><button class="btn sm ${r.c.plan?"aq":"ghost"}" data-plan="${r.c.id}">${r.c.plan?"Monthly":"Add plan"}</button></td><td class="num">${r.visits}</td><td class="num">${money(r.spent)}</td><td>${r.last?parse(r.last).toLocaleDateString("en-US",{month:"short",day:"numeric"}):"New"}</td><td>${r.next?parse(r.next).toLocaleDateString("en-US",{month:"short",day:"numeric"}):`<span style="color:var(--bad);font-weight:600">Not booked</span>`}</td></tr>`).join("")}
+ </tbody></table></div></div>`}
+
+function vMoney(){const wk=S.jobs.filter(j=>j.date>addD(TODAY,-7)&&j.date<=TODAY&&j.status==="done");
+ const earned=wk.reduce((a,j)=>a+j.price,0);const owed=S.jobs.filter(j=>j.status==="done"&&!j.paid);const upcoming=S.jobs.filter(j=>j.status!=="done").reduce((a,j)=>a+j.price,0);
+ const plans=S.clients.filter(c=>c.plan).length;
+ const by={};S.jobs.forEach(j=>{by[j.serviceId]=(by[j.serviceId]||0)+j.price});const max=Math.max(...Object.values(by),1);
+ return `<h1>Money</h1><p class="sub">What came in, what's owed, and what's booked.</p>
+ <div class="stats"><div class="stat"><div class="l">Earned, last 7 days</div><div class="v">${money(earned)}</div></div><div class="stat"><div class="l">Waiting on payment</div><div class="v">${money(owed.reduce((a,j)=>a+j.price,0))}</div></div><div class="stat"><div class="l">Booked ahead</div><div class="v">${money(upcoming)}</div></div><div class="stat"><div class="l">Monthly plan clients</div><div class="v">${plans}</div></div></div>
+ <div class="two"><div class="paper"><h2>Waiting on payment</h2>${owed.length?owed.map(j=>`<div class="job"><div class="tm">${parse(j.date).toLocaleDateString("en-US",{month:"short",day:"numeric"})}</div><div><div class="what">${esc(cl(j.clientId).name)}</div><div class="who">${esc(sv(j.serviceId).name)} · ${money(j.price)}</div></div><div class="acts"><button class="btn sm" data-act="paid" data-id="${j.id}">Mark paid</button></div></div>`).join(""):`<p class="empty">Everyone's paid up.</p>`}</div>
+ <div class="paper"><h2>Revenue by service</h2>${S.services.map(s=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between"><span>${esc(s.name)}</span><b>${money(by[s.id]||0)}</b></div><div style="height:10px;background:var(--line);border-radius:5px;margin-top:4px"><div style="height:100%;width:${(by[s.id]||0)/max*100}%;background:var(--aqua);border-radius:5px"></div></div></div>`).join("")}</div></div>`}
+
+function vServices(){return `<h1>Services &amp; prices</h1><p class="sub">Change a price here and the booking page updates right away.</p>
+ <div class="two"><div class="paper"><h2>Services</h2><div class="tw"><table><thead><tr><th>Service</th><th class="num">Base price</th><th class="num">Time</th></tr></thead><tbody>${S.services.map(s=>`<tr><td><b>${esc(s.name)}</b><br><span style="color:var(--muted);font-size:13px">${esc(s.desc)}</span></td><td class="num"><input type="number" min="0" step="5" value="${s.price}" data-price="${s.id}" aria-label="Price for ${esc(s.name)}" style="width:90px;text-align:right"></td><td class="num">${s.mins/60} hr</td></tr>`).join("")}</tbody></table></div>
+ <p style="color:var(--muted);font-size:13px">SUVs add 15%. Trucks and vans add 30%.</p></div>
+ <div class="paper"><h2>Add-ons</h2><div class="tw"><table><tbody>${S.addons.map(a=>`<tr><td>${esc(a.name)}</td><td class="num"><input type="number" min="0" step="5" value="${a.price}" data-aprice="${a.id}" aria-label="Price for ${esc(a.name)}" style="width:90px;text-align:right"></td></tr>`).join("")}</tbody></table></div>
+ <h2 style="margin-top:16px">Crew</h2><p>${S.crew.map(esc).join(", ")}</p></div></div>`}
+
+function render(){nav();$("#view").innerHTML={book:vBook,today:vToday,clients:vClients,money:vMoney,services:vServices}[S.tab]();save()}
+const keep=()=>{const v=id=>($("#"+id)||{}).value;if($("#b-name")){S.pick.name=v("b-name");S.pick.phone=v("b-phone");S.pick.vehicle=v("b-veh")}};
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;keep();const d=t.dataset,p=S.pick;
+ if(d.tab){S.tab=d.tab;S.booked=null}
+ else if(d.svc)p.svc=d.svc;else if(d.size)p.size=d.size;
+ else if(d.add)p.addons=p.addons.includes(d.add)?p.addons.filter(x=>x!==d.add):[...p.addons,d.add];
+ else if(d.time)p.time=d.time;
+ else if(d.plan){const c=cl(d.plan);c.plan=!c.plan;toast(c.plan?"Added to monthly plan":"Plan removed")}
+ else if(d.act==="book"){if(!p.name.trim()||!p.vehicle.trim()){toast("Add your name and vehicle to book");return}
+  if(S.jobs.some(j=>j.date===p.date&&j.time===p.time)){toast("That time was just taken. Pick another.");return}
+  let c=S.clients.find(x=>x.name.toLowerCase()===p.name.trim().toLowerCase());
+  if(!c){c={id:uid(),name:p.name.trim(),phone:p.phone.trim()||"No phone",vehicle:p.vehicle.trim(),size:p.size,plan:false};S.clients.push(c)}
+  const j={id:uid(),date:p.date,time:p.time,clientId:c.id,serviceId:p.svc,addons:[...p.addons],size:p.size,crew:"",status:"booked",paid:false};j.price=priceOf(S,j);S.jobs.push(j);
+  S.booked={...j,name:c.name,vehicle:c.vehicle};S.pick={...p,name:"",phone:"",vehicle:"",addons:[]}}
+ else if(d.act==="again")S.booked=null;
+ else if(d.act==="seeSched"){S.day=S.booked.date;S.tab="today";S.booked=null}
+ else if(d.act==="dprev")S.day=addD(S.day,-1);else if(d.act==="dnext")S.day=addD(S.day,1);else if(d.act==="dtoday")S.day=TODAY;
+ else if(d.act==="done"){S.jobs.find(j=>j.id===d.id).status="done";toast("Marked done")}
+ else if(d.act==="paid"){S.jobs.find(j=>j.id===d.id).paid=true;toast("Marked paid")}
+ else return;render()});
+document.addEventListener("change",e=>{const t=e.target;
+ if(t.id==="b-date"){keep();S.pick.date=t.value||TODAY;render()}
+ else if(t.dataset.crew){S.jobs.find(j=>j.id===t.dataset.crew).crew=t.value;render();toast(t.value?t.value+" assigned":"Unassigned")}
+ else if(t.dataset.price){sv(t.dataset.price).price=+t.value||0;S.jobs.filter(j=>j.status!=="done").forEach(j=>j.price=priceOf(S,j));save();toast("Price saved")}
+ else if(t.dataset.aprice){S.addons.find(a=>a.id===t.dataset.aprice).price=+t.value||0;save();toast("Price saved")}});
+$("#reset").onclick=()=>{S=sample();render();toast("Sample data reset")};render()})();
+</script>
+</body></html>

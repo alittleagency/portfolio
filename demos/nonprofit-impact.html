@@ -1,0 +1,141 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Impact Dashboard Demo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Instrument+Serif&display=swap">
+<style>
+/* Garden ledger layout (side menu, tabs) with the Festival poster palette */
+:root{--indigo:#2B2D7C;--indigo2:#23246A;--gold:#F2A900;--tomato:#E2553F;--paper:#F7F7F2;--ink:#1A1A2E;--muted:#4D4E68;--line:#E2E1D8;--card:#FFFFFF;--tint:#ECEBF7;--gold-soft:#FCEFC7;--tom-soft:#FBE1DC;--gold-ink:#7A5500;--tom-ink:#A8321F}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.55 Figtree,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:var(--ink)}
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}
+aside{background:var(--indigo);color:#fff;padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
+.org{font-family:"Instrument Serif";font-size:26px;line-height:1.05;margin:0 8px 18px}
+aside button{font:inherit;font-weight:600;text-align:left;background:transparent;color:#D5D6F2;border:0;border-radius:8px;padding:9px 10px;cursor:pointer;display:flex;justify-content:space-between}
+aside button[aria-current=page]{background:var(--gold);color:var(--ink)}
+aside .n{background:var(--tomato);color:#fff;border-radius:999px;padding:0 7px;font-size:12px}
+aside .foot{margin-top:auto;font-size:12px;color:#B9BBE6;padding:0 8px}aside .foot button{display:inline;padding:0;color:var(--gold);text-decoration:underline}
+@media(max-width:820px){.app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;padding:14px}.org{width:100%;margin:0 0 8px}aside .foot{width:100%;margin-top:8px}}
+main{padding:30px 32px 64px;max-width:1080px}
+@media(max-width:820px){main{padding:22px 16px 56px}}
+h1{font-family:"Instrument Serif";font-weight:400;font-size:42px;line-height:1;margin:0 0 6px;text-wrap:balance}
+h2{font-size:17px;font-weight:700;margin:0 0 12px}
+.sub{color:var(--muted);margin:0 0 22px}
+.k{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+@media(max-width:900px){.k{grid-template-columns:1fr 1fr}}
+.kp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kp .v{font-family:"Instrument Serif";font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kp .l{color:var(--muted);font-size:14px}
+.kp .d{font-size:13px;font-weight:700;margin-top:2px}.up{color:#1D6B45}.down{color:var(--tom-ink)}
+.row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;margin-bottom:16px}
+@media(max-width:900px){.row{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.fun .st{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.fun .bar{height:30px;border-radius:6px;display:flex;align-items:center;padding:0 10px;font-weight:700;color:#fff;white-space:nowrap}
+.fun .lbl{color:var(--muted);font-size:13px;min-width:70px}
+.goal{height:16px;background:var(--tint);border-radius:8px;overflow:hidden;margin:8px 0 4px}.goal div{height:100%;background:var(--gold)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:13px;color:var(--muted);font-weight:600;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.num{text-align:right}.tw{overflow-x:auto}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.t-g{background:var(--gold-soft);color:var(--gold-ink)}.t-r{background:var(--tom-soft);color:var(--tom-ink)}.t-i{background:var(--tint);color:var(--indigo)}.t-ok{background:#DDF1E6;color:#1D6B45}
+.btn{font:inherit;font-weight:700;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;background:var(--indigo);color:#fff;white-space:nowrap}
+.btn.sm{padding:5px 10px;font-size:13px}.btn.ghost{background:transparent;color:var(--indigo);border:1px solid var(--indigo)}.btn.gold{background:var(--gold);color:var(--ink)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+input,select{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+.form{display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-bottom:14px}.form label{display:grid;gap:3px;font-size:13px;font-weight:600;color:var(--muted)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filters button{font:inherit;font-weight:600;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--ink)}
+.filters button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}@media(max-width:900px){.cols{grid-template-columns:1fr 1fr}}
+.col{background:var(--tint);border-radius:10px;padding:10px;min-width:0}.col h3{font-size:14px;margin:0 0 8px;display:flex;justify-content:space-between}
+.sp{background:#fff;border-radius:8px;padding:9px;margin-bottom:8px}.sp b{display:block}.sp small{color:var(--muted)}
+.sp .mv{display:flex;gap:4px;margin-top:6px}
+.report{background:#fff;border:1px solid var(--line);border-radius:12px;padding:30px;max-width:760px}
+.report h2{font-family:"Instrument Serif";font-weight:400;font-size:30px;margin-bottom:4px}
+.report li{margin-bottom:6px}
+.bars-sm div{display:flex;align-items:center;gap:8px;margin-bottom:6px}.bars-sm span{min-width:110px;font-size:14px}.bars-sm i{display:block;height:12px;border-radius:3px;background:var(--indigo)}
+.empty{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:700;padding:10px 16px;border-radius:999px;z-index:9}
+@media print{aside{display:none}.app{display:block}main{padding:0}.noprint{display:none}}
+</style>
+<div class="app"><aside><div class="org">Eastside Arts Collective</div><div id="nav" style="display:contents"></div><div class="foot">Demo with sample data. Changes stay in this browser. <button id="reset">Reset</button></div></aside><main id="view"></main></div>
+<script>
+(function(){"use strict";
+const $=s=>document.querySelector(s);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>"$"+Math.round(n).toLocaleString();const uid=()=>Math.random().toString(36).slice(2,8);
+const pad=n=>String(n).padStart(2,"0");const now=new Date();const YR=now.getFullYear();
+const ago=d=>{const x=new Date();x.setDate(x.getDate()-d);return x.getFullYear()+"-"+pad(x.getMonth()+1)+"-"+pad(x.getDate())};
+const fd=s=>{const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})};
+function sample(){
+ const names=["Alicia Grant","Ben Hardy","Carmen Diaz","Derek Ng","Elena Volkova","Felix Moore","Gina Patel","Harold Banks","Ivy Chen","Jamal Wright","Kara Lund","Leo Fischer","Maya Brooks","Nate Osei","Olivia Park","Priya Rao","Quinn Ellis","Rosa Mendez","Sam Turner","Tara Holt","Uma Shah","Victor Lane","Wendy Cole","Xavier Ruiz"];
+ const amts=[2500,100,50,1000,250,25,500,5000,75,150,40,1200,300,60,2000,100,35,800,50,250,500,90,150,45];
+ const donors=names.map((n,i)=>({id:"d"+i,name:n,last:ago([20,400,45,90,380,12,60,30,150,500,8,210,75,420,15,40,9,300,365,55,100,25,70,410][i]),amount:amts[i],ytd:([20,400,45,90,380,12,60,30,150,500,8,210,75,420,15,40,9,300,365,55,100,25,70,410][i]<300?amts[i]*(1+i%3):0),first:i%5===0,thanked:i%4!==0}));
+ const sponsors=[["Peach State Bank","Renew",15000],["Northside Coffee","Talking",2500],["Kline Dental","Asked",5000],["Ridge Auto Group","Committed",10000],["Maple Realty","Talking",3000],["City Print Co.","Committed",1500],["Brightline Health","Asked",7500],["Oak & Iron Brewing","Renew",4000]]
+  .map(([n,s,a],i)=>({id:"s"+i,name:n,stage:s,amount:a}));
+ const vols=[["Ana Ruiz",42,"Gallery host"],["Bill Carter",18,"Setup crew"],["Chloe Martin",64,"Youth classes"],["Dev Iyer",9,"Setup crew"],["Erin Walsh",27,"Box office"],["Frank Ode",3,"Gallery host"],["Hana Lee",51,"Youth classes"],["Ivan Petrov",12,"Box office"]]
+  .map(([n,h,r],i)=>({id:"v"+i,name:n,hours:h,role:r,last:ago([5,30,3,95,12,140,7,60][i])}));
+ const events=[["Spring Arts Fest",ago(200),9400,8000],["Summer Kids Camp",ago(120),340,300],["Gallery Night: Local Voices",ago(60),620,500],["Fall Open Studios",ago(20),1850,2000],["Winter Makers Market",ago(-30),0,3000]].map(([n,d,a,g],i)=>({id:"e"+i,name:n,date:d,att:a,goal:g}));
+ return {donors,sponsors,vols,events,goal:120000,tab:"overview",dfilter:"all"}}
+const KEY="impact-demo-v1";let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||!S.donors)S=sample();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let tt;function toast(m){let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;clearTimeout(tt);tt=setTimeout(()=>t.remove(),2000)}
+const days=s=>Math.round((now-new Date(s+"T00:00"))/864e5);
+const lapsed=()=>S.donors.filter(d=>days(d.last)>365);
+const toThank=()=>S.donors.filter(d=>!d.thanked&&days(d.last)<=365);
+const raised=()=>S.donors.reduce((a,d)=>a+d.ytd,0)+S.sponsors.filter(s=>s.stage==="Committed").reduce((a,s)=>a+s.amount,0);
+const STAGES=["Talking","Asked","Committed","Renew"];
+function nav(){const t=[["overview","Overview"],["donors","Donors",toThank().length],["sponsors","Sponsors"],["volunteers","Volunteers"],["events","Events"],["report","Board report"]];
+ $("#nav").innerHTML=t.map(([k,l,n])=>`<button data-tab="${k}" ${S.tab===k?'aria-current="page"':""}><span>${l}</span>${n?`<span class="n">${n}</span>`:""}</button>`).join("")}
+function vOverview(){const r=raised();const vh=S.vols.reduce((a,v)=>a+v.hours,0);const att=S.events.reduce((a,e)=>a+e.att,0);
+ const comm=S.sponsors.filter(s=>s.stage==="Committed");const asked=S.sponsors.filter(s=>s.stage!=="Talking");
+ const greet=now.getHours()<12?"Good morning":now.getHours()<17?"Good afternoon":"Good evening";
+ return `<h1>${greet}</h1><p class="sub">Here's where the year stands and what needs you this week.</p>
+ <div class="k"><div class="kp"><div class="l">Raised this year</div><div class="v">${money(r)}</div><div class="goal"><div style="width:${Math.min(100,r/S.goal*100)}%"></div></div><div class="l" style="font-size:13px">${Math.round(r/S.goal*100)}% of ${money(S.goal)} goal</div></div>
+ <div class="kp"><div class="l">Donors to thank</div><div class="v">${toThank().length}</div><button class="btn sm ghost" data-tab="donors">Thank them</button></div>
+ <div class="kp"><div class="l">Volunteer hours</div><div class="v">${vh}</div><div class="d up">Worth about ${money(vh*33.49)}</div></div>
+ <div class="kp"><div class="l">People reached</div><div class="v">${att.toLocaleString()}</div><div class="d">across ${S.events.filter(e=>e.att).length} events</div></div></div>
+ <div class="row"><div class="box"><h2>Sponsor pipeline</h2><div class="fun">${[["In talks",S.sponsors.length,"var(--indigo)"],["Asked",asked.length,"var(--tomato)"],["Committed",comm.length,"#1D6B45"]].map(([l,n,c])=>`<div class="st"><span class="lbl">${l}</span><div class="bar" style="width:${Math.max(18,n/S.sponsors.length*100)}%;background:${c}">${n}</div></div>`).join("")}</div><p class="sub" style="margin:8px 0 0">${money(comm.reduce((a,s)=>a+s.amount,0))} committed, ${money(S.sponsors.filter(s=>s.stage==="Asked").reduce((a,s)=>a+s.amount,0))} waiting on a yes.</p></div>
+ <div class="box"><h2>This week</h2><ul style="margin:0;padding-left:18px">
+  <li>Thank ${toThank().length} recent donors</li><li>Win back ${lapsed().length} donors who haven't given in a year</li>
+  <li>Follow up on ${S.sponsors.filter(s=>s.stage==="Asked").length} sponsor asks</li><li>Renew ${S.sponsors.filter(s=>s.stage==="Renew").length} returning sponsors</li>
+  <li>Check in with ${S.vols.filter(v=>days(v.last)>60).length} volunteers you haven't seen in 2 months</li></ul></div></div>`}
+function vDonors(){const f=S.dfilter;let L=S.donors.slice();
+ if(f==="thank")L=toThank();else if(f==="lapsed")L=lapsed();else if(f==="first")L=L.filter(d=>d.first);else if(f==="major")L=L.filter(d=>d.amount>=1000);
+ L.sort((a,b)=>b.amount-a.amount);
+ return `<h1>Donors</h1><p class="sub">Log a gift, see who to thank, and catch people before they drift away.</p>
+ <form class="form box noprint" id="gift"><label>Name<input id="g-n" required list="dn" placeholder="Donor name"></label><datalist id="dn">${S.donors.map(d=>`<option value="${esc(d.name)}">`).join("")}</datalist><label>Amount<input id="g-a" type="number" min="1" required style="width:120px"></label><button class="btn gold">Log gift</button></form>
+ <div class="filters">${[["all","Everyone"],["thank","Needs a thank-you"],["lapsed","Lapsed 12+ months"],["first","First-time"],["major","$1,000+"]].map(([k,l])=>`<button data-df="${k}" aria-pressed="${f===k}">${l}</button>`).join("")}</div>
+ <div class="box"><div class="tw"><table><thead><tr><th>Donor</th><th class="num">Last gift</th><th>Date</th><th class="num">This year</th><th>Status</th><th></th></tr></thead><tbody>
+ ${L.length?L.map(d=>{const lap=days(d.last)>365;return `<tr><td><b>${esc(d.name)}</b>${d.first?` <span class="tag t-i">First gift</span>`:""}</td><td class="num">${money(d.amount)}</td><td>${fd(d.last)}</td><td class="num">${money(d.ytd)}</td><td>${lap?`<span class="tag t-r">Lapsed</span>`:d.thanked?`<span class="tag t-ok">Thanked</span>`:`<span class="tag t-g">Thank you due</span>`}</td><td class="num">${lap?`<button class="btn sm ghost" data-wb="${d.id}">Send check-in</button>`:!d.thanked?`<button class="btn sm" data-thank="${d.id}">Mark thanked</button>`:""}</td></tr>`}).join(""):`<tr><td colspan="6" class="empty">Nobody here right now. Nice work.</td></tr>`}
+ </tbody></table></div></div>`}
+function vSponsors(){return `<h1>Sponsors</h1><p class="sub">Move each sponsor along as the conversation moves.</p><div class="cols">${STAGES.map(st=>{const L=S.sponsors.filter(s=>s.stage===st);return `<div class="col"><h3><span>${st==="Renew"?"Up for renewal":st}</span><span>${money(L.reduce((a,s)=>a+s.amount,0))}</span></h3>${L.map(s=>{const i=STAGES.indexOf(st);return `<div class="sp"><b>${esc(s.name)}</b><small>${money(s.amount)}</small><div class="mv">${i>0?`<button class="btn sm ghost" data-mv="${s.id}" data-d="-1" aria-label="Move back">Back</button>`:""}${i<STAGES.length-1?`<button class="btn sm" data-mv="${s.id}" data-d="1">${STAGES[i+1]==="Renew"?"Mark for renewal":"Move to "+STAGES[i+1]}</button>`:""}</div></div>`}).join("")||`<p class="empty" style="font-size:14px">None yet</p>`}</div>`}).join("")}</div>`}
+function vVols(){const L=S.vols.slice().sort((a,b)=>b.hours-a.hours);const tot=L.reduce((a,v)=>a+v.hours,0);
+ return `<h1>Volunteers</h1><p class="sub">${tot} hours this year, worth about ${money(tot*33.49)} at the national volunteer rate.</p>
+ <div class="box"><div class="tw"><table><thead><tr><th>Volunteer</th><th>Role</th><th class="num">Hours</th><th>Last shift</th><th></th></tr></thead><tbody>
+ ${L.map(v=>`<tr><td><b>${esc(v.name)}</b></td><td>${esc(v.role)}</td><td class="num">${v.hours}</td><td>${fd(v.last)} ${days(v.last)>60?`<span class="tag t-r">Check in</span>`:""}</td><td class="num"><button class="btn sm ghost" data-hr="${v.id}">Log 3-hour shift</button></td></tr>`).join("")}</tbody></table></div></div>`}
+function vEvents(){return `<h1>Events</h1><p class="sub">Attendance against the goal for each event.</p><div class="box"><div class="tw"><table><thead><tr><th>Event</th><th>Date</th><th class="num">Attendance</th><th class="num">Goal</th><th></th></tr></thead><tbody>
+ ${S.events.map(e=>{const up=e.date>new Date().toISOString().slice(0,10);return `<tr><td><b>${esc(e.name)}</b></td><td>${fd(e.date)}</td><td class="num">${up?"Upcoming":e.att.toLocaleString()}</td><td class="num">${e.goal.toLocaleString()}</td><td>${up?`<span class="tag t-i">Upcoming</span>`:e.att>=e.goal?`<span class="tag t-ok">Beat goal</span>`:`<span class="tag t-r">${Math.round(e.att/e.goal*100)}% of goal</span>`}</td></tr>`}).join("")}</tbody></table></div></div>`}
+function vReport(){const r=raised();const comm=S.sponsors.filter(s=>s.stage==="Committed");const vh=S.vols.reduce((a,v)=>a+v.hours,0);const past=S.events.filter(e=>e.att);
+ const mx=Math.max(...past.map(e=>e.att));
+ return `<div class="noprint" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap"><button class="btn gold" data-act="print">Print or save as PDF</button></div>
+ <div class="report"><h2>Board report</h2><p class="sub">Eastside Arts Collective · ${now.toLocaleDateString("en-US",{month:"long",year:"numeric"})}</p>
+ <h3>Headlines</h3><ul><li>We've raised <b>${money(r)}</b>, ${Math.round(r/S.goal*100)}% of our ${money(S.goal)} goal.</li><li><b>${comm.length}</b> sponsors have committed ${money(comm.reduce((a,s)=>a+s.amount,0))}.</li><li>Volunteers gave <b>${vh} hours</b>, worth about ${money(vh*33.49)}.</li><li>We reached <b>${past.reduce((a,e)=>a+e.att,0).toLocaleString()}</b> people across ${past.length} events.</li></ul>
+ <h3>Attendance by event</h3><div class="bars-sm">${past.map(e=>`<div><span>${esc(e.name)}</span><i style="width:${e.att/mx*60}%"></i><b>${e.att.toLocaleString()}</b></div>`).join("")}</div>
+ <h3>Watch list</h3><ul><li>${lapsed().length} donors haven't given in over a year.</li><li>${S.sponsors.filter(s=>s.stage==="Renew").length} sponsors are up for renewal.</li>${past.filter(e=>e.att<e.goal).map(e=>`<li>${esc(e.name)} came in under goal (${e.att.toLocaleString()} of ${e.goal.toLocaleString()}).</li>`).join("")}</ul></div>`}
+function render(){nav();$("#view").innerHTML={overview:vOverview,donors:vDonors,sponsors:vSponsors,volunteers:vVols,events:vEvents,report:vReport}[S.tab]();save()}
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;const d=t.dataset;
+ if(d.tab){S.tab=d.tab;render();scrollTo(0,0);return}
+ if(d.df)S.dfilter=d.df;
+ else if(d.thank){S.donors.find(x=>x.id===d.thank).thanked=true;toast("Marked thanked")}
+ else if(d.wb){toast("Check-in noted for "+S.donors.find(x=>x.id===d.wb).name);return}
+ else if(d.mv){const s=S.sponsors.find(x=>x.id===d.mv);s.stage=STAGES[STAGES.indexOf(s.stage)+ +d.d];toast(s.name+": "+s.stage)}
+ else if(d.hr){const v=S.vols.find(x=>x.id===d.hr);v.hours+=3;v.last=ago(0);toast("3 hours logged for "+v.name)}
+ else if(d.act==="print"){print();return}
+ else if(t.id==="reset"){S=sample();toast("Sample data reset")}
+ else return;render()});
+document.addEventListener("submit",e=>{if(e.target.id!=="gift")return;e.preventDefault();const n=$("#g-n").value.trim(),a=+$("#g-a").value;if(!n||!a)return;
+ let d=S.donors.find(x=>x.name.toLowerCase()===n.toLowerCase());if(!d){d={id:uid(),name:n,first:true,ytd:0};S.donors.push(d)}
+ d.amount=a;d.ytd+=a;d.last=ago(0);d.thanked=false;S.dfilter="thank";render();toast("Gift logged. Thank-you added to the list.")});
+render()})();
+</script>
+</body></html>

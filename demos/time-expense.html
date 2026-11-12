@@ -1,0 +1,459 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Time &amp; Expense Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: navy app bar, underlined text tabs, one working panel per tab.  */
+:root{
+  --navy:#0F2A40;--on-navy:#EEF2F5;--on-navy-2:#B9C9D6;
+  --bg:#E6ECF1;--panel:#F1F4F7;--line:#C9D5DE;--ink:#0F2A40;--muted:#3E5568;
+  --field:#FFFFFF;--gold:#E2B654;--gold-ink:#7A5C14;--ok:#1F6B4A;--warn:#8A5A00;--bad:#A3352B;--accent:#1E5B8E;
+  --font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --navy:#0A1C2B;--on-navy:#EEF2F5;--on-navy-2:#9FB3C3;--bg:#122433;--panel:#1A3043;--line:#2E465B;--ink:#E8EEF3;--muted:#A9BBCA;
+  --field:#0E1E2C;--gold:#E2B654;--gold-ink:#E9C672;--ok:#7FD3A8;--warn:#F0C46A;--bad:#F29A8E;--accent:#8CC0EE;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --navy:#0A1C2B;--on-navy:#EEF2F5;--on-navy-2:#9FB3C3;--bg:#122433;--panel:#1A3043;--line:#2E465B;--ink:#E8EEF3;--muted:#A9BBCA;
+  --field:#0E1E2C;--gold:#E2B654;--gold-ink:#E9C672;--ok:#7FD3A8;--warn:#F0C46A;--bad:#F29A8E;--accent:#8CC0EE;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.app{background:var(--navy);color:var(--on-navy)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-block:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;white-space:nowrap}
+.who{display:flex;align-items:center;gap:8px;color:var(--on-navy-2);font-size:14px;white-space:nowrap}
+.who select{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:6px;padding:7px 10px}
+nav.tabs{display:flex;gap:28px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{font:inherit;font-weight:600;background:none;border:0;color:var(--on-navy-2);padding:10px 0 12px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--on-navy);border-bottom-color:var(--gold)}
+nav.tabs .n{color:var(--gold);margin-left:6px}
+main{padding-block:28px 64px}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+h1{font-size:26px}h2{font-size:19px}h3{font-size:16px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;margin-bottom:18px}
+.sub{color:var(--muted);margin-top:4px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;margin-bottom:18px;min-width:0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.stat .l{color:var(--muted);font-size:13px;white-space:nowrap}
+.stat .v{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px;white-space:nowrap}
+.stat a,.link{color:var(--accent);font-weight:600;cursor:pointer;background:none;border:0;font:inherit;font-weight:600;padding:0;text-decoration:underline;text-underline-offset:3px}
+.stats3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:820px){.stats,.stats3{grid-template-columns:repeat(2,minmax(0,1fr))}h1,h2{white-space:normal}}
+.btn{font:inherit;font-weight:600;border-radius:6px;padding:9px 16px;border:1px solid var(--navy);background:var(--navy);color:var(--on-navy);cursor:pointer;white-space:nowrap}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#0F2A40}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.sm{padding:5px 11px;font-size:14px}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tablewrap{overflow-x:auto;margin:0 -4px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:13px;font-weight:600;color:var(--muted);padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.fixed{table-layout:fixed;min-width:640px}
+table.tight td,table.tight th{padding-left:5px;padding-right:5px}
+td.num,th.num{text-align:right;white-space:nowrap}
+tr.total td{font-weight:700;border-bottom:0}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:6px;padding:7px 9px;min-width:0}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+.form{display:grid;grid-template-columns:150px minmax(0,1.6fr) minmax(0,1.4fr) 130px 130px auto auto;gap:10px;align-items:end}
+.form label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
+.form .chk{display:flex;align-items:center;gap:6px;padding-bottom:8px;color:var(--ink);font-weight:500;font-size:14px}
+@media (max-width:980px){.form{grid-template-columns:repeat(2,minmax(0,1fr))}.form .full{grid-column:1/-1}}
+.st{font-weight:600;white-space:nowrap}
+.st.draft{color:var(--muted)}.st.submitted,.st.sent{color:var(--warn)}.st.approved,.st.paid{color:var(--ok)}.st.returned{color:var(--bad)}.st.invoiced{color:var(--accent)}
+.note{border-left:3px solid var(--gold);padding:8px 12px;margin:12px 0;color:var(--ink)}
+.note.bad{border-left-color:var(--bad)}
+.muted{color:var(--muted)}
+.empty{color:var(--muted);padding:18px 0}
+.receipts{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.thumb{width:40px;height:40px;border:1px solid var(--line);border-radius:4px;object-fit:cover;cursor:pointer;background:var(--field)}
+.thumb.file{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted)}
+.missing{color:var(--bad);font-size:13px;font-weight:600;white-space:nowrap}
+.attach{position:relative;overflow:hidden}
+.attach input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.weekbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.weekbar b{white-space:nowrap}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+.invoice{background:var(--field);color:#0F2A40;border:1px solid var(--line);border-radius:8px;padding:36px;max-width:820px}
+.invoice .ih{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.invoice h2{font-size:28px;color:#0F2A40}
+.invoice .meta{display:grid;grid-template-columns:auto auto;gap:2px 16px;font-size:14px}
+.invoice .meta span:nth-child(odd){color:#3E5568}
+.invoice th{color:#3E5568;border-color:#C9D5DE}.invoice td{border-color:#DCE4EA}
+.invoice .tot{display:flex;justify-content:flex-end;margin-top:14px;font-size:20px;font-weight:700}
+.invoice .foot{margin-top:28px;color:#3E5568;font-size:13px}
+@media (max-width:600px){.invoice{padding:20px}}
+.overlay{position:fixed;inset:0;background:rgba(10,20,30,.7);display:flex;align-items:center;justify-content:center;padding:24px;z-index:20}
+.overlay img{max-width:100%;max-height:85vh;border-radius:6px;background:#fff}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:var(--on-navy);padding:10px 16px;border-radius:8px;font-weight:600;z-index:30}
+footer{color:var(--muted);font-size:13px;padding-bottom:40px}
+.demo{color:var(--gold-ink);font-weight:600}
+</style>
+
+<header class="app">
+  <div class="wrap">
+    <div class="bar">
+      <div class="brand">
+        Time &amp; Expense
+      </div>
+      <label class="who" for="who">Viewing as <select id="who"></select></label>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+  </div>
+</header>
+<main class="wrap" id="view"></main>
+<footer class="wrap"><span class="demo">Demo with sample data.</span> Changes stay in this browser. <button class="link" id="reset">Reset sample data</button></footer>
+
+<script>
+(function(){
+"use strict";
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(+n||0);
+const hrs=n=>(+n||0).toFixed(2);
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const parse=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const fdate=s=>s?parse(s).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):"";
+const fshort=s=>parse(s).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return iso(d)};
+const weekStart=s=>{const d=parse(s);d.setDate(d.getDate()-d.getDay());return iso(d)};
+const uid=()=>Math.random().toString(36).slice(2,9);
+const TODAY=iso(new Date());
+const STATUS_LABEL={draft:"Draft",submitted:"Waiting for approval",approved:"Approved",returned:"Sent back",sent:"Sent",paid:"Paid"};
+const CATS=["Airfare","Ground transportation","Lodging","Meals","Mileage","Parking","Rental car","Other"];
+const t2h=(a,b)=>{if(!a||!b)return 0;const [h1,m1]=a.split(":").map(Number),[h2,m2]=b.split(":").map(Number);return Math.max(0,((h2*60+m2)-(h1*60+m1))/60)};
+const t12=t=>{if(!t)return"";let [h,m]=t.split(":").map(Number);const ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+pad(m)+" "+ap};
+
+/* ---------- sample data ---------- */
+function sample(){
+  const users=[
+    {id:"u1",name:"Morgan Ellis",title:"Managing Principal",role:"manager"},
+    {id:"u2",name:"Priya Shah",title:"Consultant",role:"employee"},
+    {id:"u3",name:"Dana Reed",title:"Analyst (sample)",role:"employee"}];
+  const clients=[
+    {id:"c1",name:"Riverbend County",addr:"200 Commerce Way\nRiverbend, GA 30000",terms:30},
+    {id:"c2",name:"Sample County Government",addr:"100 Main Street\nAtlanta, GA 30303",terms:30}];
+  const projects=[
+    {id:"p1",clientId:"c1",name:"Riverbend County IT Modernization",rates:{u1:195,u2:150,u3:110}},
+    {id:"p2",clientId:"c2",name:"ERP Readiness Assessment (sample)",rates:{u1:195,u2:150,u3:110}}];
+  const tasks=["Project management","Status reporting","Vendor coordination","Requirements workshop","Change management planning","Training prep"];
+  const time=[];const thisWk=weekStart(TODAY);
+  [-4,-3,-2,-1,0].forEach(w=>{
+    const ws=addDays(thisWk,w*7);
+    const st=w<=-2?"approved":w===-1?"submitted":"draft";
+    ["u1","u2","u3"].forEach((u,ui)=>{
+      for(let d=1;d<=5;d++){
+        const date=addDays(ws,d); if(date>TODAY)continue;
+        if((d+ui+w)%3===0)continue;
+        const p=(d+ui)%4===0?"p2":"p1";
+        const start=["08:00","09:00","12:30","13:00"][(d+ui)%4];
+        const len=[2,1.75,3,2.5][(d+ui+w+8)%4];
+        const sm=+start.slice(0,2)*60+ +start.slice(3)+len*60;
+        const end=pad(Math.floor(sm/60))+":"+pad(sm%60);
+        time.push({id:uid(),uid:u,date,projectId:p,task:tasks[(d*2+ui+w+20)%tasks.length],start,end,hours:len,billable:!((d+ui)%7===0),status:st,note:"",invoiceId:null});
+      }
+    });
+  });
+  // one sent-back entry for Bhargav last week
+  const back=time.find(t=>t.uid==="u2"&&t.status==="submitted");
+  if(back){back.status="returned";back.note="Please split this between Riverbend and the ERP project.";}
+  const ws=w=>addDays(thisWk,w*7);
+  const batches=[
+    {id:"b1",uid:"u1",weekStart:ws(-3),status:"approved",note:"",items:[
+      {id:uid(),date:addDays(ws(-3),1),vendor:"Delta Air Lines",category:"Airfare",amount:613.80,projectId:"p1",notes:"ATL to ORD",billable:true,receipts:[{name:"delta-itinerary.pdf",type:"pdf"}],invoiceId:null},
+      {id:uid(),date:addDays(ws(-3),1),vendor:"Mileage",category:"Mileage",amount:11.60,projectId:"p1",notes:"Home to airport",billable:true,receipts:[],invoiceId:null},
+      {id:uid(),date:addDays(ws(-3),2),vendor:"Downtown Hotel",category:"Lodging",amount:438.12,projectId:"p1",notes:"3 nights",billable:true,receipts:[{name:"hotel-folio.pdf",type:"pdf"}],invoiceId:null}]},
+    {id:"b2",uid:"u1",weekStart:ws(-1),status:"submitted",note:"",items:[
+      {id:uid(),date:addDays(ws(-1),1),vendor:"Delta Air Lines",category:"Airfare",amount:1506.00,projectId:"p1",notes:"ATL to ORD",billable:true,receipts:[{name:"delta-receipt.pdf",type:"pdf"}],invoiceId:null},
+      {id:uid(),date:addDays(ws(-1),1),vendor:"ATL Airport Parking",category:"Parking",amount:59.00,projectId:"p1",notes:"Economy lot",billable:true,receipts:[],invoiceId:null},
+      {id:uid(),date:addDays(ws(-1),2),vendor:"Avis",category:"Rental car",amount:1.50,projectId:"p1",notes:"Rental car tolls",billable:true,receipts:[],invoiceId:null},
+      {id:uid(),date:addDays(ws(-1),3),vendor:"ClickUp Genius",category:"Other",amount:59.99,projectId:"p1",notes:"EAM training registration",billable:false,receipts:[{name:"clickup.pdf",type:"pdf"}],invoiceId:null}]},
+    {id:"b3",uid:"u2",weekStart:ws(-2),status:"approved",note:"",items:[
+      {id:uid(),date:addDays(ws(-2),2),vendor:"Mileage",category:"Mileage",amount:42.35,projectId:"p2",notes:"Client site visit",billable:true,receipts:[],invoiceId:null}]},
+    {id:"b4",uid:"u1",weekStart:ws(0),status:"draft",note:"",items:[
+      {id:uid(),date:TODAY,vendor:"Mileage",category:"Mileage",amount:9.88,projectId:"p1",notes:"ATL airport to home",billable:true,receipts:[],invoiceId:null}]}];
+  // a paid invoice covering the oldest approved week
+  const oldWk=ws(-4),inv={id:"i1",num:"INV-"+parse(TODAY).getFullYear()+"-0041",clientId:"c1",from:oldWk,to:addDays(oldWk,6),date:addDays(oldWk,8),status:"paid",lines:[],total:0};
+  time.filter(t=>t.date>=oldWk&&t.date<=inv.to&&t.projectId==="p1"&&t.billable).forEach(t=>t.invoiceId="i1");
+  inv.lines=buildLines("c1",time.filter(t=>t.invoiceId==="i1"),[],projects,users);inv.total=inv.lines.reduce((a,l)=>a+l.amount,0);
+  return {users,clients,projects,time,batches,invoices:[inv],me:"u1",tab:"overview",wk:weekStart(TODAY),openBatch:null,openInvoice:null,editTime:null,approveFilter:"all"};
+}
+function buildLines(clientId,timeRows,expRows,projects,users){
+  const lines=[];const byKey={};
+  timeRows.forEach(t=>{const p=projects.find(x=>x.id===t.projectId);const k=t.projectId+"|"+t.uid;const rate=p.rates[t.uid]||0;
+    byKey[k]=byKey[k]||{kind:"labor",desc:p.name+": "+users.find(u=>u.id===t.uid).name,qty:0,rate,amount:0};byKey[k].qty+=t.hours;});
+  Object.values(byKey).forEach(l=>{l.amount=Math.round(l.qty*l.rate*100)/100;lines.push(l)});
+  const byCat={};expRows.forEach(e=>{byCat[e.category]=byCat[e.category]||{kind:"expense",desc:"Expenses: "+e.category,qty:null,rate:null,amount:0};byCat[e.category].amount+=e.amount});
+  Object.values(byCat).forEach(l=>{l.amount=Math.round(l.amount*100)/100;lines.push(l)});
+  return lines;
+}
+
+/* ---------- state ---------- */
+const KEY="te-demo-v1";let S;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+if(!S||!S.users)S=sample();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const me=()=>S.users.find(u=>u.id===S.me);
+const isMgr=()=>me().role==="manager";
+const user=id=>S.users.find(u=>u.id===id);
+const proj=id=>S.projects.find(p=>p.id===id);
+const client=id=>S.clients.find(c=>c.id===id);
+const allItems=()=>S.batches.flatMap(b=>b.items.map(i=>({...i,batch:b})));
+let toastT;function toast(m){let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;clearTimeout(toastT);toastT=setTimeout(()=>t.remove(),2200)}
+
+/* ---------- derived ---------- */
+function pendingTime(){const g={};S.time.filter(t=>t.status==="submitted").forEach(t=>{const k=t.uid+"|"+weekStart(t.date);(g[k]=g[k]||{uid:t.uid,wk:weekStart(t.date),rows:[]}).rows.push(t)});return Object.values(g)}
+function pendingBatches(){return S.batches.filter(b=>b.status==="submitted")}
+function readyFor(clientId){
+  const pids=S.projects.filter(p=>p.clientId===clientId).map(p=>p.id);
+  const t=S.time.filter(x=>pids.includes(x.projectId)&&x.status==="approved"&&x.billable&&!x.invoiceId);
+  const e=allItems().filter(x=>pids.includes(x.projectId)&&x.batch.status==="approved"&&x.billable&&!x.invoiceId);
+  const lines=buildLines(clientId,t,e,S.projects,S.users);
+  return {t,e,total:lines.reduce((a,l)=>a+l.amount,0),hours:t.reduce((a,x)=>a+x.hours,0)};
+}
+
+/* ---------- tabs ---------- */
+function tabs(){
+  const pend=pendingTime().length+pendingBatches().length;
+  const list=isMgr()?[["overview","Overview"],["time","My time"],["expenses","My expenses"],["approvals","Approvals",pend],["invoices","Invoices"],["projects","Projects & rates"]]
+    :[["overview","Overview"],["time","My time"],["expenses","My expenses"]];
+  if(!list.some(x=>x[0]===S.tab))S.tab="overview";
+  $("#tabs").innerHTML=list.map(([k,l,n])=>`<button role="tab" data-tab="${k}" aria-selected="${S.tab===k}">${l}${n?`<span class="n">${n}</span>`:""}</button>`).join("");
+}
+
+/* ---------- views ---------- */
+function vOverview(){
+  const m=me();const wk=weekStart(TODAY);
+  const myWeek=S.time.filter(t=>t.uid===m.id&&weekStart(t.date)===wk).reduce((a,t)=>a+t.hours,0);
+  const returned=S.time.filter(t=>t.uid===m.id&&t.status==="returned").length+S.batches.filter(b=>b.uid===m.id&&b.status==="returned").length;
+  const missing=allItems().filter(i=>i.batch.uid===m.id&&!i.receipts.length).length;
+  let h=`<div class="head"><div><h1>Good to see you, ${esc(m.name.split(" ")[0])}</h1><div class="sub">${esc(m.title)} · ${isMgr()?"Manager access":"Employee access"}</div></div></div>`;
+  if(isMgr()){
+    const ready=S.clients.map(c=>({c,r:readyFor(c.id)})).filter(x=>x.r.total>0);
+    const readyTot=ready.reduce((a,x)=>a+x.r.total,0);
+    const unpaid=S.invoices.filter(i=>i.status==="sent").reduce((a,i)=>a+i.total,0);
+    const monthHrs=S.time.filter(t=>t.date.slice(0,7)===TODAY.slice(0,7)).reduce((a,t)=>a+t.hours,0);
+    const pend=pendingTime().length+pendingBatches().length;
+    h+=`<div class="stats">
+      <div class="stat"><div class="l">Team hours this month</div><div class="v">${hrs(monthHrs)}</div></div>
+      <div class="stat"><div class="l">Waiting for your approval</div><div class="v">${pend}</div>${pend?`<button class="link" data-go="approvals">Review</button>`:""}</div>
+      <div class="stat"><div class="l">Ready to invoice</div><div class="v">${money(readyTot)}</div>${readyTot?`<button class="link" data-go="invoices">Create invoices</button>`:""}</div>
+      <div class="stat"><div class="l">Sent, not yet paid</div><div class="v">${money(unpaid)}</div></div></div>`;
+    h+=`<div class="panel"><h2>Ready to invoice by client</h2>${ready.length?`<div class="tablewrap"><table><thead><tr><th>Client</th><th class="num">Approved hours</th><th class="num">Expenses</th><th class="num">Amount</th><th></th></tr></thead><tbody>${ready.map(({c,r})=>`<tr><td>${esc(c.name)}</td><td class="num">${hrs(r.hours)}</td><td class="num">${money(r.e.reduce((a,x)=>a+x.amount,0))}</td><td class="num">${money(r.total)}</td><td class="num"><button class="btn sm gold" data-act="mkinv" data-id="${c.id}">Create invoice</button></td></tr>`).join("")}</tbody></table></div>`:`<p class="empty">Nothing approved and waiting to be billed.</p>`}</div>`;
+  }
+  h+=`<div class="stats stats3">
+    <div class="stat"><div class="l">My hours this week</div><div class="v">${hrs(myWeek)}</div><button class="link" data-go="time">Log time</button></div>
+    <div class="stat"><div class="l">Sent back to me</div><div class="v">${returned}</div>${returned?`<button class="link" data-act="goreturned">Fix and resubmit</button>`:""}</div>
+    <div class="stat"><div class="l">Expenses missing a receipt</div><div class="v">${missing}</div>${missing?`<button class="link" data-go="expenses">Add receipts</button>`:""}</div></div>`;
+  return h;
+}
+
+function vTime(){
+  const m=me();const wk=S.wk;const end=addDays(wk,6);
+  const rows=S.time.filter(t=>t.uid===m.id&&t.date>=wk&&t.date<=end).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));
+  const editable=t=>t.status==="draft"||t.status==="returned";
+  const canSubmit=rows.some(editable);
+  const tot=rows.reduce((a,t)=>a+t.hours,0),bill=rows.filter(t=>t.billable).reduce((a,t)=>a+t.hours,0);
+  const ed=S.editTime?S.time.find(t=>t.id===S.editTime):null;
+  const myProjects=S.projects.filter(p=>p.rates[m.id]!=null);
+  const returned=rows.filter(t=>t.status==="returned");
+  let h=`<div class="head"><div><h1>My time</h1><div class="sub">Log hours by project and task, then submit the week for approval.</div></div>
+    <div class="weekbar"><button class="btn ghost sm" data-act="wk" data-d="-7" aria-label="Previous week">Previous</button><b>Week of ${fdate(wk)}</b><button class="btn ghost sm" data-act="wk" data-d="7" aria-label="Next week">Next</button>${wk!==weekStart(TODAY)?`<button class="link" data-act="wknow">This week</button>`:""}</div></div>`;
+  returned.forEach(t=>h+=`<div class="note bad"><b>Sent back:</b> ${fshort(t.date)}, ${esc(t.task)}. ${esc(t.note)}</div>`);
+  h+=`<div class="panel"><h2 style="margin-bottom:12px">${ed?"Edit entry":"Add time"}</h2>
+    <form class="form" id="tform">
+      <label>Date<input type="date" id="t-date" required value="${ed?ed.date:(TODAY>=wk&&TODAY<=end?TODAY:addDays(wk,1))}"></label>
+      <label>Project<select id="t-proj">${myProjects.map(p=>`<option value="${p.id}" ${ed&&ed.projectId===p.id?"selected":""}>${esc(p.name)}</option>`).join("")}</select></label>
+      <label>Task<input id="t-task" required placeholder="What you worked on" value="${esc(ed?ed.task:"")}"></label>
+      <label>Start<input type="time" id="t-start" required value="${ed?ed.start:"09:00"}"></label>
+      <label>End<input type="time" id="t-end" required value="${ed?ed.end:"11:00"}"></label>
+      <label class="chk"><input type="checkbox" id="t-bill" ${!ed||ed.billable?"checked":""}> Billable</label>
+      <div class="row"><button class="btn" type="submit">${ed?"Save":"Add"}</button>${ed?`<button class="btn ghost" type="button" data-act="tcancel">Cancel</button>`:""}</div>
+    </form></div>`;
+  h+=`<div class="panel"><div class="head" style="margin-bottom:8px"><h2>Entries</h2><div class="row"><span class="muted">${hrs(tot)} hours, ${hrs(bill)} billable</span><button class="btn gold" data-act="tsubmit" ${canSubmit?"":"disabled"}>Submit week</button></div></div>
+    ${rows.length?`<div class="tablewrap"><table><thead><tr><th>Date</th><th>Project</th><th>Task</th><th>Time</th><th class="num">Hours</th><th>Billable</th><th>Status</th><th></th></tr></thead><tbody>
+    ${rows.map(t=>`<tr><td style="white-space:nowrap">${fshort(t.date)}</td><td>${esc(proj(t.projectId).name)}</td><td>${esc(t.task)}</td><td style="white-space:nowrap">${t12(t.start)} to ${t12(t.end)}</td><td class="num">${hrs(t.hours)}</td><td>${t.billable?"Yes":"No"}</td><td>${stLabel(t.invoiceId?"invoiced":t.status)}</td>
+      <td class="num">${editable(t)?`<button class="link" data-act="tedit" data-id="${t.id}">Edit</button> &nbsp; <button class="link" data-act="tdel" data-id="${t.id}">Delete</button>`:""}</td></tr>`).join("")}
+    </tbody></table></div>`:`<p class="empty">No time logged this week yet. Add your first entry above.</p>`}</div>`;
+  return h;
+}
+function stLabel(s){return `<span class="st ${s}">${s==="invoiced"?"Invoiced":STATUS_LABEL[s]}</span>`}
+
+function receiptCell(i,bid){
+  const th=i.receipts.map((r,ri)=>r.url?`<img class="thumb" src="${r.url}" alt="Receipt ${esc(r.name)}" data-act="rview" data-b="${bid}" data-i="${i.id}" data-r="${ri}">`:`<span class="thumb file" title="${esc(r.name)}">${r.type==="pdf"?"PDF":"FILE"}</span>`).join("");
+  return `<div class="receipts">${th}${i.receipts.length?"":`<span class="missing">No receipt</span>`}<span class="btn ghost sm attach">Attach<input type="file" accept="image/*,application/pdf" multiple data-act="rattach" data-b="${bid}" data-i="${i.id}" aria-label="Attach receipt"></span></div>`;
+}
+
+function vExpenses(){
+  const m=me();
+  if(S.openBatch){const b=S.batches.find(x=>x.id===S.openBatch);if(b)return vBatch(b)}
+  const mine=S.batches.filter(b=>b.uid===m.id).sort((a,b)=>b.weekStart.localeCompare(a.weekStart));
+  let h=`<div class="head"><div><h1>My expenses</h1><div class="sub">One batch per week. You can attach receipts any time, even after a batch is submitted or approved.</div></div><button class="btn gold" data-act="bnew">New expense batch</button></div>`;
+  h+=`<div class="panel">${mine.length?`<div class="tablewrap"><table><thead><tr><th>Week of</th><th class="num">Items</th><th class="num">Total</th><th>Receipts</th><th>Status</th><th></th></tr></thead><tbody>
+    ${mine.map(b=>{const tot=b.items.reduce((a,i)=>a+i.amount,0);const miss=b.items.filter(i=>!i.receipts.length).length;
+      return `<tr><td style="white-space:nowrap">${fdate(b.weekStart)}</td><td class="num">${b.items.length}</td><td class="num">${money(tot)}</td><td>${miss?`<span class="missing">${miss} missing</span>`:`<span class="muted">All attached</span>`}</td><td>${stLabel(b.status)}</td><td class="num"><button class="link" data-act="bopen" data-id="${b.id}">Open</button></td></tr>`}).join("")}
+    </tbody></table></div>`:`<p class="empty">No expense batches yet.</p>`}</div>`;
+  return h;
+}
+function vBatch(b){
+  const edit=(b.status==="draft"||b.status==="returned")&&b.uid===S.me;
+  const tot=b.items.reduce((a,i)=>a+i.amount,0);
+  const projs=S.projects.filter(p=>p.rates[b.uid]!=null);
+  let h=`<div class="head"><div><button class="link" data-act="bclose">Back to all batches</button><h1 style="margin-top:6px">Expenses, week of ${fdate(b.weekStart)}</h1><div class="sub">${esc(user(b.uid).name)} · ${stLabel(b.status)}</div></div>
+    <div class="row"><b style="font-size:20px">${money(tot)}</b>${edit?`<button class="btn gold" data-act="bsubmit" ${b.items.length?"":"disabled"}>Submit for approval</button>`:""}</div></div>`;
+  if(b.status==="returned"&&b.note)h+=`<div class="note bad"><b>Sent back:</b> ${esc(b.note)}</div>`;
+  if(!edit)h+=`<div class="note">This batch is ${STATUS_LABEL[b.status].toLowerCase()}, so amounts are locked. You can still attach receipts.</div>`;
+  h+=`<div class="panel"><div class="tablewrap"><table class="tight"><thead><tr><th>Date</th><th>Vendor</th><th>Category</th><th class="num">Amount</th><th>Project</th><th>Notes</th><th>Billable</th><th>Receipts</th>${edit?"<th></th>":""}</tr></thead><tbody>
+  ${b.items.map(i=>edit?`<tr>
+    <td><input type="date" value="${i.date}" data-f="date" data-i="${i.id}" aria-label="Date" style="width:140px"></td>
+    <td><input value="${esc(i.vendor)}" data-f="vendor" data-i="${i.id}" aria-label="Vendor" style="width:120px"></td>
+    <td><select data-f="category" data-i="${i.id}" aria-label="Category" style="width:125px">${CATS.map(c=>`<option ${c===i.category?"selected":""}>${c}</option>`).join("")}</select></td>
+    <td class="num"><input type="number" step="0.01" min="0" value="${i.amount.toFixed(2)}" data-f="amount" data-i="${i.id}" aria-label="Amount" style="width:88px;text-align:right"></td>
+    <td><select data-f="projectId" data-i="${i.id}" aria-label="Project" style="width:150px">${projs.map(p=>`<option value="${p.id}" ${p.id===i.projectId?"selected":""}>${esc(p.name)}</option>`).join("")}</select></td>
+    <td><input value="${esc(i.notes)}" data-f="notes" data-i="${i.id}" aria-label="Notes" style="width:120px"></td>
+    <td><input type="checkbox" ${i.billable?"checked":""} data-f="billable" data-i="${i.id}" aria-label="Billable"></td>
+    <td>${receiptCell(i,b.id)}</td>
+    <td><button class="link" data-act="idel" data-id="${i.id}">Delete</button></td></tr>`
+  :`<tr><td style="white-space:nowrap">${fshort(i.date)}</td><td>${esc(i.vendor)}</td><td>${esc(i.category)}</td><td class="num">${money(i.amount)}</td><td>${esc(proj(i.projectId).name)}</td><td>${esc(i.notes)}</td><td>${i.billable?"Yes":"No"}</td><td>${receiptCell(i,b.id)}</td></tr>`).join("")}
+  <tr class="total"><td colspan="3">Total</td><td class="num">${money(tot)}</td><td colspan="${edit?5:4}"></td></tr>
+  </tbody></table></div>${edit?`<div style="margin-top:14px"><button class="btn ghost" data-act="iadd">Add expense</button></div>`:""}</div>`;
+  return h;
+}
+
+function vApprovals(){
+  const pt=pendingTime(),pb=pendingBatches();
+  let h=`<div class="head"><div><h1>Approvals</h1><div class="sub">Approve submitted time and expenses, or send them back with a note.</div></div></div>`;
+  h+=`<div class="panel"><h2 style="margin-bottom:10px">Timesheets</h2>${pt.length?pt.map(g=>{const tot=g.rows.reduce((a,t)=>a+t.hours,0);const k=g.uid+"|"+g.wk;
+    return `<div style="padding:12px 0;border-bottom:1px solid var(--line)"><div class="head" style="margin:0 0 8px"><div><h3>${esc(user(g.uid).name)}</h3><div class="sub">Week of ${fdate(g.wk)} · ${hrs(tot)} hours, ${hrs(g.rows.filter(t=>t.billable).reduce((a,t)=>a+t.hours,0))} billable</div></div>
+      <div class="row"><input id="n-${k.replace(/\W/g,"")}" placeholder="Note if sending back" aria-label="Note" style="width:220px"><button class="btn ghost sm" data-act="tback" data-k="${k}">Send back</button><button class="btn sm" data-act="tok" data-k="${k}">Approve</button></div></div>
+      <div class="tablewrap"><table class="fixed"><colgroup><col style="width:130px"><col><col style="width:240px"><col style="width:80px"><col style="width:110px"></colgroup><tbody>${g.rows.sort((a,b)=>a.date.localeCompare(b.date)).map(t=>`<tr><td style="white-space:nowrap">${fshort(t.date)}</td><td>${esc(proj(t.projectId).name)}</td><td>${esc(t.task)}</td><td class="num">${hrs(t.hours)}</td><td>${t.billable?"Billable":"Not billable"}</td></tr>`).join("")}</tbody></table></div></div>`}).join(""):`<p class="empty">No timesheets waiting.</p>`}</div>`;
+  h+=`<div class="panel"><h2 style="margin-bottom:10px">Expense batches</h2>${pb.length?`<div class="tablewrap"><table><thead><tr><th>Employee</th><th>Week of</th><th class="num">Items</th><th class="num">Total</th><th>Receipts</th><th></th></tr></thead><tbody>${pb.map(b=>{const miss=b.items.filter(i=>!i.receipts.length).length;
+    return `<tr><td>${esc(user(b.uid).name)}</td><td style="white-space:nowrap">${fdate(b.weekStart)}</td><td class="num">${b.items.length}</td><td class="num">${money(b.items.reduce((a,i)=>a+i.amount,0))}</td><td>${miss?`<span class="missing">${miss} missing</span>`:"All attached"}</td>
+    <td class="num"><div class="row" style="justify-content:flex-end"><button class="link" data-act="bopen" data-id="${b.id}">Open</button><input id="bn-${b.id}" placeholder="Note if sending back" aria-label="Note" style="width:190px"><button class="btn ghost sm" data-act="bback" data-id="${b.id}">Send back</button><button class="btn sm" data-act="bok" data-id="${b.id}">Approve</button></div></td></tr>`}).join("")}</tbody></table></div>`:`<p class="empty">No expense batches waiting.</p>`}</div>`;
+  return h;
+}
+
+function vInvoices(){
+  if(S.openInvoice){const i=S.invoices.find(x=>x.id===S.openInvoice);if(i)return vInvoice(i)}
+  let h=`<div class="head"><div><h1>Invoices</h1><div class="sub">Invoices are built from approved, billable time and expenses that haven't been billed yet.</div></div></div>`;
+  h+=`<div class="panel"><h2 style="margin-bottom:10px">Ready to invoice</h2><div class="tablewrap"><table><thead><tr><th>Client</th><th class="num">Hours</th><th class="num">Labor</th><th class="num">Expenses</th><th class="num">Total</th><th></th></tr></thead><tbody>
+    ${S.clients.map(c=>{const r=readyFor(c.id);const exp=r.e.reduce((a,x)=>a+x.amount,0);return `<tr><td>${esc(c.name)}</td><td class="num">${hrs(r.hours)}</td><td class="num">${money(r.total-exp)}</td><td class="num">${money(exp)}</td><td class="num"><b>${money(r.total)}</b></td><td class="num"><button class="btn sm gold" data-act="mkinv" data-id="${c.id}" ${r.total?"":"disabled"}>Create invoice</button></td></tr>`}).join("")}
+  </tbody></table></div></div>`;
+  const list=S.invoices.slice().sort((a,b)=>b.date.localeCompare(a.date));
+  h+=`<div class="panel"><h2 style="margin-bottom:10px">All invoices</h2>${list.length?`<div class="tablewrap"><table><thead><tr><th>Invoice</th><th>Client</th><th>Period</th><th>Date</th><th class="num">Total</th><th>Status</th><th></th></tr></thead><tbody>
+    ${list.map(i=>`<tr><td style="white-space:nowrap">${esc(i.num)}</td><td>${esc(client(i.clientId).name)}</td><td style="white-space:nowrap">${fdate(i.from)} to ${fdate(i.to)}</td><td style="white-space:nowrap">${fdate(i.date)}</td><td class="num">${money(i.total)}</td><td>${stLabel(i.status)}</td><td class="num"><button class="link" data-act="iopen" data-id="${i.id}">Open</button></td></tr>`).join("")}
+  </tbody></table></div>`:`<p class="empty">No invoices yet.</p>`}</div>`;
+  return h;
+}
+function vInvoice(i){
+  const c=client(i.clientId);const due=addDays(i.date,c.terms);
+  let h=`<div class="head"><div><button class="link" data-act="iclose">Back to invoices</button><h1 style="margin-top:6px">${esc(i.num)}</h1><div class="sub">${esc(c.name)} · ${stLabel(i.status)}</div></div>
+    <div class="row">${i.status==="draft"?`<button class="btn ghost" data-act="idelinv" data-id="${i.id}">Delete draft</button><button class="btn gold" data-act="isent" data-id="${i.id}">Mark as sent</button>`:i.status==="sent"?`<button class="btn gold" data-act="ipaid" data-id="${i.id}">Mark as paid</button>`:""}</div></div>`;
+  h+=`<div class="invoice"><div class="ih"><div><h2>Invoice</h2><div style="margin-top:10px;font-weight:700">Northline Consulting Group (demo)</div><div style="color:#3E5568;font-size:14px">Atlanta, Georgia<br>555-010-0199</div></div>
+    <div class="meta"><span>Invoice</span><b>${esc(i.num)}</b><span>Date</span><span>${fdate(i.date)}</span><span>Due</span><span>${fdate(due)}</span><span>Period</span><span>${fdate(i.from)} to ${fdate(i.to)}</span></div></div>
+    <div style="margin-bottom:22px"><div style="color:#3E5568;font-size:13px;font-weight:600">BILL TO</div><div style="font-weight:700">${esc(c.name)}</div><div style="white-space:pre-line;font-size:14px">${esc(c.addr)}</div></div>
+    <div class="tablewrap"><table><thead><tr><th>Description</th><th class="num">Hours</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead><tbody>
+    ${i.lines.map(l=>`<tr><td>${esc(l.desc)}</td><td class="num">${l.qty==null?"":hrs(l.qty)}</td><td class="num">${l.rate==null?"":money(l.rate)}</td><td class="num">${money(l.amount)}</td></tr>`).join("")}
+    </tbody></table></div><div class="tot">Total due &nbsp; ${money(i.total)}</div>
+    <div class="foot">Payment due within ${c.terms} days. Receipts for all expenses are on file and available on request.</div></div>`;
+  return h;
+}
+
+function vProjects(){
+  const staff=S.users;
+  let h=`<div class="head"><div><h1>Projects &amp; rates</h1><div class="sub">Hourly billing rate for each person on each project. Leave blank if they don't work on it. Rates here are samples.</div></div></div>`;
+  h+=`<div class="panel"><div class="tablewrap"><table><thead><tr><th>Project</th><th>Client</th>${staff.map(u=>`<th class="num">${esc(u.name)}</th>`).join("")}</tr></thead><tbody>
+  ${S.projects.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(client(p.clientId).name)}</td>${staff.map(u=>`<td class="num"><input type="number" min="0" step="5" value="${p.rates[u.id]??""}" data-rate="${p.id}|${u.id}" aria-label="Rate for ${esc(u.name)}" style="width:90px;text-align:right"></td>`).join("")}</tr>`).join("")}
+  </tbody></table></div></div>`;
+  h+=`<div class="panel"><h2 style="margin-bottom:10px">People</h2><div class="tablewrap"><table><thead><tr><th>Name</th><th>Title</th><th>Access</th></tr></thead><tbody>${staff.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.title)}</td><td>${u.role==="manager"?"Manager: sees everyone, approves, invoices":"Employee: own time and expenses only"}</td></tr>`).join("")}</tbody></table></div></div>`;
+  return h;
+}
+
+/* ---------- render ---------- */
+function render(){
+  $("#who").innerHTML=S.users.map(u=>`<option value="${u.id}" ${u.id===S.me?"selected":""}>${esc(u.name)} (${u.role==="manager"?"Manager":"Employee"})</option>`).join("");
+  tabs();
+  const v={overview:vOverview,time:vTime,expenses:vExpenses,approvals:vApprovals,invoices:vInvoices,projects:vProjects}[S.tab];
+  $("#view").innerHTML=v();save();
+}
+
+/* ---------- actions ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-tab],[data-go],[data-act]");if(!t)return;
+  if(t.dataset.tab||t.dataset.go){S.tab=t.dataset.tab||t.dataset.go;S.openBatch=null;S.openInvoice=null;S.editTime=null;render();scrollTo(0,0);return}
+  const a=t.dataset.act,id=t.dataset.id;
+  if(a==="rattach")return;
+  if(a==="wk"){S.wk=addDays(S.wk,+t.dataset.d);S.editTime=null}
+  else if(a==="wknow")S.wk=weekStart(TODAY);
+  else if(a==="goreturned"){const r=S.time.find(x=>x.uid===S.me&&x.status==="returned");S.tab="time";if(r)S.wk=weekStart(r.date)}
+  else if(a==="tedit")S.editTime=id;
+  else if(a==="tcancel")S.editTime=null;
+  else if(a==="tdel"){S.time=S.time.filter(x=>x.id!==id);toast("Entry deleted")}
+  else if(a==="tsubmit"){let n=0;S.time.forEach(x=>{if(x.uid===S.me&&x.date>=S.wk&&x.date<=addDays(S.wk,6)&&(x.status==="draft"||x.status==="returned")){x.status="submitted";x.note="";n++}});toast(n+" entries submitted for approval")}
+  else if(a==="bnew"){const wk=weekStart(TODAY);let b=S.batches.find(x=>x.uid===S.me&&x.weekStart===wk&&(x.status==="draft"||x.status==="returned"));
+    if(!b){b={id:uid(),uid:S.me,weekStart:wk,status:"draft",note:"",items:[]};S.batches.push(b)}
+    if(!b.items.length)b.items.push(newItem());S.openBatch=b.id}
+  else if(a==="bopen"){S.openBatch=id;S.tab="expenses"}
+  else if(a==="bclose")S.openBatch=null;
+  else if(a==="iadd"){S.batches.find(x=>x.id===S.openBatch).items.push(newItem())}
+  else if(a==="idel"){const b=S.batches.find(x=>x.id===S.openBatch);b.items=b.items.filter(x=>x.id!==id)}
+  else if(a==="bsubmit"){const b=S.batches.find(x=>x.id===S.openBatch);b.status="submitted";b.note="";toast("Expenses submitted for approval")}
+  else if(a==="tok"||a==="tback"){const [u,wk]=t.dataset.k.split("|");const note=($("#n-"+t.dataset.k.replace(/\W/g,""))||{}).value||"";
+    if(a==="tback"&&!note.trim()){toast("Add a note so they know what to fix");return}
+    S.time.forEach(x=>{if(x.uid===u&&weekStart(x.date)===wk&&x.status==="submitted"){x.status=a==="tok"?"approved":"returned";x.note=a==="tok"?"":note.trim()}});
+    toast(a==="tok"?"Timesheet approved":"Sent back to "+user(u).name)}
+  else if(a==="bok"||a==="bback"){const b=S.batches.find(x=>x.id===id);const note=($("#bn-"+id)||{}).value||"";
+    if(a==="bback"&&!note.trim()){toast("Add a note so they know what to fix");return}
+    b.status=a==="bok"?"approved":"returned";b.note=a==="bok"?"":note.trim();toast(a==="bok"?"Expenses approved":"Sent back to "+user(b.uid).name)}
+  else if(a==="mkinv"){const r=readyFor(id);if(!r.total)return;
+    const dates=[...r.t.map(x=>x.date),...r.e.map(x=>x.date)].sort();
+    const n=S.invoices.length+41;const inv={id:uid(),num:"INV-"+TODAY.slice(0,4)+"-"+String(n+1).padStart(4,"0"),clientId:id,from:dates[0],to:dates[dates.length-1],date:TODAY,status:"draft",
+      lines:buildLines(id,r.t,r.e,S.projects,S.users),total:r.total};
+    S.invoices.push(inv);r.t.forEach(x=>S.time.find(y=>y.id===x.id).invoiceId=inv.id);
+    r.e.forEach(x=>{S.batches.forEach(b=>b.items.forEach(i=>{if(i.id===x.id)i.invoiceId=inv.id}))});
+    S.tab="invoices";S.openInvoice=inv.id;toast("Draft invoice created")}
+  else if(a==="iopen")S.openInvoice=id;
+  else if(a==="iclose")S.openInvoice=null;
+  else if(a==="isent"){S.invoices.find(x=>x.id===id).status="sent";toast("Marked as sent")}
+  else if(a==="ipaid"){S.invoices.find(x=>x.id===id).status="paid";toast("Marked as paid")}
+  else if(a==="idelinv"){S.time.forEach(x=>{if(x.invoiceId===id)x.invoiceId=null});S.batches.forEach(b=>b.items.forEach(i=>{if(i.invoiceId===id)i.invoiceId=null}));S.invoices=S.invoices.filter(x=>x.id!==id);S.openInvoice=null;toast("Draft deleted; its time and expenses are ready to invoice again")}
+  else if(a==="rview"){const b=S.batches.find(x=>x.id===t.dataset.b);const i=b.items.find(x=>x.id===t.dataset.i);const r=i.receipts[+t.dataset.r];
+    const o=document.createElement("div");o.className="overlay";o.innerHTML=`<img src="${r.url}" alt="Receipt ${esc(r.name)}">`;o.onclick=()=>o.remove();document.body.appendChild(o);return}
+  else return;
+  render();
+});
+function newItem(){const p=S.projects.find(x=>x.rates[S.me]!=null);return {id:uid(),date:TODAY,vendor:"",category:"Meals",amount:0,projectId:p.id,notes:"",billable:true,receipts:[],invoiceId:null}}
+
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.id==="who"){S.me=t.value;S.openBatch=null;S.openInvoice=null;S.editTime=null;S.tab="overview";render();toast("Now viewing as "+me().name);return}
+  if(t.dataset.f){const b=S.batches.find(x=>x.id===S.openBatch);const i=b.items.find(x=>x.id===t.dataset.i);
+    const f=t.dataset.f;i[f]=f==="amount"?Math.round((parseFloat(t.value)||0)*100)/100:f==="billable"?t.checked:t.value;render();return}
+  if(t.dataset.rate){const [p,u]=t.dataset.rate.split("|");const pr=proj(p);if(t.value==="")delete pr.rates[u];else pr.rates[u]=+t.value;save();toast("Rate saved");return}
+  if(t.dataset.act==="rattach"){const b=S.batches.find(x=>x.id===t.dataset.b);const i=b.items.find(x=>x.id===t.dataset.i);
+    const files=[...t.files];let left=files.length;
+    files.forEach(f=>{if(f.type.startsWith("image/")){const rd=new FileReader();rd.onload=()=>{shrink(rd.result,u=>{i.receipts.push({name:f.name,type:"img",url:u});if(!--left){render();toast("Receipt attached")}})};rd.readAsDataURL(f)}
+      else{i.receipts.push({name:f.name,type:"pdf"});if(!--left){render();toast("Receipt attached")}}});}
+});
+function shrink(src,cb){const im=new Image();im.onload=()=>{const k=Math.min(1,1000/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.8))};im.onerror=()=>cb(src);im.src=src}
+
+document.addEventListener("submit",e=>{
+  if(e.target.id!=="tform")return;e.preventDefault();
+  const v=id=>$("#"+id).value;const h=t2h(v("t-start"),v("t-end"));
+  if(h<=0){toast("End time needs to be after start time");return}
+  const row={date:v("t-date"),projectId:v("t-proj"),task:v("t-task").trim(),start:v("t-start"),end:v("t-end"),hours:Math.round(h*100)/100,billable:$("#t-bill").checked};
+  if(S.editTime){const x=S.time.find(y=>y.id===S.editTime);Object.assign(x,row);if(x.status==="returned"){}S.editTime=null;toast("Entry saved")}
+  else{S.time.push({id:uid(),uid:S.me,status:"draft",note:"",invoiceId:null,...row});toast("Time added")}
+  S.wk=weekStart(row.date);render();
+});
+$("#reset").onclick=()=>{S=sample();render();toast("Sample data reset")};
+render();
+})();
+</script>
+
+</body></html>

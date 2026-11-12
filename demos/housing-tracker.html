@@ -1,0 +1,142 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Housing Tracker Demo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
+<style>
+/* Front porch: warm, people-first board */
+:root{--brick:#B5523B;--brick-ink:#8E3B28;--porch:#A7C7D9;--porch-soft:#E4EFF5;--honey:#E7B85C;--honey-soft:#FBF0D6;--white:#FFFFFF;--slate:#2F3B45;--muted:#56636E;--line:#D5DDE3;--wash:#F3F6F8;--ok:#2E7D5B;--ok-soft:#DCF0E5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--white);color:var(--slate);font:400 15px/1.5 Outfit,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+::selection{background:var(--honey);color:var(--slate)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding:20px 0 12px;border-bottom:1px solid var(--line)}
+.logo{font-weight:800;font-size:22px}.logo i{font-style:normal;color:var(--brick)}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{font:inherit;font-weight:600;background:none;border:0;color:var(--muted);padding:8px 12px;border-radius:8px;cursor:pointer}
+nav button[aria-pressed=true]{background:var(--slate);color:var(--white)}
+main{padding:24px 0 56px}
+h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:0 0 4px;text-wrap:balance}
+h2{font-size:17px;font-weight:700;margin:0 0 10px}
+.sub{color:var(--muted);margin:0 0 20px}
+.sum{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:20px}
+.sum div{font-size:14px;color:var(--muted)}.sum b{display:block;font-size:26px;color:var(--slate);font-variant-numeric:tabular-nums}
+.board{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
+.col{background:var(--wash);border-radius:12px;padding:12px;min-width:0}
+.col h2{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}
+.col h2 span{color:var(--muted);font-weight:600}
+.card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-bottom:8px;cursor:pointer;width:100%;text-align:left;font:inherit;color:inherit;display:block}
+.card:hover{border-color:var(--porch)}
+.card b{font-size:16px}.card .m{color:var(--muted);font-size:13px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.pri{background:var(--brick)}.std{background:var(--porch)}.hold{background:var(--honey)}
+.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;margin:6px 4px 0 0}
+.t-h{background:var(--honey-soft);color:#7A5714}.t-p{background:var(--porch-soft);color:#2D5B75}.t-b{background:#F6DED8;color:var(--brick-ink)}.t-ok{background:var(--ok-soft);color:var(--ok)}
+.pos{font-weight:800;color:var(--brick);margin-right:4px}
+.two{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+.box{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.homes{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.home{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--white)}
+.home h3{margin:0;font-size:17px}
+.beds{display:flex;gap:6px;margin:10px 0}
+.bed{flex:1;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.bed.f{background:var(--porch);color:var(--slate)}.bed.o{background:var(--white);border:2px dashed var(--brick);color:var(--brick-ink)}
+.fund{height:8px;background:var(--wash);border-radius:4px;overflow:hidden;margin-top:6px}.fund div{height:100%;background:var(--honey)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:13px;color:var(--muted);font-weight:600;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 8px;border-bottom:1px solid var(--line)}.num{text-align:right}.tw{overflow-x:auto}
+.btn{font:inherit;font-weight:700;border:0;border-radius:8px;padding:9px 15px;cursor:pointer;background:var(--brick);color:var(--white);white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--slate);border:1px solid var(--line)}.btn.sm{padding:5px 10px;font-size:13px}.btn:disabled{opacity:.45;cursor:default}
+:focus-visible{outline:3px solid var(--honey);outline-offset:2px}
+input,select,textarea{font:inherit;color:var(--slate);background:var(--white);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0;width:100%}
+.form{display:grid;gap:10px}.form label{display:grid;gap:3px;font-size:13px;font-weight:600;color:var(--muted)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.drawer{position:fixed;inset:0;background:rgba(47,59,69,.45);display:flex;justify-content:flex-end;z-index:20}
+.drawer .in{background:var(--white);width:min(440px,100%);height:100%;overflow:auto;padding:22px;box-shadow:-8px 0 30px rgba(47,59,69,.2)}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.notes{background:var(--wash);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+.empty{color:var(--muted);font-size:14px;padding:6px 0}
+footer{color:var(--muted);font-size:13px;padding-bottom:30px}footer button{font:inherit;color:var(--brick);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--slate);color:var(--white);font-weight:600;padding:10px 16px;border-radius:999px;z-index:30}
+</style>
+<div class="wrap"><header><div class="logo">Willow Lane <i>Homes</i></div><nav id="nav"></nav></header><main id="view"></main>
+<footer>Demo with sample data. Changes stay in this browser. <button id="reset">Reset sample data</button></footer></div>
+<script>
+(function(){"use strict";
+const $=s=>document.querySelector(s);const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>"$"+Math.round(n).toLocaleString();const uid=()=>Math.random().toString(36).slice(2,8);const pad=n=>String(n).padStart(2,"0");
+const ago=d=>{const x=new Date();x.setDate(x.getDate()-d);return x.getFullYear()+"-"+pad(x.getMonth()+1)+"-"+pad(x.getDate())};
+const fd=s=>{const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})};
+const STAGES=[["applied","Applied"],["waitlist","Waitlist"],["matched","Matched to a home"],["moved","Moved in"]];
+const NEEDS=["Wheelchair access","Ground floor","Overnight support","Near transit","Pet friendly"];
+function sample(){
+ const homes=[{id:"h1",name:"Home 1, Birch",beds:3,status:"Open",cost:420000,raised:420000},{id:"h2",name:"Home 2, Cedar",beds:3,status:"Open",cost:420000,raised:420000},
+  {id:"h3",name:"Home 3, Dogwood",beds:3,status:"Open",cost:440000,raised:440000},{id:"h4",name:"Home 4, Elm",beds:3,status:"Building",cost:450000,raised:312000},{id:"h5",name:"Home 5, Fir",beds:3,status:"Fundraising",cost:450000,raised:96000}];
+ const P=[["Chris Allen","moved","h1",0,["Ground floor"]],["Dee Morgan","moved","h1",0,["Overnight support"]],["Ray Fields","moved","h1",0,[]],["Toni Vale","moved","h2",0,["Wheelchair access"]],["Eli Brooks","moved","h2",0,[]],["Nia Grant","moved","h3",0,["Near transit"]],
+  ["Ava Lin","matched","h2",0,["Pet friendly"]],["Owen Pratt","matched","h3",0,[]],
+  ["Lena Price","waitlist","",1,["Wheelchair access"]],["Jordan Wells","waitlist","",2,["Overnight support"]],["Mia Torres","waitlist","",3,[]],["Kai Dunn","waitlist","",4,["Ground floor","Near transit"]],["Ruth Okoro","waitlist","",5,[]],
+  ["Marcus Tate","applied","",0,["Overnight support"]],["Renee Oduya","applied","",0,[]],["Sam Kline","applied","",0,["Wheelchair access"]],["Isla Ford","applied","",0,["Pet friendly"]]];
+ const people=P.map(([n,st,h,pos,needs],i)=>({id:"p"+i,name:n,stage:st,home:h,pos,needs,priority:i%5===0,applied:ago(400-i*22),docs:st==="applied"?(i%2?"Missing income letter":"Complete"):"Complete",guardian:["Pat Allen","Lou Morgan","","Jan Vale","","","Sue Lin","","Ann Price","Dev Wells","","Ty Dunn","","Gail Tate","","Rob Kline",""][i]||"",notes:st==="waitlist"&&pos===1?"Tour scheduled for Home 3.":""}));
+ const gifts=[["Hollis Family Foundation","h4",150000],["Peach State Bank","h4",75000],["Grace Church","h5",40000],["Kim and Ted Rowe","h4",25000],["Ridge Rotary","h5",20000],["Monthly donors (62)","h5",36000],["Ridge Rotary","h4",12000],["Anon","h4",50000]]
+  .map(([n,h,a],i)=>({id:"g"+i,name:n,home:h,amount:a,date:ago(10+i*19)}));
+ return {homes,people,gifts,tab:"board",open:null}}
+const KEY="willow-demo-v1";let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||!S.homes)S=sample();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let tt;function toast(m){let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;clearTimeout(tt);tt=setTimeout(()=>t.remove(),2200)}
+const home=id=>S.homes.find(h=>h.id===id);const per=id=>S.people.find(p=>p.id===id);
+const inHome=id=>S.people.filter(p=>p.home===id&&(p.stage==="moved"||p.stage==="matched"));
+const openBeds=()=>S.homes.filter(h=>h.status==="Open").reduce((a,h)=>a+Math.max(0,h.beds-inHome(h.id).length),0);
+const renum=()=>S.people.filter(p=>p.stage==="waitlist").sort((a,b)=>a.pos-b.pos).forEach((p,i)=>p.pos=i+1);
+function nav(){$("#nav").innerHTML=[["board","People"],["homes","Homes"],["funding","Funding"],["add","Add applicant"]].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${S.tab===k}">${l}</button>`).join("")}
+function card(p){const h=home(p.home);return `<button class="card" data-open="${p.id}"><b>${p.stage==="waitlist"?`<span class="pos">#${p.pos}</span>`:""}${esc(p.name)}</b>
+ <div class="m">${p.stage==="moved"||p.stage==="matched"?esc(h?h.name:""):"Applied "+fd(p.applied)}</div>
+ <div>${p.priority?`<span class="tag t-b">Priority</span>`:""}${p.needs.map(n=>`<span class="tag t-p">${esc(n)}</span>`).join("")}${p.docs!=="Complete"?`<span class="tag t-h">${esc(p.docs)}</span>`:""}</div></button>`}
+function vBoard(){renum();const c=k=>S.people.filter(p=>p.stage===k);
+ return `<h1>Residents and applicants</h1><p class="sub">Everyone from first application to move-in day. Click a name to see their file or move them forward.</p>
+ <div class="sum"><div><b>${c("applied").length}</b>new applications</div><div><b>${c("waitlist").length}</b>on the waitlist</div><div><b>${openBeds()}</b>open beds right now</div><div><b>${c("moved").length}</b>residents home</div></div>
+ <div class="board">${STAGES.map(([k,l])=>{const L=c(k).sort((a,b)=>k==="waitlist"?a.pos-b.pos:0);return `<div class="col"><h2>${l}<span>${L.length}</span></h2>${L.map(card).join("")||`<p class="empty">No one here yet.</p>`}</div>`}).join("")}</div>`}
+function vHomes(){return `<h1>Homes</h1><p class="sub">Each home, its beds, and who lives there. Dashed beds are open.</p><div class="homes">${S.homes.map(h=>{const r=inHome(h.id);const live=h.status==="Open";
+ return `<div class="home"><h3>${esc(h.name)}</h3><span class="tag ${live?"t-ok":h.status==="Building"?"t-h":"t-p"}">${h.status==="Open"?"Open":h.status}</span>
+ ${live?`<div class="beds">${Array.from({length:h.beds},(_,i)=>r[i]?`<div class="bed f" title="${esc(r[i].name)}">${esc(r[i].name.split(" ")[0])}${r[i].stage==="matched"?" (soon)":""}</div>`:`<div class="bed o">Open</div>`).join("")}</div>`:`<p class="empty" style="margin:10px 0">${h.beds} beds when finished</p>`}
+ <div class="m" style="font-size:13px;color:var(--muted)">${money(h.raised)} of ${money(h.cost)} raised</div><div class="fund"><div style="width:${Math.min(100,h.raised/h.cost*100)}%"></div></div>
+ ${live&&r.length<h.beds?`<button class="btn sm" style="margin-top:10px" data-match="${h.id}">Match next on waitlist</button>`:""}</div>`}).join("")}</div>`}
+function vFunding(){const tot=S.gifts.reduce((a,g)=>a+g.amount,0);
+ return `<h1>Funding</h1><p class="sub">Who is funding which home, so every donor can see the home they helped build.</p>
+ <div class="two"><div class="box"><h2>Gifts</h2><form class="form noprint" id="gift" style="grid-template-columns:1.4fr 1fr 1fr auto;align-items:end;margin-bottom:12px"><label>Donor<input id="g-n" required></label><label>Home<select id="g-h">${S.homes.filter(h=>h.raised<h.cost).map(h=>`<option value="${h.id}">${esc(h.name)}</option>`).join("")}</select></label><label>Amount<input id="g-a" type="number" min="1" required></label><button class="btn">Add gift</button></form>
+ <div class="tw"><table><thead><tr><th>Donor</th><th>Home</th><th class="num">Amount</th><th>Date</th></tr></thead><tbody>${S.gifts.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(g=>`<tr><td>${esc(g.name)}</td><td>${esc(home(g.home).name)}</td><td class="num">${money(g.amount)}</td><td>${fd(g.date)}</td></tr>`).join("")}</tbody></table></div></div>
+ <div class="box"><h2>Still to raise</h2>${S.homes.filter(h=>h.raised<h.cost).map(h=>`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between"><b>${esc(h.name)}</b><span>${money(h.cost-h.raised)} to go</span></div><div class="fund" style="height:12px"><div style="width:${h.raised/h.cost*100}%"></div></div></div>`).join("")||`<p class="empty">Every home is fully funded.</p>`}
+ <p class="sub" style="margin:8px 0 0">${money(tot)} given in the last few months.</p></div></div>`}
+function vAdd(){return `<h1>Add an applicant</h1><p class="sub">New applicants start in Applied. Move them to the waitlist once their paperwork is in.</p>
+ <form class="form box" id="addf" style="max-width:560px"><div class="g2"><label>Applicant name<input id="a-n" required></label><label>Family or guardian contact<input id="a-g"></label></div>
+ <label>Needs</label><div class="steps">${NEEDS.map(n=>`<label style="display:flex;gap:6px;align-items:center;color:var(--slate);font-weight:500"><input type="checkbox" value="${n}" style="width:auto"> ${n}</label>`).join("")}</div>
+ <label style="display:flex;gap:6px;align-items:center;color:var(--slate);font-weight:500"><input type="checkbox" id="a-p" style="width:auto"> Priority (aging caregiver or urgent need)</label>
+ <label>Notes<textarea id="a-no" rows="3"></textarea></label><div><button class="btn">Add applicant</button></div></form>`}
+function drawer(){const p=per(S.open);if(!p)return "";const i=STAGES.findIndex(s=>s[0]===p.stage);const opts=S.homes.filter(h=>h.status==="Open"&&inHome(h.id).length<h.beds);
+ return `<div class="drawer" data-close="1"><div class="in" role="dialog" aria-label="${esc(p.name)}"><button class="btn ghost sm" data-close="1">Close</button>
+ <h1 style="margin-top:12px">${esc(p.name)}</h1><p class="sub" style="margin:0">${STAGES[i][1]}${p.stage==="waitlist"?`, #${p.pos} in line`:""}${p.home?` · ${esc(home(p.home).name)}`:""}</p>
+ <div>${p.priority?`<span class="tag t-b">Priority</span>`:""}${p.needs.map(n=>`<span class="tag t-p">${esc(n)}</span>`).join("")}</div>
+ <div class="notes"><b>Applied:</b> ${fd(p.applied)}<br><b>Paperwork:</b> ${esc(p.docs)}<br><b>Family contact:</b> ${esc(p.guardian||"None listed")}${p.notes?`<br><b>Notes:</b> ${esc(p.notes)}`:""}</div>
+ ${p.docs!=="Complete"?`<button class="btn ghost sm" data-docs="${p.id}">Mark paperwork complete</button>`:""}
+ <h2 style="margin-top:16px">Next step</h2><div class="steps">
+ ${p.stage==="applied"?`<button class="btn" data-to="waitlist" ${p.docs!=="Complete"?"disabled title='Paperwork first'":""}>Add to waitlist</button>`:""}
+ ${p.stage==="waitlist"?(opts.length?opts.map(h=>`<button class="btn" data-to="matched" data-h="${h.id}">Match to ${esc(h.name)}</button>`).join(""):`<p class="empty">No open beds right now.</p>`)+(p.pos>1?`<button class="btn ghost" data-up="1">Move up one</button>`:""):""}
+ ${p.stage==="matched"?`<button class="btn" data-to="moved">Moved in</button>`:""}
+ ${i>0&&p.stage!=="moved"?`<button class="btn ghost" data-to="${STAGES[i-1][0]}">Move back</button>`:""}
+ ${p.stage==="moved"?`<p class="empty">Living at ${esc(home(p.home).name)}.</p>`:""}</div></div></div>`}
+function render(){nav();$("#view").innerHTML={board:vBoard,homes:vHomes,funding:vFunding,add:vAdd}[S.tab]()+drawer();save()}
+document.addEventListener("click",e=>{const t=e.target.closest("[data-tab],[data-open],[data-close],[data-to],[data-up],[data-docs],[data-match]");if(!t)return;
+ if(t.dataset.close&&e.target!==t)return;const d=t.dataset,p=per(S.open);
+ if(d.tab){S.tab=d.tab;S.open=null}else if(d.open)S.open=d.open;else if(d.close)S.open=null;
+ else if(d.docs){p.docs="Complete";toast("Paperwork complete")}
+ else if(d.up){const q=S.people.find(x=>x.stage==="waitlist"&&x.pos===p.pos-1);q.pos++;p.pos--;toast("Moved up")}
+ else if(d.to){if(d.to==="waitlist"&&p.stage==="applied")p.pos=99;if(d.to==="matched")p.home=d.h;if(d.to==="waitlist"||d.to==="applied")p.home="";p.stage=d.to;renum();toast(p.name+": "+STAGES.find(s=>s[0]===d.to)[1])}
+ else if(d.match){renum();const nx=S.people.filter(x=>x.stage==="waitlist").sort((a,b)=>a.pos-b.pos)[0];if(!nx){toast("Nobody on the waitlist");return}nx.stage="matched";nx.home=d.match;renum();toast(nx.name+" matched to "+home(d.match).name)}
+ else if(t.id==="reset"){S=sample();toast("Sample data reset")}
+ render()});
+$("#reset").onclick=()=>{S=sample();render();toast("Sample data reset")};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.open){S.open=null;render()}});
+document.addEventListener("submit",e=>{e.preventDefault();
+ if(e.target.id==="addf"){const n=$("#a-n").value.trim();if(!n)return;S.people.push({id:uid(),name:n,stage:"applied",home:"",pos:0,needs:[...e.target.querySelectorAll(".steps input:checked")].map(x=>x.value),priority:$("#a-p").checked,applied:ago(0),docs:"Missing income letter",guardian:$("#a-g").value.trim(),notes:$("#a-no").value.trim()});S.tab="board";toast(n+" added to Applied")}
+ if(e.target.id==="gift"){const h=home($("#g-h").value),a=+$("#g-a").value,n=$("#g-n").value.trim();if(!h||!a||!n)return;S.gifts.push({id:uid(),name:n,home:h.id,amount:a,date:ago(0)});h.raised+=a;if(h.raised>=h.cost&&h.status==="Fundraising")h.status="Building";toast("Gift added to "+h.name)}
+ render()});
+render()})();
+</script>
+</body></html>
