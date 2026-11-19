@@ -39,9 +39,9 @@ iframe{width:100%;height:100%;border:2px solid var(--ink);border-radius:14px;bac
  .stage{height:auto;padding:10px}
  iframe{height:88vh;min-height:620px}
 }
-</style><style id="nobreak">p,li,dd,blockquote,figcaption,label,td{text-wrap:pretty}h1,h2,h3,h4,h5,.cta,button,a.btn{text-wrap:balance}</style><style id="rust-text">body{color:#1f1a17!important}h1,h2,h3,nav button,.bar p b,input,textarea,select{color:#1f1a17}</style></head><body>
+</style><style id="nobreak">p,li,dd,blockquote,figcaption,label,td{text-wrap:pretty}h1,h2,h3,h4,h5,.cta,button,a.btn{text-wrap:balance}</style><style id="rust-text">body{color:#1f1a17!important}h1,h2,h3,nav button,.bar p b,input,textarea,select{color:#1f1a17}</style><style id="sitenav-css">.sitenav{position:sticky;top:0;z-index:30;background:#FDF5EC;border-bottom:2px solid #8c3b20;font-family:Manrope,system-ui,sans-serif}.sn-in{max-width:1040px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;box-sizing:border-box}.sn-logo{font:800 19px Manrope,system-ui,sans-serif;text-decoration:none;color:#1f1a17}.sn-logo span{color:#a3472a}.sn-links{display:flex;gap:22px;align-items:center;font-weight:600;font-size:14px}.sn-links a{text-decoration:none;color:#1f1a17;white-space:nowrap}.sn-links a[aria-current=page]{color:#8c3b20;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}.sn-links .sn-btn{background:#8c3b20;color:#fff;border-radius:999px;padding:9px 16px}@media(max-width:900px){.sn-links a:not(.sn-btn):not(.sn-li){display:none}}</style><style>.app{height:calc(100vh - 66px)!important}@media(max-width:860px){.app{height:auto!important}}.sitenav{display:block!important}.sitenav .sn-links a{font-size:14px!important;font-weight:600!important}.sitenav .sn-logo{font-size:19px!important;font-weight:800!important;color:#1f1a17!important}.sitenav .sn-links .sn-btn{color:#fff!important}</style></head><body><nav class="sitenav"><div class="sn-in"><a class="sn-logo" href="index.html">Brittany May<span>.</span></a><div class="sn-links"><a href="index.html#build">What I build</a><a href="demos.html" aria-current="page">Demos</a><a href="index.html#work">Work</a><a href="index.html#about">About</a><a href="BrittanyMay_Resume.pdf" target="_blank">Resume</a><a href="start.html">Free 5-minute Snapshot</a><a class="sn-btn" href="mailto:brittanyhmay@gmail.com">Say hi</a><a class="sn-li" href="https://linkedin.com/in/brittany-h-may" target="_blank" rel="noopener">LinkedIn</a></div></div></nav>
 <div class="app">
-<aside><div class="top"><a class="home" href="index.html">Brittany May.</a><br><a class="back" href="index.html">Back to home</a></div>
+<aside><div class="top" style="padding-top:14px"></div>
 <div class="pick"><label for="sel" style="font-size:14px;font-weight:700;color:var(--soft)">Pick a demo</label><select id="sel"></select></div>
 <nav id="nav" aria-label="Demos"></nav>
 <div class="cta-side"><b>Want one like this?</b><p>Start with a free Systems Snapshot. <span class="keep">It takes about 5 minutes.</span></p><a class="btn" href="start.html">Work with me</a></div></aside>
@@ -60,6 +60,10 @@ const G=[["Dashboards",[
  ["navigator","resource-navigator.html","Resource Navigator","Match people to the right help","Staff spent hours figuring out which partner fits each business owner.","four questions that match people to the right help, with a take-home plan."],
  ["cleanup","follow-through.html","Sign-up Cleanup","Messy lists to follow-ups","Event sign-ups came in three messy lists and nobody got followed up with.","one clean list with a follow-up for every person and a report for leadership."],
  ["contract","contract-ready.html","Contract-Ready Check","What's missing to sell to government","Small businesses don't know what they need to win government work.","a checklist of what's missing and which contracts to go after now."]]]];
+/* Hidden for now (files kept): impact, ai, navigator, cleanup, contract. Add ids back to SHOW to bring one back. */
+const SHOW=["detailing","nonprofit","housing","time"];
+for(const g of G)g[1]=g[1].filter(d=>SHOW.includes(d[0]));
+for(let i=G.length-1;i>=0;i--)if(!G[i][1].length)G.splice(i,1);
 const all=G.flatMap(g=>g[1]);
 const $=s=>document.querySelector(s);
 $("#nav").innerHTML=G.map(([g,L])=>`<div class="grp">${g}</div>`+L.map(d=>`<button data-id="${d[0]}">${d[2]}<small>${d[3]}</small></button>`).join("")).join("");
