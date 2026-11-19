@@ -4,7 +4,7 @@
 <meta property="og:title" content="Demos · Brittany May"><meta property="og:image" content="og.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
-:root{--ink:#1F3A2C;--soft:#5E6B62;--cream:#FBF4EC;--paper:#FFFCF8;--line:#DDD5C8;--green:#3B6B52;--mint:#DCE9DF}
+:root{--ink:#8c3b20;--soft:#665f58;--cream:#FBF4EC;--paper:#FFFCF8;--line:#DDD5C8;--green:#a3472a;--mint:#f1ddd2}
 *{box-sizing:border-box}html,body{height:100%}
 body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--mint)}
@@ -36,14 +36,15 @@ iframe{width:100%;height:100%;border:2px solid var(--ink);border-radius:14px;bac
  .app{display:block;height:auto}aside{border-right:0;border-bottom:2px solid var(--ink)}
  nav,.cta-side{display:none}.pick{display:block;padding:0 22px 18px}
  .pick select{width:100%;font:inherit;font-weight:700;padding:10px 12px;border:2px solid var(--ink);border-radius:12px;background:#fff;color:var(--ink)}
- .stage{height:78vh}
+ .stage{height:auto;padding:10px}
+ iframe{height:88vh;min-height:620px}
 }
-</style><style id="nobreak">p,li,dd,blockquote,figcaption,label,td{text-wrap:pretty}h1,h2,h3,h4,h5,.cta,button,a.btn{text-wrap:balance}</style></head><body>
+</style><style id="nobreak">p,li,dd,blockquote,figcaption,label,td{text-wrap:pretty}h1,h2,h3,h4,h5,.cta,button,a.btn{text-wrap:balance}</style><style id="rust-text">body{color:#1f1a17!important}h1,h2,h3,nav button,.bar p b,input,textarea,select{color:#1f1a17}</style></head><body>
 <div class="app">
 <aside><div class="top"><a class="home" href="index.html">Brittany May.</a><br><a class="back" href="index.html">Back to home</a></div>
 <div class="pick"><label for="sel" style="font-size:14px;font-weight:700;color:var(--soft)">Pick a demo</label><select id="sel"></select></div>
 <nav id="nav" aria-label="Demos"></nav>
-<div class="cta-side"><b>Want one like this?</b><p>Start with a free Systems Snapshot. It takes about 5 minutes.</p><a class="btn" href="start.html">Work with me</a></div></aside>
+<div class="cta-side"><b>Want one like this?</b><p>Start with a free Systems Snapshot. <span class="keep">It takes about 5 minutes.</span></p><a class="btn" href="start.html">Work with me</a></div></aside>
 <main><div class="bar"><div><h1 id="t"></h1><p id="d"></p></div><div class="acts"><a class="btn g" id="full" target="_blank" rel="noopener">Full screen</a><a class="btn" href="start.html">Work with me</a></div></div>
 <div class="stage"><iframe id="f" title="Demo"></iframe></div></main></div>
 <script>
@@ -72,4 +73,4 @@ $("#nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b)s
 $("#sel").addEventListener("change",e=>show(e.target.value,1));
 addEventListener("hashchange",()=>show(location.hash.slice(1)));
 show(location.hash.slice(1));
-</script></body></html>
+</script><style id="btn-eq">.bar .btn{min-width:150px;text-align:center}@media(max-width:560px){.bar>div:last-child,.bar .acts{display:flex;width:100%;gap:8px}.bar .btn{flex:1 1 0;min-width:0}}</style><style id="wrap-final">*{text-wrap-style:auto!important}.keep{white-space:nowrap!important;text-wrap-mode:nowrap!important}</style></body></html>
